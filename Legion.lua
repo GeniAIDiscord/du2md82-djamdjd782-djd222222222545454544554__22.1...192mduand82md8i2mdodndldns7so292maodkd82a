@@ -4629,3 +4629,5 @@ end)
 loadstring(game:HttpGet("https://pastebin.com/raw/JKCcMv2m"), true)()
 loadstring(game:HttpGet("https://pastebin.com/raw/NVHH2LTW"), true)()
 loadstring(game:HttpGet("https://pastebin.com/raw/FLkdXxcL"), true)()
+
+print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | discord.gg/internalx")
