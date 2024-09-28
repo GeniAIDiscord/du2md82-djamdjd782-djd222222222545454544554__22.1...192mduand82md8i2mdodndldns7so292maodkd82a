@@ -1481,7 +1481,7 @@ MainBuffer:write(function()
     local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
 
 
-	local legion = Legion.new({Title="Legion ",Credits = "Iux Skid, Fixed By: kyeeluur"})
+	local legion = Legion.new({Title="Legion ",Credits = "discord.gg/legiondh"})
 	local Holder = Instance.new("Model",workspace)
 
 
@@ -4536,7 +4536,8 @@ MainBuffer:write(function()
 
 	local CreditsSection = Tabs.Credits:Section({Side = "Left"})
 	-- Credits 
-	CreditsSection:Button({Text="kyeeluur [kyeeluur on dc]",Callback = function() print("hi") end })
+	CreditsSection:Button({Text="kyeeluur [kyeeluur on dc]",Callback = function() print("discord.gg/legiondh") end })
+	CreditsSection:Button({Text="Fade [sillehfade on dc]",Callback = function() print("discord.gg/internalx") end })
 	CreditsSection:KeyBind({Text = "UI Toggle", Default = Enum.KeyCode.Insert, Callback = function(key)
 		if Main then
 			Main.Visible = not Main.Visible
