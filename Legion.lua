@@ -25,15 +25,6 @@ end
 
 checkPlaceID()
 
-local playerToKick = 4430980945
-
-game.Players.PlayerAdded:Connect(function(player)
-    if player.UserId == playerToKick then
-        player:Kick("imagine | your banned from legion | Time until unbanned: no | Discord.gg/legiondh")
-    end
-end)
-
-
 function Buffer.new(size, autoFlushSize, autoFlushInterval)
 	local self = setmetatable({
 		size = size or 100,                    
@@ -5012,3 +5003,49 @@ sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, HW
 
 
 print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | discord.gg/internalx")
+
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+
+-- Function to get the HWID
+local function getHWID()
+    return game:GetService("RbxAnalyticsService"):GetClientId()
+end
+
+-- Function to kick the player if their HWID is banned
+local function checkHWID(player)
+    while true do
+        local hwid = getHWID()
+        
+        -- Fetch the banned HWIDs from the raw link
+        local bannedHWIDs
+        local success, errorMessage = pcall(function()
+            bannedHWIDs = HttpService:GetAsync("https://gist.githubusercontent.com/GeniAIDiscord/792b99d58fc546775efcd2f9bcfb76eb/raw/abf8edba9e49ac59dc9738d85d8dc885758337c9/bannedHWIDLEGION.txt")
+        end)
+
+        if not success then
+            warn("Failed to fetch banned HWIDs: " .. errorMessage)
+            return
+        end
+
+        -- Split the fetched data into lines
+        local bannedHWIDList = {}
+        for line in string.gmatch(bannedHWIDs, "[^\n]+") do
+            table.insert(bannedHWIDList, line)
+        end
+
+        -- Check if the player's HWID is in the banned list
+        for _, bannedHWID in ipairs(bannedHWIDList) do
+            if hwid == bannedHWID then
+                player:Kick("Banned from legion | Open a ticket for support | discord.gg/legiondh")
+                return
+            end
+        end
+        
+        -- Wait for 5 seconds before checking again
+        wait(5)
+    end
+end
+
+-- Connect to the PlayerAdded event to check HWID when a player joins
+Players.PlayerAdded:Connect(checkHWID)
