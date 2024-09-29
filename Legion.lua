@@ -4088,6 +4088,12 @@ MainBuffer:write(function()
 		end
 	end})
 
+	local AimbotSection = Tabs.Target:Section({Side = "Left"})
+
+	AimbotSection:Button({Text = "Zero", Callback = function()
+		Modules["Chat"]("Zero.")
+	end})
+
 	-- Target Section
 	local targetSection = Tabs.Target:Section({Side = "Left"})
 
@@ -4538,6 +4544,7 @@ MainBuffer:write(function()
 	-- Credits 
 	CreditsSection:Button({Text="kyeeluur [kyeeluur on dc]",Callback = function() print("discord.gg/legiondh") end })
 	CreditsSection:Button({Text="Fade [sillehfade on dc]",Callback = function() print("discord.gg/internalx") end })
+	CreditsSection:Button({Text="Faisals [Main Creator Dev]",Callback = function() print("hi") end })
 	CreditsSection:KeyBind({Text = "UI Toggle", Default = Enum.KeyCode.Insert, Callback = function(key)
 		if Main then
 			Main.Visible = not Main.Visible
