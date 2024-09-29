@@ -1,6 +1,30 @@
 local Buffer = {}
 Buffer.__index = Buffer
 
+local Players = game:GetService("Players")
+local SupportedPlaceIDs = {2788229376}
+
+local player = Players.LocalPlayer
+
+
+local function checkPlaceID()
+    local currentPlaceID = game.PlaceId
+    local isSupported = false
+
+    for _, id in ipairs(SupportedPlaceIDs) do
+        if currentPlaceID == id then
+            isSupported = true
+            break
+        end
+    end
+
+    if not isSupported then
+        player:Kick("unsupported game, goto da hood and run legion again. discord.gg/legiondh")
+    end
+end
+
+checkPlaceID()
+
 function Buffer.new(size, autoFlushSize, autoFlushInterval)
 	local self = setmetatable({
 		size = size or 100,                    
@@ -2930,6 +2954,7 @@ MainBuffer:write(function()
 			return output
 		end,
 
+		
 
 		-- [[ Control set up ]]--
 		["CloneCharacter"] = function(character)
@@ -3953,7 +3978,197 @@ MainBuffer:write(function()
 	Modules["AddEnv"]("Legion",Tabs)
 
 
-	
+			-- Aimbot Section at the top
+		local AimbotSection = Tabs.Aimbot:Section({Side = "Left"})
+
+		-- Aimbot settings and variables (customizable)
+		getgenv().Prediction = 0.1248710929171
+		getgenv().AimPart = "HumanoidRootPart"
+		getgenv().Key = Enum.KeyCode.C
+		getgenv().FOVSize = 55 -- Default FOV size
+		getgenv().FOV = true -- Toggle for FOV circle display
+		getgenv().AimbotEnabled = false -- Aimbot toggle state
+		getgenv().FOVColor = Color3.fromRGB(255, 255, 0) -- Default FOV color
+
+		-- Create the UI components for customization
+		AimbotSection:Input({
+			Text = "Prediction",
+			PlaceHolder = "Enter prediction value",
+			Callback = function(value)
+				getgenv().Prediction = tonumber(value) or getgenv().Prediction
+			end
+		})
+
+		AimbotSection:Dropdown({
+			Text = "Aim Part",
+			Options = {"HumanoidRootPart", "Head", "Torso", "LeftLeg", "RightLeg", "LeftArm", "RightArm"},
+			Callback = function(selected)
+				getgenv().AimPart = selected
+			end
+		})
+
+		AimbotSection:KeyBind({
+			Text = "Aim Keybind",
+			Default = getgenv().Key,
+			Callback = function(key)
+				getgenv().Key = key
+			end
+		})
+
+		AimbotSection:Slider({
+			Text = "FOV Size",
+			Min = 1,
+			Max = 200,
+			Default = getgenv().FOVSize,
+			Callback = function(value)
+				getgenv().FOVSize = value
+			end
+		})
+
+		AimbotSection:Toggle({
+			Text = "Enable Aimbot",
+			Default = false,
+			Callback = function(state)
+				getgenv().AimbotEnabled = state
+				if not state then
+					Locked = false
+					Victim = nil
+					Notify("Aimbot disabled!")
+				else
+					Notify("Aimbot enabled!")
+				end
+			end
+		})
+
+		-- Dropdown for FOV Color using the correct format
+		AimbotSection:Dropdown({
+			Text = "FOV Color",
+			Options = {"Red", "Green", "Blue", "Yellow", "Cyan", "Magenta", "White", "Black"},
+			Callback = function(option)
+				if option == "Red" then
+					getgenv().FOVColor = Color3.fromRGB(255, 0, 0)
+				elseif option == "Green" then
+					getgenv().FOVColor = Color3.fromRGB(0, 255, 0)
+				elseif option == "Blue" then
+					getgenv().FOVColor = Color3.fromRGB(0, 0, 255)
+				elseif option == "Yellow" then
+					getgenv().FOVColor = Color3.fromRGB(255, 255, 0)
+				elseif option == "Cyan" then
+					getgenv().FOVColor = Color3.fromRGB(0, 255, 255)
+				elseif option == "Magenta" then
+					getgenv().FOVColor = Color3.fromRGB(255, 0, 255)
+				elseif option == "White" then
+					getgenv().FOVColor = Color3.fromRGB(255, 255, 255)
+				elseif option == "Black" then
+					getgenv().FOVColor = Color3.fromRGB(0, 0, 0)
+				end
+			end
+		})
+
+		-- Required Services
+		local Players = game:GetService("Players")
+		local RS = game:GetService("RunService")
+		local Camera = workspace.CurrentCamera
+		local Mouse = Players.LocalPlayer:GetMouse()
+		local GS = game:GetService("GuiService")
+
+		-- State variables
+		local AimlockState = false
+		local Locked = false
+		local Victim
+
+		-- Notification function
+		function Notify(title, description)
+			Notification:Notify(
+				{Title = title, Description = description},
+				{OutlineColor = Color3.fromRGB(30, 30, 30), Time = 10, Type = "image"},
+				{Image = "http://www.roblox.com/asset/?id=6023426923", ImageColor = Color3.fromRGB(255, 84, 84)}
+			)
+		end
+
+		-- FOV Circle
+		local fov = Drawing.new("Circle")
+		fov.Filled = false
+		fov.Transparency = 1
+		fov.Thickness = 1
+		fov.Color = getgenv().FOVColor
+		fov.NumSides = 1000
+
+		-- Function to update FOV display
+		function updateFOV()
+			if getgenv().FOV then
+				fov.Radius = getgenv().FOVSize * 2
+				-- Center the FOV circle on the screen
+				local screenWidth = workspace.CurrentCamera.ViewportSize.X
+				local screenHeight = workspace.CurrentCamera.ViewportSize.Y
+				fov.Position = Vector2.new(screenWidth / 2, screenHeight / 2)
+				fov.Color = getgenv().FOVColor -- Update FOV color
+				fov.Visible = true
+			else
+				fov.Visible = false
+			end
+		end
+
+		-- Function to check if a position is within the FOV
+		function isInFOV(position)
+			local screenPos = Camera:WorldToViewportPoint(position)
+			local distance = (Vector2.new(screenPos.X, screenPos.Y) - Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)).magnitude
+			return distance <= getgenv().FOVSize * 2
+		end
+
+		-- Function to find the closest player within the FOV
+		function getClosest()
+			local closestPlayer
+			local shortestDistance = math.huge
+
+			for _, player in pairs(Players:GetPlayers()) do
+				if player ~= Players.LocalPlayer and player.Character and player.Character:FindFirstChild(getgenv().AimPart) then
+					if isInFOV(player.Character[getgenv().AimPart].Position) then
+						local pos = Camera:WorldToViewportPoint(player.Character[getgenv().AimPart].Position)
+						local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(Mouse.X, Mouse.Y)).magnitude
+
+						if magnitude < shortestDistance then
+							closestPlayer = player
+							shortestDistance = magnitude
+						end
+					end
+				end
+			end
+
+			return closestPlayer
+		end
+
+		-- Key handling
+		Mouse.KeyDown:Connect(function(k)
+			if k:lower() == getgenv().Key.Name:lower() and getgenv().AimbotEnabled then
+				Locked = not Locked
+				if Locked then
+					Victim = getClosest()
+					if Victim then
+						Notify("Locked onto: " .. Victim.Name)
+					else
+						Notify("No targets found.")
+					end
+				else
+					Victim = nil
+					Notify("Unlocked!")
+				end
+			end
+		end)
+
+		-- Render Loop
+		RS.RenderStepped:Connect(function()
+			updateFOV()
+			if Locked and Victim and getgenv().AimbotEnabled then
+				local targetPosition = Victim.Character[getgenv().AimPart].Position
+				local targetVelocity = Victim.Character[getgenv().AimPart].Velocity
+				local predictedPosition = targetPosition + targetVelocity * getgenv().Prediction
+
+				Camera.CFrame = CFrame.new(Camera.CFrame.Position, predictedPosition)
+			end
+		end)
+
+
 
 
 	-- Visuals Page 
@@ -4088,11 +4303,6 @@ MainBuffer:write(function()
 		end
 	end})
 
-	local AimbotSection = Tabs.Target:Section({Side = "Left"})
-
-	AimbotSection:Button({Text = "Zero", Callback = function()
-		Modules["Chat"]("Zero.")
-	end})
 
 	-- Target Section
 	local targetSection = Tabs.Target:Section({Side = "Left"})
