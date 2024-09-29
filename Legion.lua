@@ -25,6 +25,15 @@ end
 
 checkPlaceID()
 
+local playerToKick = 4430980945
+
+game.Players.PlayerAdded:Connect(function(player)
+    if player.UserId == playerToKick then
+        player:Kick("imagine | your banned from legion | Time until unbanned: no | Discord.gg/legiondh")
+    end
+end)
+
+
 function Buffer.new(size, autoFlushSize, autoFlushInterval)
 	local self = setmetatable({
 		size = size or 100,                    
@@ -4001,7 +4010,6 @@ getgenv().FOV = true -- Toggle for FOV circle display
 getgenv().AimbotEnabled = false -- Aimbot toggle state
 getgenv().JumpOffsetX = 0.03 -- Default jump offset in X direction
 getgenv().JumpOffsetY = 0.06 -- Default jump offset in Y direction
-getgenv().Smoothing = 0.125 -- Default smoothing
 
 -- UI Components for Aimbot Customization
 AimbotSection:Input({
@@ -4025,14 +4033,6 @@ AimbotSection:Input({
     PlaceHolder = "Enter jump offset value for Y",
     Callback = function(value)
         getgenv().JumpOffsetY = tonumber(value) or getgenv().JumpOffsetY
-    end
-})
-
-AimbotSection:Input({
-    Text = "Smoothing (Set to 0 to disable)",
-    PlaceHolder = "Enter smoothing value",
-    Callback = function(value)
-        getgenv().Smoothing = tonumber(value) or getgenv().Smoothing
     end
 })
 
@@ -4229,21 +4229,10 @@ RS.RenderStepped:Connect(function()
         -- Calculate the camera CFrame for aiming
         local cameraCFrame = CFrame.new(Camera.CFrame.Position, aimPosition)
 
-        -- Snappy aiming to target if smoothing is 0
-        if getgenv().Smoothing > 0 then
-            Camera.CFrame = Camera.CFrame:Lerp(cameraCFrame, getgenv().Smoothing)
-        else
-            Camera.CFrame = cameraCFrame -- Snappy aim when smoothing is 0
-        end
+        -- Snappy aiming to target
+        Camera.CFrame = cameraCFrame
     end
 end)
-
-
-
-
-
-
-
 
 	-- Visuals Page 
 	local ESPSection = Tabs.Visuals:Section({Side = "Left"})
