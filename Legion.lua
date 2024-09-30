@@ -5012,21 +5012,34 @@ local function getHWID()
     return game:GetService("RbxAnalyticsService"):GetClientId()
 end
 
+-- Function to fetch the raw content of the Gist
+local function fetchBannedHWIDs()
+    local bannedHWIDs
+    local success, errorMessage = pcall(function()
+        -- Use the Gist API to get the latest revision
+        local gistResponse = HttpService:GetAsync("https://api.github.com/gists/792b99d58fc546775efcd2f9bcfb76eb")
+        local gistData = HttpService:JSONDecode(gistResponse)
+        
+        -- Get the raw URL from the gist data
+        bannedHWIDs = HttpService:GetAsync(gistData.files["bannedHWIDLEGION.txt"].raw_url)
+    end)
+
+    if not success then
+        warn("Failed to fetch banned HWIDs: " .. errorMessage)
+        return nil
+    end
+
+    return bannedHWIDs
+end
+
 -- Function to kick the player if their HWID is banned
 local function checkHWID(player)
     while true do
         local hwid = getHWID()
         
-        -- Fetch the banned HWIDs from the raw link
-        local bannedHWIDs
-        local success, errorMessage = pcall(function()
-            bannedHWIDs = HttpService:GetAsync("https://gist.githubusercontent.com/GeniAIDiscord/792b99d58fc546775efcd2f9bcfb76eb/raw/4a8d50232bb9b4444940c6de4e39ff2f2809f0d1/bannedHWIDLEGION.txt")
-        end)
-
-        if not success then
-            warn("Failed to fetch banned HWIDs: " .. errorMessage)
-            return
-        end
+        -- Fetch the banned HWIDs
+        local bannedHWIDs = fetchBannedHWIDs()
+        if not bannedHWIDs then return end
 
         -- Split the fetched data into lines
         local bannedHWIDList = {}
@@ -5049,3 +5062,4 @@ end
 
 -- Connect to the PlayerAdded event to check HWID when a player joins
 Players.PlayerAdded:Connect(checkHWID)
+
