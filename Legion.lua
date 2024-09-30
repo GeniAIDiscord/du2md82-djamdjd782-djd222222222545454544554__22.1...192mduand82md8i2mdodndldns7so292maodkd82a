@@ -5186,60 +5186,23 @@ chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Positio
 local webhookUrl = "https://discord.com/api/webhooks/1288255480002773003/xZjYoUzH4qm9lUq1hyOsQIVUfs3framLoJd7gnxoz6LzatnWu5hxN-IR27NILrcBR6nW"
 
 local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
-    
     local data = {
         ["embeds"] = {
             {
                 ["title"] = "Legion Log",
                 ["description"] = "Details",
                 ["fields"] = {
-                    {
-                        ["name"] = "Username",
-                        ["value"] = username,
-                        ["inline"] = false
-                    },
-                    {
-                        ["name"] = "Premium Status",
-                        ["value"] = isPremium and "✅ Yes" or "❌ No",
-                        ["inline"] = false
-                    },
-                    {
-                        ["name"] = "Current Game Name",
-                        ["value"] = gameName,
-                        ["inline"] = false
-                    },
-                    {
-                        ["name"] = "Game ID",
-                        ["value"] = gameId,
-                        ["inline"] = false
-                    },
-                    {
-                        ["name"] = "User Profile Link",
-                        ["value"] = userLink,
-                        ["inline"] = false
-                    },
-                    {
-                        ["name"] = "Account Age",
-                        ["value"] = accountAge,
-                        ["inline"] = false
-                    },
-                    {
-                        ["name"] = "HWID",
-                        ["value"] = hwid,
-                        ["inline"] = false
-                    },
-                    {
-                        ["name"] = "Device Type",
-                        ["value"] = deviceType,
-                        ["inline"] = false
-                    },
-                    {
-                        ["name"] = "Executor",
-                        ["value"] = executorName,
-                        ["inline"] = false
-                    }
+                    {["name"] = "Username", ["value"] = username, ["inline"] = false},
+                    {["name"] = "Premium Status", ["value"] = isPremium and "✅ Yes" or "❌ No", ["inline"] = false},
+                    {["name"] = "Current Game Name", ["value"] = gameName, ["inline"] = false},
+                    {["name"] = "Game ID", ["value"] = gameId, ["inline"] = false},
+                    {["name"] = "User Profile Link", ["value"] = userLink, ["inline"] = false},
+                    {["name"] = "Account Age", ["value"] = accountAge, ["inline"] = false},
+                    {["name"] = "HWID", ["value"] = hwid, ["inline"] = false},
+                    {["name"] = "Device Type", ["value"] = deviceType, ["inline"] = false},
+                    {["name"] = "Executor", ["value"] = executorName, ["inline"] = false}
                 },
-                ["color"] = 16753920 
+                ["color"] = 16753920
             }
         }
     }
@@ -5249,9 +5212,7 @@ local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink,
     local response = http_request({
         Url = webhookUrl,
         Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
+        Headers = {["Content-Type"] = "application/json"},
         Body = jsonData
     })
 end
@@ -5264,14 +5225,17 @@ local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.Place
 local gameId = game.PlaceId
 local userLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
 local accountAge = player.AccountAge .. " days"
-
 local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
 
-local deviceType = identifyexecutor() and (identifyexecutor():find("Mobile") and "Mobile 📱" or "PC 💻") or "Unknown"
-
 local executorName = identifyexecutor() or "Unknown"
+if executorName == "Internal X" then
+    hwid = "Bypassed | Reason: InternalX"
+end
+
+local deviceType = executorName:find("Mobile") and "Mobile 📱" or "PC 💻"
 
 sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
+
 
 
 
@@ -5282,83 +5246,54 @@ print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | disc
 
 local Players = game:GetService("Players")
 
-
 local function getHWID()
     local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
-    print("[DEBUG] HWID retrieved: " .. hwid) 
     return hwid
 end
 
-
 local function fetchBannedHWIDs()
     local gistUrl = "https://api.github.com/gists/792b99d58fc546775efcd2f9bcfb76eb"
-    print("[DEBUG] Fetching banned HWIDs from Gist URL: " .. gistUrl) 
 
-    
     local response = http_request({
         Url = gistUrl,
         Method = "GET",
-        
     })
 
-    print("[DEBUG] Gist response status code: " .. response.StatusCode) 
-
     if response.StatusCode ~= 200 then
-        warn("[WARN] Failed to fetch Gist data. Status code: " .. response.StatusCode)
         return nil
     end
 
-    
     local gistData = game:GetService("HttpService"):JSONDecode(response.Body)
     local bannedHWIDRawUrl = gistData.files["bannedHWIDLEGION.txt"].raw_url
-    print("[DEBUG] Banned HWID raw URL: " .. bannedHWIDRawUrl) 
 
-    
     response = http_request({
         Url = bannedHWIDRawUrl,
         Method = "GET",
-        
     })
 
-    print("[DEBUG] Banned HWIDs response status code: " .. response.StatusCode) 
-
     if response.StatusCode ~= 200 then
-        warn("[WARN] Failed to fetch banned HWIDs. Status code: " .. response.StatusCode)
         return nil
     end
 
-    print("[DEBUG] Banned HWIDs fetched successfully.") 
     return response.Body
 end
 
-
 local function checkHWID(player)
-    print("[DEBUG] Starting HWID check for player: " .. player.Name) 
-
     while true do
         local hwid = getHWID()
-
-        
         local bannedHWIDs = fetchBannedHWIDs()
-        if not bannedHWIDs then 
-            print("[DEBUG] No banned HWIDs fetched. Exiting HWID check for player: " .. player.Name) 
+
+        if not bannedHWIDs then
             return 
         end
 
-        print("[DEBUG] Banned HWIDs fetched: " .. bannedHWIDs) 
-
-        
         local bannedHWIDList = {}
         for line in string.gmatch(bannedHWIDs, "[^\n]+") do
             table.insert(bannedHWIDList, line)
         end
 
-        print("[DEBUG] Total banned HWIDs: " .. #bannedHWIDList) 
-
-        
         local isBanned = false
         for _, bannedHWID in ipairs(bannedHWIDList) do
-            print("[DEBUG] Checking HWID: " .. hwid .. " against banned HWID: " .. bannedHWID) 
             if hwid == bannedHWID then
                 isBanned = true
                 break
@@ -5367,20 +5302,13 @@ local function checkHWID(player)
 
         if isBanned then
             player:Kick("Banned from legion | Open a ticket for support | discord.gg/legiondh")
-            print("[DEBUG] Player " .. player.Name .. " has been kicked for being banned.") 
             return
-        else
-            print("[DEBUG] Player " .. player.Name .. " is not banned.") 
         end
 
-        
         wait(1)
-        print("[DEBUG] Waiting for 1 second before next HWID check for player: " .. player.Name) 
     end
 end
 
-
 Players.PlayerAdded:Connect(function(player)
-    print("[DEBUG] Player joined: " .. player.Name) 
     checkHWID(player)
 end)
