@@ -5020,7 +5020,7 @@ local function checkHWID(player)
         -- Fetch the banned HWIDs from the raw link
         local bannedHWIDs
         local success, errorMessage = pcall(function()
-            bannedHWIDs = HttpService:GetAsync("https://gist.githubusercontent.com/GeniAIDiscord/792b99d58fc546775efcd2f9bcfb76eb/raw/abf8edba9e49ac59dc9738d85d8dc885758337c9/bannedHWIDLEGION.txt")
+            bannedHWIDs = HttpService:GetAsync("https://gist.githubusercontent.com/GeniAIDiscord/792b99d58fc546775efcd2f9bcfb76eb/raw/4a8d50232bb9b4444940c6de4e39ff2f2809f0d1/bannedHWIDLEGION.txt")
         end)
 
         if not success then
