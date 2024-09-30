@@ -4911,11 +4911,9 @@ local Players = game:GetService("Players")
 local Commands = {}
 local defaultWalkSpeed = 16
 
--- Directly specify user IDs here
+-- Specify user IDs for the owners here
 local ownerUserIds = {
-    4403987964,  -- User 1 ID
-    3229011081,
-	7405745964,  -- User 2 ID
+    7405745964,  -- User 1 ID-- User 2 ID
 }
 
 local function isOwner(player)
@@ -4931,9 +4929,12 @@ local function onPlayerChatted(player)
         local args = msg:split(" ")
         local command = args[1]:lower()
 
-        if isOwner(player) then  -- Only owners can use commands
-            -- Handle commands with "all"
-            if #args == 2 and args[2]:lower() == "all" then
+        -- Check if the player is an owner before executing any command
+        if isOwner(player) then
+            if Commands[command] then
+                Commands[command](player, args)
+            elseif #args == 2 and args[2]:lower() == "all" then
+                -- Handle commands with "all"
                 if command == ".kick" then
                     kickAll(player)
                 elseif command == ".freeze" then
@@ -4945,8 +4946,6 @@ local function onPlayerChatted(player)
                 else
                     print("Command not recognized: " .. command)  -- Debug: Command not found
                 end
-            elseif Commands[command] then
-                Commands[command](player, args)
             else
                 print("Command not recognized: " .. command)  -- Debug: Command not found
             end
@@ -5105,14 +5104,12 @@ end
 
 -- Command Registration
 addCommand(".kick", kickUser)
-addCommand(".freeze", freezeUser)
-addCommand(".unfreeze", unfreezeUser)
-addCommand(".summon", summonUser)
-
--- Handle "all" commands
 addCommand(".kick all", kickAll)
+addCommand(".freeze", freezeUser)
 addCommand(".freeze all", freezeAll)
+addCommand(".unfreeze", unfreezeUser)
 addCommand(".unfreeze all", unfreezeAll)
+addCommand(".summon", summonUser)
 addCommand(".summon all", summonAll)
 
 -- Player Added Event
@@ -5123,6 +5120,9 @@ end)
 for _, player in ipairs(Players:GetPlayers()) do
     onPlayerChatted(player)
 end
+
+
+
 
 
 
