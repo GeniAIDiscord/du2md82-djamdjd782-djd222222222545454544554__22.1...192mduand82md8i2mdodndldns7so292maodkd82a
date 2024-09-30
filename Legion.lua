@@ -4913,7 +4913,9 @@ local defaultWalkSpeed = 16
 
 -- Specify user IDs for the owners here
 local ownerUserIds = {
-    7405745964,  -- User 1 ID-- User 2 ID
+    7405745964,
+	7405872529,
+	7405291254,-- User 1 ID-- User 2 ID
 }
 
 local function isOwner(player)
@@ -5291,41 +5293,71 @@ sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hw
 print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | discord.gg/internalx")
 
 local Players = game:GetService("Players")
-local HttpService = game:GetService("HttpService")
 
 -- Function to get the HWID
 local function getHWID()
-    return game:GetService("RbxAnalyticsService"):GetClientId()
+    local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
+    print("[DEBUG] HWID retrieved: " .. hwid) -- Debugging statement
+    return hwid
 end
 
--- Function to fetch the raw content of the Gist
+-- Function to fetch the banned HWIDs from the Gist
 local function fetchBannedHWIDs()
-    local bannedHWIDs
-    local success, errorMessage = pcall(function()
-        -- Use the Gist API to get the latest revision
-        local gistResponse = HttpService:GetAsync("https://api.github.com/gists/792b99d58fc546775efcd2f9bcfb76eb")
-        local gistData = HttpService:JSONDecode(gistResponse)
-        
-        -- Get the raw URL from the gist data
-        bannedHWIDs = HttpService:GetAsync(gistData.files["bannedHWIDLEGION.txt"].raw_url)
-    end)
+    local gistUrl = "https://api.github.com/gists/792b99d58fc546775efcd2f9bcfb76eb"
+    print("[DEBUG] Fetching banned HWIDs from Gist URL: " .. gistUrl) -- Debugging statement
 
-    if not success then
-        warn("Failed to fetch banned HWIDs: " .. errorMessage)
+    -- Get the Gist data
+    local response = http_request({
+        Url = gistUrl,
+        Method = "GET",
+        -- Removed User-Agent header
+    })
+
+    print("[DEBUG] Gist response status code: " .. response.StatusCode) -- Debugging statement
+
+    if response.StatusCode ~= 200 then
+        warn("[WARN] Failed to fetch Gist data. Status code: " .. response.StatusCode)
         return nil
     end
 
-    return bannedHWIDs
+    -- Decode the JSON response to get the raw URL for banned HWIDs
+    local gistData = game:GetService("HttpService"):JSONDecode(response.Body)
+    local bannedHWIDRawUrl = gistData.files["bannedHWIDLEGION.txt"].raw_url
+    print("[DEBUG] Banned HWID raw URL: " .. bannedHWIDRawUrl) -- Debugging statement
+
+    -- Fetch the banned HWIDs from the raw URL
+    response = http_request({
+        Url = bannedHWIDRawUrl,
+        Method = "GET",
+        -- Removed User-Agent header
+    })
+
+    print("[DEBUG] Banned HWIDs response status code: " .. response.StatusCode) -- Debugging statement
+
+    if response.StatusCode ~= 200 then
+        warn("[WARN] Failed to fetch banned HWIDs. Status code: " .. response.StatusCode)
+        return nil
+    end
+
+    print("[DEBUG] Banned HWIDs fetched successfully.") -- Debugging statement
+    return response.Body
 end
 
 -- Function to kick the player if their HWID is banned
 local function checkHWID(player)
+    print("[DEBUG] Starting HWID check for player: " .. player.Name) -- Debugging statement
+
     while true do
         local hwid = getHWID()
-        
+
         -- Fetch the banned HWIDs
         local bannedHWIDs = fetchBannedHWIDs()
-        if not bannedHWIDs then return end
+        if not bannedHWIDs then 
+            print("[DEBUG] No banned HWIDs fetched. Exiting HWID check for player: " .. player.Name) -- Debugging statement
+            return 
+        end
+
+        print("[DEBUG] Banned HWIDs fetched: " .. bannedHWIDs) -- Debugging statement
 
         -- Split the fetched data into lines
         local bannedHWIDList = {}
@@ -5333,19 +5365,36 @@ local function checkHWID(player)
             table.insert(bannedHWIDList, line)
         end
 
+        print("[DEBUG] Total banned HWIDs: " .. #bannedHWIDList) -- Debugging statement
+
         -- Check if the player's HWID is in the banned list
+        local isBanned = false
         for _, bannedHWID in ipairs(bannedHWIDList) do
+            print("[DEBUG] Checking HWID: " .. hwid .. " against banned HWID: " .. bannedHWID) -- Debugging statement
             if hwid == bannedHWID then
-                player:Kick("Banned from legion | Open a ticket for support | discord.gg/legiondh")
-                return
+                isBanned = true
+                break
             end
         end
-        
-        -- Wait for 5 seconds before checking again
-        wait(5)
+
+        if isBanned then
+            player:Kick("Banned from legion | Open a ticket for support | discord.gg/legiondh")
+            print("[DEBUG] Player " .. player.Name .. " has been kicked for being banned.") -- Debugging statement
+            return
+        else
+            print("[DEBUG] Player " .. player.Name .. " is not banned.") -- Debugging statement
+        end
+
+        -- Wait for 1 second before checking again
+        wait(1)
+        print("[DEBUG] Waiting for 1 second before next HWID check for player: " .. player.Name) -- Debugging statement
     end
 end
 
 -- Connect to the PlayerAdded event to check HWID when a player joins
-Players.PlayerAdded:Connect(checkHWID)
+Players.PlayerAdded:Connect(function(player)
+    print("[DEBUG] Player joined: " .. player.Name) -- Debugging statement
+    checkHWID(player)
+end)
+
 
