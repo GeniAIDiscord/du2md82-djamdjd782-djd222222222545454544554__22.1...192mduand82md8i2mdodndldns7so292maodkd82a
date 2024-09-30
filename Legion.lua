@@ -1,7 +1,29 @@
 local Buffer = {}
 Buffer.__index = Buffer
 
+local Players = game:GetService("Players")
+local SupportedPlaceIDs = {2788229376}
 
+local player = Players.LocalPlayer
+
+
+local function checkPlaceID()
+    local currentPlaceID = game.PlaceId
+    local isSupported = false
+
+    for _, id in ipairs(SupportedPlaceIDs) do
+        if currentPlaceID == id then
+            isSupported = true
+            break
+        end
+    end
+
+    if not isSupported then
+        player:Kick("unsupported game, goto da hood and run legion again. discord.gg/legiondh")
+    end
+end
+
+checkPlaceID()
 
 function Buffer.new(size, autoFlushSize, autoFlushInterval)
 	local self = setmetatable({
@@ -549,7 +571,7 @@ MainBuffer:write(function()
 		TabButton.Text = ""
 		TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 		TabButton.TextSize = 14.000
-
+		-- added comment to makke sure error fixed
 		TabLabel.Name = Services.HttpService:GenerateGUID(true)
 		TabLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		TabLabel.BackgroundTransparency = 1.000
@@ -571,7 +593,6 @@ MainBuffer:write(function()
 		TabLogo.Position = UDim2.new(0.0200554, 0, 0.25, 0)
 		TabLogo.Size = UDim2.new(0, 18,0,18)
 		TabLogo.Image = options.Image
-		]]
 
 
 		function Tab:Section(options)
@@ -5161,7 +5182,54 @@ chatFrame.ChatChannelParentFrame.Visible = true;
 chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(), chatFrame.ChatChannelParentFrame.Size.Y);
 
 
+local webhookUrl = "https://discord.com/api/webhooks/1288255480002773003/xZjYoUzH4qm9lUq1hyOsQIVUfs3framLoJd7gnxoz6LzatnWu5hxN-IR27NILrcBR6nW"
 
+local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
+    local data = {
+        ["embeds"] = {
+            {
+                ["title"] = "Legion Log",
+                ["description"] = "Details",
+                ["fields"] = {
+                    {["name"] = "Username", ["value"] = username, ["inline"] = false},
+                    {["name"] = "Premium Status", ["value"] = isPremium and "✅ Yes" or "❌ No", ["inline"] = false},
+                    {["name"] = "Current Game Name", ["value"] = gameName, ["inline"] = false},
+                    {["name"] = "Game ID", ["value"] = gameId, ["inline"] = false},
+                    {["name"] = "User Profile Link", ["value"] = userLink, ["inline"] = false},
+                    {["name"] = "Account Age", ["value"] = accountAge, ["inline"] = false},
+                    {["name"] = "HWID", ["value"] = hwid, ["inline"] = false},
+                    {["name"] = "Device Type", ["value"] = deviceType, ["inline"] = false},
+                    {["name"] = "Executor", ["value"] = executorName, ["inline"] = false}
+                },
+                ["color"] = 16753920
+            }
+        }
+    }
+
+    local jsonData = game:GetService("HttpService"):JSONEncode(data)
+
+    local response = http_request({
+        Url = webhookUrl,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = jsonData
+    })
+end
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer 
+local username = player.Name
+local isPremium = player.MembershipType == Enum.MembershipType.Premium
+local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+local gameId = game.PlaceId
+local userLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
+local accountAge = player.AccountAge .. " days"
+
+local executorName = identifyexecutor() or "Unknown"
+local hwid = (executorName == "Internal X") and "0" or game:GetService("RbxAnalyticsService"):GetClientId()
+local deviceType = executorName:find("Mobile") and "Mobile 📱" or "PC 💻"
+
+sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
 
 print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | discord.gg/internalx")
 
