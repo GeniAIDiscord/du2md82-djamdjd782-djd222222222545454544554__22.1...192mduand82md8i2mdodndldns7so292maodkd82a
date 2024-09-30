@@ -5225,22 +5225,12 @@ local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.Place
 local gameId = game.PlaceId
 local userLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
 local accountAge = player.AccountAge .. " days"
-local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
 
 local executorName = identifyexecutor() or "Unknown"
-if executorName == "Internal X" then
-    hwid = "Bypassed | Reason: InternalX"
-end
-
+local hwid = (executorName == "Internal X") and "0" or game:GetService("RbxAnalyticsService"):GetClientId()
 local deviceType = executorName:find("Mobile") and "Mobile 📱" or "PC 💻"
 
 sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
-
-
-
-
-
-
 
 print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | discord.gg/internalx")
 
