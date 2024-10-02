@@ -4977,10 +4977,14 @@ local Commands = {}
 local defaultWalkSpeed = 16
 
 
+local Players = game:GetService("Players")
+local Commands = {}
+local defaultWalkSpeed = 16
+
 local ownerUserIds = {
     7405745964,
-	7405872529,
-	7405291254,
+    7405872529,
+    7405291254,
 }
 
 local function isOwner(player)
@@ -4991,33 +4995,73 @@ local function addCommand(command, func)
     Commands[command:lower()] = func
 end
 
+local function executeCommand(commandName, player, args)
+    local targetPlayers
+
+    if #args == 2 and args[2]:lower() == "all" then
+        targetPlayers = Players:GetPlayers()
+    else
+        targetPlayers = findPlayerByName(args[2])
+    end
+
+    if targetPlayers then
+        for _, targetPlayer in ipairs(targetPlayers) do
+            if not isOwner(targetPlayer) then
+                if commandName == ".kick" then
+                    targetPlayer:Kick("You have been kicked by " .. player.Name)
+                    print(targetPlayer.Name .. " has been kicked by " .. player.Name)
+                elseif commandName == ".freeze" then
+                    if targetPlayer.Character then
+                        local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+                        if humanoid then
+                            humanoid.WalkSpeed = 0
+                            print(targetPlayer.Name .. " has been frozen.")
+                        end
+                    end
+                elseif commandName == ".unfreeze" then
+                    if targetPlayer.Character then
+                        local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+                        if humanoid then
+                            humanoid.WalkSpeed = defaultWalkSpeed
+                            print(targetPlayer.Name .. " has been unfrozen.")
+                        end
+                    end
+                elseif commandName == ".summon" then
+                    local targetPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
+                    if targetPosition and targetPlayer.Character then
+                        targetPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
+                        print(targetPlayer.Name .. " has been summoned to " .. player.Name .. "'s position.")
+                    end
+                elseif commandName == ".kill" then
+                    if targetPlayer.Character then
+                        local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+                        if humanoid then
+                            humanoid.Health = 0
+                            print(targetPlayer.Name .. " has been killed.")
+                        end
+                    end
+                elseif commandName == ".rejoin" then
+                    game:GetService("TeleportService"):Teleport(game.PlaceId, targetPlayer)
+                    print(targetPlayer.Name .. " is rejoining the game.")
+                end
+            else
+                print(targetPlayer.Name .. " cannot be affected by this command.")
+            end
+        end
+    else
+        print("No players found for command: " .. commandName)
+    end
+end
+
 local function onPlayerChatted(player)
     player.Chatted:Connect(function(msg)
         local args = msg:split(" ")
         local command = args[1]:lower()
 
-        
-        if isOwner(player) then
-            if Commands[command] then
-                Commands[command](player, args)
-            elseif #args == 2 and args[2]:lower() == "all" then
-                
-                if command == ".kick" then
-                    kickAll(player)
-                elseif command == ".freeze" then
-                    freezeAll(player)
-                elseif command == ".unfreeze" then
-                    unfreezeAll(player)
-                elseif command == ".summon" then
-                    summonAll(player)
-                else
-                    print("Command not recognized: " .. command)  
-                end
-            else
-                print("Command not recognized: " .. command)  
-            end
+        if Commands[command] then
+            executeCommand(command, player, args)
         else
-            print("You do not have permission to use this command.")  
+            print("Command not recognized: " .. command)
         end
     end)
 end
@@ -5029,12 +5073,10 @@ local function findPlayerByName(name)
     for _, player in ipairs(Players:GetPlayers()) do
         local playerName = string.lower(player.Name)
 
-        
         if playerName == lowerName then
-            return {player}  
+            return {player}  -- Exact match found
         end
 
-        
         if playerName:find(lowerName, 1, true) then
             table.insert(matches, player)
         end
@@ -5043,133 +5085,80 @@ local function findPlayerByName(name)
     return #matches > 0 and matches or nil
 end
 
+-- Command Functions
 local function kickUser(player, args)
     if #args == 2 then
-        local targetPlayers = findPlayerByName(args[2])
-        if targetPlayers then
-            for _, targetPlayer in ipairs(targetPlayers) do
-                targetPlayer:Kick("You have been kicked by " .. player.Name)
-                print(targetPlayer.Name .. " has been kicked by " .. player.Name)  
-            end
-        else
-            print("No players found to kick with name: " .. args[2])  
-        end
+        executeCommand(".kick", player, args)
     else
-        print("Invalid kick command usage.")  
+        print("Invalid kick command usage.")
     end
 end
 
 local function kickAll(player)
-    for _, otherPlayer in ipairs(Players:GetPlayers()) do
-        if not isOwner(otherPlayer) then  
-            otherPlayer:Kick("You have been kicked by " .. player.Name)
-            print(otherPlayer.Name .. " has been kicked by " .. player.Name)  
-        end
-    end
+    executeCommand(".kick all", player, {})
 end
 
 local function freezeUser(player, args)
     if #args == 2 then
-        local targetPlayers = findPlayerByName(args[2])
-        if targetPlayers then
-            for _, targetPlayer in ipairs(targetPlayers) do
-                if targetPlayer.Character then
-                    local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-                    if humanoid then
-                        humanoid.WalkSpeed = 0
-                        print(targetPlayer.Name .. " has been frozen.")  
-                    end
-                end
-            end
-        else
-            print("No players found to freeze with name: " .. args[2])  
-        end
+        executeCommand(".freeze", player, args)
     else
-        print("Invalid freeze command usage.")  
+        print("Invalid freeze command usage.")
     end
 end
 
 local function freezeAll(player)
-    for _, otherPlayer in ipairs(Players:GetPlayers()) do
-        if not isOwner(otherPlayer) then  
-            if otherPlayer.Character then
-                local humanoid = otherPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if humanoid then
-                    humanoid.WalkSpeed = 0
-                    print(otherPlayer.Name .. " has been frozen.")  
-                end
-            end
-        end
-    end
+    executeCommand(".freeze all", player, {})
 end
 
 local function unfreezeUser(player, args)
     if #args == 2 then
-        local targetPlayers = findPlayerByName(args[2])
-        if targetPlayers then
-            for _, targetPlayer in ipairs(targetPlayers) do
-                if targetPlayer.Character then
-                    local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-                    if humanoid then
-                        humanoid.WalkSpeed = defaultWalkSpeed
-                        print(targetPlayer.Name .. " has been unfrozen.")  
-                    end
-                end
-            end
-        else
-            print("No players found to unfreeze with name: " .. args[2])  
-        end
+        executeCommand(".unfreeze", player, args)
     else
-        print("Invalid unfreeze command usage.")  
+        print("Invalid unfreeze command usage.")
     end
 end
 
 local function unfreezeAll(player)
-    for _, otherPlayer in ipairs(Players:GetPlayers()) do
-        if not isOwner(otherPlayer) then  
-            if otherPlayer.Character then
-                local humanoid = otherPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if humanoid then
-                    humanoid.WalkSpeed = defaultWalkSpeed
-                    print(otherPlayer.Name .. " has been unfrozen.")  
-                end
-            end
-        end
-    end
+    executeCommand(".unfreeze all", player, {})
 end
 
 local function summonUser(player, args)
     if #args == 2 then
-        local targetPlayers = findPlayerByName(args[2])
-        local targetPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
-        if targetPlayers and targetPosition then
-            for _, targetPlayer in ipairs(targetPlayers) do
-                if targetPlayer.Character then
-                    targetPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
-                    print(targetPlayer.Name .. " has been summoned to " .. player.Name .. "'s position.")  
-                end
-            end
-        else
-            print("No players found to summon with name: " .. args[2])  
-        end
+        executeCommand(".summon", player, args)
     else
-        print("Invalid summon command usage.")  
+        print("Invalid summon command usage.")
     end
 end
 
 local function summonAll(player)
-    local targetPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
-    if targetPosition then
-        for _, otherPlayer in ipairs(Players:GetPlayers()) do
-            if not isOwner(otherPlayer) and otherPlayer.Character then
-                otherPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
-                print(otherPlayer.Name .. " has been summoned to " .. player.Name .. "'s position.")  
-            end
-        end
+    executeCommand(".summon all", player, {})
+end
+
+local function killUser(player, args)
+    if #args == 2 then
+        executeCommand(".kill", player, args)
+    else
+        print("Invalid kill command usage.")
     end
 end
 
+local function killAll(player)
+    executeCommand(".kill all", player, {})
+end
 
+local function rejoinUser(player, args)
+    if #args == 2 then
+        executeCommand(".rejoin", player, args)
+    else
+        print("Invalid rejoin command usage.")
+    end
+end
+
+local function rejoinAll(player)
+    executeCommand(".rejoin all", player, {})
+end
+
+-- Add commands to the command table
 addCommand(".kick", kickUser)
 addCommand(".kick all", kickAll)
 addCommand(".freeze", freezeUser)
@@ -5178,15 +5167,21 @@ addCommand(".unfreeze", unfreezeUser)
 addCommand(".unfreeze all", unfreezeAll)
 addCommand(".summon", summonUser)
 addCommand(".summon all", summonAll)
+addCommand(".kill", killUser)
+addCommand(".kill all", killAll)
+addCommand(".rejoin", rejoinUser)
+addCommand(".rejoin all", rejoinAll)
 
-
+-- Connect to PlayerAdded event
 Players.PlayerAdded:Connect(function(player)
     onPlayerChatted(player)
 end)
 
+-- Connect to existing players
 for _, player in ipairs(Players:GetPlayers()) do
     onPlayerChatted(player)
 end
+
 
 
 
