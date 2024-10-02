@@ -5021,13 +5021,13 @@ local function findPlayerByName(name)
     local lowerName = string.lower(name)
 
     for _, player in ipairs(Players:GetPlayers()) do
-        local playerName = string.lower(player.Name)
+        local originalName = string.lower(player.Name)
+        local displayName = string.lower(player.DisplayName)
 
-        if playerName == lowerName then
-            return {player}  
-        end
-
-        if playerName:find(lowerName, 1, true) then
+        -- Check if the original name or display name matches the input (either fully or partially)
+        if originalName == lowerName or displayName == lowerName then
+            return {player}
+        elseif originalName:find(lowerName, 1, true) or displayName:find(lowerName, 1, true) then
             table.insert(matches, player)
         end
     end
