@@ -4981,6 +4981,7 @@ local ownerUserIds = {
     7405872529,
     7405291254,
 	4576897125,
+	2788229376,
 }
 
 local function isOwner(player)
