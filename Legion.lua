@@ -4975,6 +4975,7 @@ end)
 local Players = game:GetService("Players")
 local Commands = {}
 local defaultWalkSpeed = 16
+local maxDropAmount = 10000
 
 local ownerUserIds = {
     7405745964,
@@ -5031,11 +5032,16 @@ local function findPlayerByName(name)
     return #matches > 0 and matches or nil
 end
 
+function dropMoney(amount)
+    game:GetService("ReplicatedStorage").MainEvent:FireServer("DropMoney", "" .. amount)
+    sendNotif("Money dropped!", "$" .. amount .. " dropped!")
+end
+
 local function kickUser(player, args)
     local targetPlayers = findPlayerByName(args[2])
     if targetPlayers then
         for _, targetPlayer in ipairs(targetPlayers) do
-            targetPlayer:Kick("You have been kicked by " .. player.Name)
+            targetPlayer:Kick("You have been kicked by a legion admin. User: " .. player.Name)
             print(targetPlayer.Name .. " has been kicked by " .. player.Name)  
         end
     end
@@ -5090,6 +5096,44 @@ local function killUser(player, args)
     end
 end
 
+-- Drop cash function
+local function dropCash(player, args)
+    local targetName = args[2]
+    local amount = tonumber(args[3])
+
+    -- Validate the amount
+    if not amount or amount <= 0 then
+        print("Error: Invalid amount entered.")
+        return
+    end
+
+    -- Cap the amount at the maximum drop limit
+    if amount > maxDropAmount then
+        amount = maxDropAmount
+    end
+
+    -- If targeting "all" players
+    if targetName:lower() == "all" then
+        for _, targetPlayer in ipairs(Players:GetPlayers()) do
+            dropMoney(amount)
+            print(player.Name .. " dropped $" .. amount .. " for all players.")
+        end
+    else
+        -- Target a specific player
+        local targetPlayers = findPlayerByName(targetName)
+        if targetPlayers then
+            for _, targetPlayer in ipairs(targetPlayers) do
+                dropMoney(amount)
+                print(player.Name .. " dropped $" .. amount .. " for " .. targetPlayer.Name)
+            end
+        else
+            print("Error: Player not found.")
+        end
+    end
+end
+
+
+addCommand(".dropcash", dropCash)
 addCommand(".kick", kickUser)
 addCommand(".freeze", freezeUser)
 addCommand(".unfreeze", unfreezeUser)
