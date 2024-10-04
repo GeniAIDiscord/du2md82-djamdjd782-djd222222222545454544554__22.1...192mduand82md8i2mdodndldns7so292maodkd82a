@@ -4560,10 +4560,10 @@ MainBuffer:write(function()
 	end})
 
 	
-	playerSection:Toggle({Name = "Auto Dodge",Flag="auto_dodge",Default=false,Callback=function(state)
-		Settings["Player"]["AutoDodge"] = state 
-		Modules["AutoDodge"]()
-	end})
+	-- playerSection:Toggle({Name = "Auto Dodge",Flag="auto_dodge",Default=false,Callback=function(state)
+	-- 	Settings["Player"]["AutoDodge"] = state 
+	-- 	Modules["AutoDodge"]()
+	-- end})
 
 	
 
