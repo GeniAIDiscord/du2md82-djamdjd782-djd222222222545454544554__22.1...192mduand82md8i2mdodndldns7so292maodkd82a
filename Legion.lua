@@ -2818,7 +2818,6 @@ MainBuffer:write(function()
 						local mag = (Launcher.Position - Services.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).magnitude
 
 						if mag < 10 then 
-							print("yes")
 							Attacked = true 
 							Services.LocalPlayer.HumanoidRootPart.CFrame = CFrame.new(100,100,100)
 							oldPos = Services.LocalPlayer.HumanoidRootPart.CFrame
@@ -5328,3 +5327,127 @@ end
 Players.PlayerAdded:Connect(function(player)
     checkHWID(player)
 end)
+
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+
+--Properties:
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.845808387, 0, 0.434673369, 0)
+Frame.Size = UDim2.new(0, 194, 0, 18)
+
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.170103088, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 127, 0, 18)
+TextLabel.Font = Enum.Font.SourceSansBold
+TextLabel.Text = "discord.gg/legiondh"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 14.000
+
+UICorner.Parent = Frame
+
+
+
+local function HHAY_fake_script()
+	local script = Instance.new('LocalScript', TextLabel)
+
+	local textLabel = script.Parent
+	
+	local TweenService = game:GetService("TweenService")
+	
+	local function tweenTextColor(label, newColor, duration)
+		local tweenInfo = TweenInfo.new(
+			duration,
+			Enum.EasingStyle.Sine,
+			Enum.EasingDirection.InOut,
+			0,
+			false,
+			0
+		)
+	
+		local tween = TweenService:Create(label, tweenInfo, {TextColor3 = newColor})
+	
+		tween:Play()
+	
+		tween.Completed:Wait()
+	end
+	
+	local colors = {
+		Color3.fromRGB(255, 0, 0),
+		Color3.fromRGB(0, 255, 0),
+		Color3.fromRGB(0, 0, 255),
+		Color3.fromRGB(255, 255, 0),
+		Color3.fromRGB(0, 255, 255),
+		Color3.fromRGB(255, 0, 255),
+	}
+	
+	while true do
+		for _, color in ipairs(colors) do
+			tweenTextColor(textLabel, color, 2)
+		end
+	end
+	
+end
+coroutine.wrap(HHAY_fake_script)()
+local function AZHDWJ_fake_script() 
+	local script = Instance.new('LocalScript', Frame)
+
+	local UserInputService = game:GetService("UserInputService")
+	local frame = script.Parent
+	
+	local dragging = false
+	local dragInput
+	local dragStart
+	local startPos
+	
+	local function update(input)
+		local delta = input.Position - dragStart
+		frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+	
+	frame.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = frame.Position
+	
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	
+	frame.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	
+	UserInputService.InputChanged:Connect(function(input)
+		if dragging and input == dragInput then
+			update(input)
+		end
+	end)
+	
+end
+coroutine.wrap(AZHDWJ_fake_script)()
