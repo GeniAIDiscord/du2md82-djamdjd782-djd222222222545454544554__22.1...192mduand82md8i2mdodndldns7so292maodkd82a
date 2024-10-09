@@ -1,5 +1,49 @@
+--© THIS CODE HAS A LICENSE!
+
+--[[
+			     FULL LEGION SOURCE 
+		<< ----------------------------------------------- >>
+		The Control wasn't made by me (neither by iux)			
+		It was made by Seth
+	
+		The Sex aswell was made by Seth
+		The Hoverboard Aswell
+
+	        Everything else that is in here was made by me and Percent
+	        and nothing from Iux
+
+		<< ----------------------------------------------- >>
+
+		As you can see I tried to make the Sex and stuff adjust to my style
+	 	of my (Solo) style of code for easier understanding 
+
+		But ngl I was too bored to Fully change Control Aswell
+
+		<< ----------------------------------------------- >>
+
+		Now what is it like working with Iux?
+
+		Bad. In simple terms.
+
+		All he said "Add this" or "Fix This" while not doing any work himself
+		and just relaxing making money because seth keeps sending him shit.
+
+		He made nothing that was in Legion so idk why he was still credited
+		He was playing fortnite all day without doing literally ANYTHING
+
+		When I asked him for help on the hoverboard cause he sent me "his" (which later
+		turned out to be seths) tool. I wanted to modify that and he had some modules in
+		his script and he was saying like "no im gatekeeping" like bro WE ARE WORKING TOGETHER
+		this isn't a solo mission for you bro. Like you are in the team and not some mysterious ass 
+		nga.
+
+		<< ----------------------------------------------- >>
+
+		- Solo , Percent
+]]--
+
 local Buffer = {}
-Buffer.__index = Buffer -- putted by faisal8754 they deleted it but i toke it
+Buffer.__index = Buffer
 
 function Buffer.new(size, autoFlushSize, autoFlushInterval)
 	local self = setmetatable({
@@ -34,7 +78,7 @@ function Buffer:write(value)
 		end
 	end)
 
-	if not success then
+	if not success then 
 		print("Couldn't create buffer returning to old method")
 		return value()
 	end 
@@ -1473,13 +1517,11 @@ MainBuffer:write(function()
 	end)
 
 
-
-
-
 	local EspLibrary = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Sirius/request/library/sense/source.lua'))()
 	local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
-    local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
+        local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
 
+	--> local Bolt = loadstring(game:HttpGet("https://femboys-for.rent/p/raw/tlzqiyz8wh"))()
 
 	local executorName = identifyexecutor()  
     if not executorName then
@@ -1489,6 +1531,9 @@ MainBuffer:write(function()
     local legion = Legion.new({Title = "Legion ", Credits = "discord.gg/legiondh | Exec name: " .. executorName})
 	local Holder = Instance.new("Model",workspace)
 
+	for index,name in pairs({"Settings","Document","Folder","Code","User","Custom","Wallet","Player","Target","File","Globe","Bank","Settings_2","Eye","volume","at"}) do 
+		writefile("Legion/Assets/"..name..".png",game:HttpGet("https://www.getlegion.lol/Ui/Assets/"..name..".png"))
+	end 
 
 	local function getAsset(name)
 		local path = "Legion/Assets/"..name..".png"
@@ -1508,7 +1553,7 @@ MainBuffer:write(function()
 					__/ |              
 					|___/               
 		--------------------------------
-		  https://discord.gg/legiondh
+		  https://discord.gg/Yh8GPhQK9r
 
 
 		[ // Introduction \\ ]
@@ -2818,6 +2863,7 @@ MainBuffer:write(function()
 						local mag = (Launcher.Position - Services.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).magnitude
 
 						if mag < 10 then 
+							print("yes")
 							Attacked = true 
 							Services.LocalPlayer.HumanoidRootPart.CFrame = CFrame.new(100,100,100)
 							oldPos = Services.LocalPlayer.HumanoidRootPart.CFrame
@@ -2896,6 +2942,7 @@ MainBuffer:write(function()
 			local env = getgenv() or _ENV or getfenv()
 
 			if env[variable] or env[variable] == setting then
+				print(`[❌] Variable "[{varaible}]" was already found in the env`)
 				return 
 			end 
 			
@@ -2904,9 +2951,11 @@ MainBuffer:write(function()
 			end)
 
 			if success then 
+				print(`[✅] Successfully added "[{variable}] to the env"`)
 				return 
 			end 
 
+			print(`[❌] Something went wrong when trying to add "[{variable}]" to the env: {err}`)
 		end ,
 
 		["StringToCFrame"] = function (str)
@@ -3015,6 +3064,28 @@ MainBuffer:write(function()
 			Part1.CFrame = Part2.CFrame * (Offset or CFrame.new())
 			Part1.CanCollide = false
 			Part2.CanCollide = false
+		end,
+		-- [[ Sex Tools ]]--
+		["AlignSex"] = function(Power,Damping,TargetPart,OwnerPart,Position,Rotation)
+			if Settings["Grab"]["GrabbedCharacter"] == nil then 
+				return 
+			end
+
+			if Services.LocalPlayer.Character.BodyEffects.Grabbed.Value ~= nil then
+				if not Settings["Grab"]["GrabbedCharacter"][TargetPart]:FindFirstChildWhichIsA("BodyPosition") and not Settings["Grab"]["GrabbedCharacter"][TargetPart]:FindFirstChildWhichIsA("BodyGyro") then
+					local BodyPosition = Instance.new("BodyPosition",Settings["Grab"]["GrabbedCharacter"][TargetPart])
+					local BodyGyro = Instance.new("BodyGyro",Settings["Grab"]["GrabbedCharacter"][TargetPart])
+
+					BodyPosition.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+
+					BodyGyro.maxTorque = Vector3.new(9e9,9e9,9e9)
+					BodyGyro.P = 10000
+				end
+				Settings["Grab"]["GrabbedCharacter"][TargetPart].BodyGyro.CFrame = Services.LocalPlayer.Character[OwnerPart].CFrame*Rotation
+				Settings["Grab"]["GrabbedCharacter"][TargetPart].BodyPosition.Position = Services.LocalPlayer.Character[OwnerPart].CFrame * Position.Position
+				Settings["Grab"]["GrabbedCharacter"][TargetPart].BodyPosition.P = Power
+				Settings["Grab"]["GrabbedCharacter"][TargetPart].BodyPosition.D = Damping
+			end
 		end,
 
 		-- [[ Destroy Tool ]]--
@@ -3198,10 +3269,406 @@ MainBuffer:write(function()
 
 	}
 
-	--> Removed: Control,Sex and Hoverboard because we do not want skids
-	
 	local Tools = {
-	
+		["Control"] = function()
+			if Settings["Grab"]["Control"] then 
+				local mouse = Services.LocalPlayer:GetMouse() 
+				local ControlFakeAttack = {
+					2788309317,
+					2788309982,
+					2788311138,
+					2788308661
+				}
+
+				local function CloneCharacter(ClonedCharacter)
+
+					ClonedCharacter.Archivable = true
+
+					local newClone = ClonedCharacter:Clone()
+					newClone.Humanoid.RootPart.Anchored = false
+					newClone.Humanoid.Health = 9e9
+					newClone.Humanoid.MaxHealth = 9e9
+					newClone.RagdollConstraints:Destroy()
+					newClone.BodyEffects:Destroy()
+					newClone:WaitForChild("GRABBING_CONSTRAINT"):Destroy()
+					for _, Class in pairs(newClone:GetDescendants()) do
+						if Class:IsA("BasePart") and
+							Class.Name ~= "Head" and
+							Class.Name ~= "HumanoidRootPart" and
+							Class.Name ~= "UpperTorso" and
+							Class.Name ~= "LowerTorso" and
+							Class.Name ~= "LeftUpperArm" and
+							Class.Name ~= "RightUpperArm" and
+							Class.Name ~= "LeftLowerArm" and
+							Class.Name ~= "RightLowerArm" and
+							Class.Name ~= "LeftHand" and
+							Class.Name ~= "RightHand" and
+							Class.Name ~= "LeftUpperLeg" and
+							Class.Name ~= "RightUpperLeg" and
+							Class.Name ~= "LeftLowerLeg" and
+							Class.Name ~= "RightLowerLeg" and
+							Class.Name ~= "LeftFoot" and
+							Class.Name ~= "RightFoot" then
+							Class.Massless = false
+							Class:Destroy()
+						end
+
+						if Class:IsA("BasePart") then
+							Class.CustomPhysicalProperties = PhysicalProperties.new(100, 2, .5, 100, 1)
+							Class.Transparency = 1
+						end
+
+						if Class:IsA("Decal") then
+							Class.Transparency = 1
+						end
+
+						if Class:IsA("Motor6D") then
+							Class:Destroy()
+						end
+
+					end
+
+					newClone.Parent = Services.LocalPlayer.Character
+					newClone.Humanoid:ChangeState("GettingUp")
+					ClonedCharacter.Archivable = false
+					ClonedCharacter.LeftHand:FindFirstChildOfClass("Motor6D").Enabled = false
+					ClonedCharacter.RightHand:FindFirstChildOfClass("Motor6D").Enabled = false
+					ClonedCharacter.LeftFoot:FindFirstChildOfClass("Motor6D").Enabled = false
+					ClonedCharacter.RightFoot:FindFirstChildOfClass("Motor6D").Enabled = false
+					return newClone
+				end
+
+
+				function ZeroVelocity___(PATH)
+					PATH.Velocity = Vector3.zero
+					PATH.AssemblyAngularVelocity = Vector3.zero
+					PATH.AssemblyLinearVelocity = Vector3.zero
+				end
+
+
+				local function AlignControl(P0,P1,Offset)
+					P0.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+					P0.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+					P0.Velocity = Vector3.new(0, 0, 0)
+					P0.CFrame = P1.CFrame * (Offset or CFrame.new())
+					P0.CanCollide = false
+					P1.CanCollide = false
+				end
+
+				local function InsertOn(Table, Value)
+					if type(Table) == "table" and Value then
+						Table[#Table + 1] = Value
+					end
+				end
+
+				local function Loop(Name, Callback)
+					if game:GetService("RunService")[Name] then
+						local CurrentLoop
+						CurrentLoop = game:GetService("RunService")[Name]:Connect(function()
+							local Result, Output = pcall(Callback)
+
+							if not Result then
+								CurrentLoop:Disconnect()
+								warn(Output)
+							end
+						end)
+
+						return CurrentLoop
+					end
+				end
+				local ClonedCharacter
+
+				function CloneAnimStop(ID, SPEED)
+					for i,v in pairs(ClonedCharacter:WaitForChild("Humanoid"):GetPlayingAnimationTracks()) do
+						if (v.Animation.AnimationId:match("rbxassetid://"..ID)) then
+							if tonumber(SPEED) then
+								v:Stop(SPEED)
+							else
+								v:Stop()
+							end
+						end 
+					end
+				end
+
+				local function CloneAnimPlayWStop(ID)
+					for i,v in pairs(Services.LocalPlayer.Character.Humanoid:GetPlayingAnimationTracks()) do
+						if (v.Animation.AnimationId:match("rbxassetid://"..ID)) then
+							v:Stop(0)
+							if not ClonedCharacter:FindFirstChild(ID) then
+								local animation = Instance.new('Animation', ClonedCharacter)
+								animation.AnimationId = 'rbxassetid://'..ID
+								animation.Name = "_____GYAT"
+								playing = ClonedCharacter.Humanoid:LoadAnimation(animation)
+								playing:Play()
+							end
+						end
+					end
+					if ClonedCharacter.Humanoid.MoveDirection.magnitude > 0 then
+						CloneAnimStop(ID)
+						for _, v in pairs(ClonedCharacter:GetChildren()) do
+							if v.Name == "_____GYAT" then
+								v:Destroy()
+							end
+						end
+					end    
+				end
+
+				local function CloneAnimPlayWDetectionIDK(ID,SPEED)
+					for i,v in pairs(ClonedCharacter:WaitForChild("Humanoid"):GetPlayingAnimationTracks()) do if (v.Animation.AnimationId:match("rbxassetid://"..ID)) then v:Stop() return end end
+					local animation = Instance.new('Animation', game:GetService("Workspace"))
+					animation.AnimationId = 'rbxassetid://'..ID
+					playing = ClonedCharacter.Humanoid:LoadAnimation(animation)
+					playing:Play() 
+					if tonumber(SPEED) then
+						playing:AdjustSpeed(SPEED)
+					else
+						playing:AdjustSpeed(1)
+					end
+					animation:Destroy()
+				end
+
+				local function CloneAnimPlay(ID,SPEED)
+					for i,v in pairs(ClonedCharacter:WaitForChild("Humanoid"):GetPlayingAnimationTracks()) do if (v.Animation.AnimationId:match("rbxassetid://"..ID)) then v:Stop() end end
+					local animation = Instance.new('Animation', game:GetService("Workspace"))
+					animation.AnimationId = 'rbxassetid://'..ID
+					playing = ClonedCharacter.Humanoid:LoadAnimation(animation)
+					playing:Play() 
+					if tonumber(SPEED) then
+						playing:AdjustSpeed(SPEED)
+					else
+						playing:AdjustSpeed(1)
+					end
+					animation:Destroy()
+				end
+
+				local function ControlFramework()
+					local plr = ClonedCharacter
+					local torso = plr:FindFirstChild("Head")
+					local flying = false
+					local deb = true 
+					local ctrl = {f = 0, b = 0, l = 0, r = 0} 
+					local lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+					local maxspeed = 5000
+					local speed = 5000 
+
+					function Fly() 
+						local bg = Instance.new("BodyGyro", torso) 
+						bg.P = 9e4 
+						bg.maxTorque = Vector3.new(9e9, 9e9, 9e9) 
+						bg.cframe = torso.CFrame 
+						local bv = Instance.new("BodyVelocity", torso) 
+						bv.velocity = Vector3.new(0,0.1,0) 
+						bv.maxForce = Vector3.new(9e9, 9e9, 9e9) 
+						repeat task.wait() 
+							plr.Humanoid.PlatformStand = true 
+							if ctrl.l + ctrl.r ~= 100000 or ctrl.f + ctrl.b ~= 10000 then 
+								speed = speed + 0.0 + (speed/maxspeed) 
+								if speed > maxspeed then 
+									speed = maxspeed 
+								end 
+							elseif not (ctrl.l + ctrl.r ~= 5 or ctrl.f + ctrl.b ~= 5) and speed ~= 5 then 
+								speed = speed - 5
+								if speed > 5 then 
+									speed = -2 
+								end 
+							end 
+							if (ctrl.l + ctrl.r) ~= 5 or (ctrl.f + ctrl.b) ~= 5 then 
+								bv.velocity = ((Workspace.CurrentCamera.CFrame.lookVector * (ctrl.f + ctrl.b)) + ((Workspace.CurrentCamera.CFrame * CFrame.new(ctrl.l + ctrl.r, (ctrl.f + ctrl.b) * .2, 0).p) - Workspace.CurrentCamera.CFrame.p)) * speed 
+								lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r} 
+							elseif (ctrl.l + ctrl.r) == 5 and (ctrl.f + ctrl.b) == 5 and speed ~= 5 then 
+								bv.velocity = ((Workspace.CurrentCamera.CFrame.lookVector * (lastctrl.f + lastctrl.b)) + ((Workspace.CurrentCamera.CFrame * CFrame.new(lastctrl.l + lastctrl.r, (lastctrl.f + lastctrl.b) * .2, 0).p) - Workspace.CurrentCamera.CFrame.p)) * speed 
+							else 
+								bv.velocity = Vector3.new(0, 0.1, 0) 
+							end 
+							bg.cframe = Workspace.CurrentCamera.CFrame * CFrame.Angles(-math.rad((ctrl.f + ctrl.b) * 50 * speed/maxspeed), 0, 0) 
+						until not flying 
+						ctrl = {f = 0, b = 0, l = 0, r = 0} 
+						lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+						speed = 5 
+						bg:Destroy() 
+						bv:Destroy() 
+						plr.Humanoid.PlatformStand = false 
+					end 
+
+
+
+					Fly()
+					local Ungrabbed
+					local Speed__UP
+					local FLY__NEGA
+					InsertOn(LiveConnections, Services.LocalPlayer:GetMouse().KeyDown:Connect(function(key)
+						if key == "v" then
+							CloneAnimPlayWDetectionIDK(7024352298)
+						elseif key == "q" then
+							CloneAnimPlayWDetectionIDK(10370362157,1.1)
+						elseif key == "t" then
+							CloneAnimPlayWDetectionIDK(10714068222)
+						elseif key == "y" then
+							CloneAnimPlayWDetectionIDK(10214311282)
+						elseif key == "u" then
+							CloneAnimPlayWDetectionIDK(10714340543,1.3)
+						elseif key == "j" then
+							CloneAnimPlayWDetectionIDK(14548619594)
+						elseif key == "e" then
+							CloneAnimPlayWDetectionIDK(2816431506,1.5)
+						elseif key == "r" then
+							CloneAnimPlayWDetectionIDK(11444443576,1.1)
+						elseif key == "2" then
+							CloneAnimPlay(3152394906)
+						elseif key == "f" then
+							CloneAnimPlay(2788354405)
+						elseif key == "0" then
+							ClonedCharacter.Humanoid.WalkSpeed = 24
+						elseif key == "x" then
+							Speed__UP = not Speed__UP
+							if Speed__UP == true then
+								repeat task.wait()
+									ClonedCharacter.HumanoidRootPart.CFrame = ClonedCharacter.HumanoidRootPart.CFrame + ClonedCharacter.Humanoid.MoveDirection * 5
+								until Speed__UP == false
+							end
+
+						elseif key:lower() == "h" then 
+							if flying then 
+								flying = false 
+							else 
+								flying = true 
+								Fly() 
+							end 
+						elseif key:lower() == "w" then 
+							ctrl.f = 45
+						elseif key:lower() == "s" then 
+							ctrl.b = -45 
+						elseif key:lower() == "a" then 
+							ctrl.l = -45 
+						elseif key:lower() == "d" then 
+							ctrl.r = 45
+						end 
+					end))
+
+					InsertOn(LiveConnections, Services.LocalPlayer:GetMouse().KeyUp:Connect(function(key)
+						if key == "2" then
+							CloneAnimStop(3152394906)
+						elseif key == "f" then
+							CloneAnimStop(2788354405)
+						elseif key == "0" then
+							ClonedCharacter.Humanoid.WalkSpeed = 16
+
+
+						elseif key:lower() == "w" then 
+							ctrl.f = 0
+						elseif key:lower() == "s" then 
+							ctrl.b = 0
+						elseif key:lower() == "a" then 
+							ctrl.l = 0
+						elseif key:lower() == "d" then 
+							ctrl.r = 0
+						end 
+					end))
+
+					InsertOn(LiveConnections, Services.LocalPlayer.Backpack.Combat.Activated:Connect(function(key)
+						CloneAnimPlay((ControlFakeAttack[math.random(1,#ControlFakeAttack)]),1.3)
+					end))
+
+					repeat task.wait() until Services.LocalPlayer.Character.BodyEffects.Grabbed.Value == nil or Furry_ == true
+					Services.LocalPlayer.Character.Humanoid.RootPart.CFrame = CFrame.new(ClonedCharacter.PrimaryPart.CFrame.Position)
+					Services.LocalPlayer.Character.Humanoid.RootPart.Velocity = Vector3.zero
+					workspace.CurrentCamera.CameraSubject = Services.LocalPlayer.Character
+					ClonedCharacter:Destroy()
+					for _, Stuff in pairs(GrabbedCharacter:GetDescendants()) do
+						if Stuff:IsA("BodyPosition") then
+							Stuff:Destroy()
+						end
+					end
+					for _, Connection in pairs(LiveConnections) do Connection:Disconnect()end
+					GrabbedCharacter.LeftHand:FindFirstChildOfClass("Motor6D").Enabled = true
+					GrabbedCharacter.RightHand:FindFirstChildOfClass("Motor6D").Enabled = true
+					GrabbedCharacter.LeftFoot:FindFirstChildOfClass("Motor6D").Enabled = true
+					GrabbedCharacter.RightFoot:FindFirstChildOfClass("Motor6D").Enabled = true
+				end
+
+				local Control = Instance.new("Tool",Services.LocalPlayer.Backpack)
+				Control.RequiresHandle = false
+				Control.Name = "Control"
+				Control.Activated:connect(function()
+					if Services.LocalPlayer.Character.BodyEffects.Grabbed.Value then
+						Services.LocalPlayer.Character["Control"].Parent = Services.LocalPlayer.Backpack task.wait()
+						for index,clone in pairs(Services.LocalPlayer.Character:GetChildren()) do 
+							if clone.Name == tostring(GrabbedCharacter) then 
+								clone:Destroy()
+							end 
+						end 
+						GrabbedCharacter = Services.LocalPlayer.Character.BodyEffects.Grabbed.Value
+						for index,part in pairs(GrabbedCharacter:GetDescendants()) do 
+							if part:IsA("BodyPosition") or part:IsA("BodyGyro") then 
+								part:Destroy()
+							end 
+						end
+						local GrabConstraint = GrabbedCharacter:WaitForChild("GRABBING_CONSTRAINT")
+						if not GrabConstraint then return end
+						GrabbedCharacter.GRABBING_CONSTRAINT.H.Length = 99e9
+						ClonedCharacter = CloneCharacter(GrabbedCharacter)
+						workspace.CurrentCamera.CameraSubject = ClonedCharacter
+						
+
+						
+
+						InsertOn(LiveConnections, Loop("Heartbeat", function()
+							Services.LocalPlayer.Character.Humanoid.RootPart.CFrame = ClonedCharacter:FindFirstChild("HumanoidRootPart").CFrame - Vector3.new(0,15,0)
+							ZeroVelocity___(Services.LocalPlayer.Character.Humanoid.RootPart)
+							Modules["AlignControl"](GrabbedCharacter.Head,ClonedCharacter:FindFirstChild("Head"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.HumanoidRootPart,ClonedCharacter:FindFirstChild("HumanoidRootPart"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.UpperTorso,ClonedCharacter:FindFirstChild("UpperTorso"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.LowerTorso,ClonedCharacter:FindFirstChild("LowerTorso"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.LeftUpperArm,ClonedCharacter:FindFirstChild("LeftUpperArm"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.LeftLowerArm,ClonedCharacter:FindFirstChild("LeftLowerArm"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.RightUpperArm,ClonedCharacter:FindFirstChild("RightUpperArm"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.RightLowerArm,ClonedCharacter:FindFirstChild("RightLowerArm"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.LeftHand,ClonedCharacter:FindFirstChild("LeftHand"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.RightHand,ClonedCharacter:FindFirstChild("RightHand"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.LeftUpperLeg,ClonedCharacter:FindFirstChild("LeftUpperLeg"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.LeftLowerLeg,ClonedCharacter:FindFirstChild("LeftLowerLeg"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.RightUpperLeg,ClonedCharacter:FindFirstChild("RightUpperLeg"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.RightLowerLeg,ClonedCharacter:FindFirstChild("RightLowerLeg"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.LeftFoot,ClonedCharacter:FindFirstChild("LeftFoot"),CFrame.new(0, 0, 0))
+							Modules["AlignControl"](GrabbedCharacter.RightFoot,ClonedCharacter:FindFirstChild("RightFoot"),CFrame.new(0, 0, 0))
+
+							CloneAnimPlayWStop(3152375249)
+							CloneAnimPlayWStop(3152378852)
+							CloneAnimPlayWStop(3189773368)
+							CloneAnimPlayWStop(3189776546)
+							CloneAnimPlayWStop(3189777795)
+							CloneAnimPlayWStop(3189779152)
+							CloneAnimPlayWStop(3487719500)
+							CloneAnimPlayWStop(11710529975)
+							CloneAnimPlayWStop(11710524717)
+							CloneAnimPlayWStop(11710527244)
+							CloneAnimPlayWStop(11710529220)
+							CloneAnimPlayWStop(11710529220)
+							CloneAnimPlayWStop(11710524200)
+							CloneAnimPlayWStop(11710541744)
+							ClonedCharacter.Humanoid.Jump = Services.LocalPlayer.Character.Humanoid.Jump
+							ClonedCharacter.Humanoid:Move(Services.LocalPlayer.Character.Humanoid.MoveDirection, false)
+							for i,v in pairs(ClonedCharacter.Humanoid:GetPlayingAnimationTracks()) do
+								if (v.Animation.AnimationId:match("rbxassetid://3152394906")) then
+									if ClonedCharacter.Humanoid.MoveDirection.magnitude > 0 then
+										v:AdjustSpeed(1)
+									else
+										v:AdjustSpeed(0)
+									end
+								end
+							end
+						end))
+						ControlFramework()
+					end
+				end)
+				return
+			end
+			for index,loop in pairs(LiveConnections) do 
+				loop:Disconnect()
+				loop = nil 
+			end
+			Modules["DestroyTool"]("Control")
+		end,
 
 		["Time Stop"] = function()
 			local success,err = pcall(function()
@@ -3300,7 +3767,7 @@ MainBuffer:write(function()
 
 						Modules["Remove"](Settings["Grab"]["GrabbedCharacter"],"all")
 						Modules["Play"](Sounds["Rip"])
-						Services.TweenService:Create(Services.Lighting.ColorCorrection, TweenInfo.new(1), {Contrast = 0}):Play()
+						Services.TweenService:Create(Services..ColorCorrection, TweenInfo.new(1), {Contrast = 0}):Play()
 						task.wait(0.3)
 
 						Services.ReplicatedStorage.MainEvent:FireServer("Grabbing",false)
@@ -3381,17 +3848,17 @@ MainBuffer:write(function()
 					Settings["Grab"]["Grab"] = false 
 					Modules["Play"]("8063279487")
 					if Settings["Grab"]["Effects"] then 
-						Services.TweenService:Create(game.Lighting, TweenInfo.new(.7), {ColorShift_Bottom = Color3.fromRGB(0,255,0)}):Play()
-						Services.TweenService:Create(game.Lighting, TweenInfo.new(.7), {ColorShift_Top = Color3.fromRGB(0,255,0)}):Play()
-						Services.TweenService:Create(game.Lighting, TweenInfo.new(.7), {Brightness = 100}):Play()
-						Services.TweenService:Create(game.Lighting, TweenInfo.new(.7), {Ambient = Color3.fromRGB(0,255,0)}):Play()
+						Services.TweenService:Create(game. TweenInfo.new(.7), {ColorShift_Bottom = Color3.fromRGB(0,255,0)}):Play()
+						Services.TweenService:Create(game. TweenInfo.new(.7), {ColorShift_Top = Color3.fromRGB(0,255,0)}):Play()
+						Services.TweenService:Create(game. TweenInfo.new(.7), {Brightness = 100}):Play()
+						Services.TweenService:Create(game. TweenInfo.new(.7), {Ambient = Color3.fromRGB(0,255,0)}):Play()
 					end 
 					Modules["Chat"]("C MOON: GRAVITY MOON")
 					Modules["AnimPlay"](Services.LocalPlayer.Character,8254789608)
 					Settings["Grab"]["GrabbedCharacter"].UpperTorso.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0,2000,0)
 					task.wait(3.5)
 
-					Services.TweenService:Create(game.Lighting, TweenInfo.new(.7), {ColorShift_Bottom = Color3.fromRGB(0,0,0)}):Play()
+					Services.TweenService:Create(game. TweenInfo.new(.7), {ColorShift_Bottom = Color3.fromRGB(0,0,0)}):Play()
 					Services.TweenService:Create(game.Lighting, TweenInfo.new(.7), {ColorShift_Top = Color3.fromRGB(0,0,0)}):Play()
 					Services.TweenService:Create(game.Lighting, TweenInfo.new(.7), {Brightness = 1}):Play()
 					Services.TweenService:Create(game.Lighting, TweenInfo.new(.7), {Ambient = Color3.fromRGB(0,0,0)}):Play()
@@ -3457,7 +3924,53 @@ MainBuffer:write(function()
 
 		
 
-		
+		["Sex"] = function()
+			if Settings["Grab"]["Sex"] then
+				Modules["CreateTool"]("Sex",function()
+					if Settings["Grab"]["GrabbedCharacter"] == nil then 
+						return 
+					end
+ 
+					local success,err = pcall(function()
+						Modules["StopAnimation"](Services.LocalPlayer.Character,3135389157)
+						Modules["AnimPlay"](Services.LocalPlayer.Character,4784557631)
+						Modules["AnimPlay"](Services.LocalPlayer.Character,3119980985,1.5)
+
+						
+						for index,part in pairs(Settings["Grab"]["GrabbedCharacter"]:GetDescendants()) do 
+							if part:IsA("BodyPosition") or part:IsA("BodyGyro") or part:IsA("BodyVelocity") then 
+								part:Destroy()
+							end 
+						end 
+						Settings["Grab"]["Grab"] = false 
+						repeat task.wait()
+							if Settings["Grab"]["GrabbedCharacter"] == nil then 
+								break
+							end 
+
+							Modules["NoVelocity"](Settings["Grab"]["GrabbedCharacter"])
+							Modules["CanCollide"](Settings["Grab"]["GrabbedCharacter"],false)
+
+							local Sine = tick() * 60
+							Modules["AlignSex"](10000,175,"UpperTorso","HumanoidRootPart",CFrame.new(0, -0.3, -2 + .5 * math.sin(Sine / Settings["Grab"]["Sex Speed"])),CFrame.Angles(math.pi*-.3,0,0))
+						until Settings["Grab"]["GrabbedCharacter"] == nil or Services.LocalPlayer.Character.BodyEffects.Grabbed.Value == nil 
+
+						Modules["StopAnimation"](Services.LocalPlayer.Character,4784557631)
+						Modules["StopAnimation"](Services.LocalPlayer.Character,3119980985)
+
+						Settings["Grab"]["Grab"] = true  
+					end)
+					if not success then 
+						print("A error occured when using Sex : [ "..err.." ]")
+					end 
+				end)
+				return
+			end 
+			Modules["StopAnimation"](Services.LocalPlayer.Character,4784557631)
+			Modules["StopAnimation"](Services.LocalPlayer.Character,3119980985)
+			Settings["Grab"]["Grab"] = true 
+			Modules["DestroyTool"]("Sex")
+		end,
 
 		["Chezburger"] = function()
 			if Settings["Grab"]["Chezburger"] then 
@@ -3735,6 +4248,282 @@ MainBuffer:write(function()
 			Modules["DestroyTool"]("Punch Back")
 		end,
 
+		["Mind Control"] = function()
+			if Settings["Grab"]["Mind Control"] then 
+				Modules["CreateTool"]("Mind Control",function()
+					local success,err = pcall(function()
+						if Cache["Loops"]["Mind Control"] ~= nil then 
+							return 
+						end 
+
+
+
+						Settings["Grab"]["Grab"] = false 
+						Modules["StopAnimation"](Services.LocalPlayer.Character,"3135389157")
+						Modules["StopAnimation"](Services.LocalPlayer.Character,"11075367458")
+
+						-- Storing old character to delete later (cause if dropped then GrabbedChar = nil )
+						local OldChar = Settings["Grab"]["GrabbedCharacter"]
+						for index,part in pairs(OldChar:GetDescendants()) do 
+							if part:IsA("BodyPosition") or part:IsA("BodyGyro") then 
+								part:Destroy()
+							end 
+						end
+
+						local GrabAnim = Modules["LoadAnimation"](Services.LocalPlayer.Character,Animations["Grab"])
+
+						GrabAnim.Priority = Enum.AnimationPriority.Action4
+						GrabAnim:Play()
+						GrabAnim:AdjustSpeed(0) 
+						GrabAnim.TimePosition = .1
+
+						local Clone = Modules["CloneCharacter"](OldChar)
+						
+
+						Clone.Parent = Services.LocalPlayer.Character
+						Clone.HumanoidRootPart.CFrame = Services.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(3,0,0)
+
+
+						
+
+						Cache["Loops"]["Mind Control"] = Services.RunService.Heartbeat:Connect(Virtualize(function()
+							if Settings["Grab"]["Mind Control"] and Settings["Grab"]["GrabbedCharacter"] ~= nil then 
+								for index,part in pairs(Settings["Grab"]["GrabbedCharacter"]:GetChildren()) do 
+									if part:IsA("BasePart") and Clone:FindFirstChild(part.Name) then 
+										Modules["AlignControl"](part,Clone[part.Name],CFrame.new(0,0,0))
+									end 
+								end 
+								Clone.Humanoid.Jump = Services.LocalPlayer.Character.Humanoid.Jump
+								Clone.Humanoid:Move(Services.LocalPlayer.Character.Humanoid.MoveDirection,false)
+							end 
+
+							if Services.LocalPlayer.Character.BodyEffects.Grabbed.Value == nil then 
+
+								
+								Modules["DestroyClone"](Clone,OldChar)
+								Settings["Grab"]["Grab"] = true 
+								Cache["Loops"]["Mind Control"]:Disconnect()
+								Cache["Loops"]["Mind Control"] = nil 
+							end 
+						end))
+
+					end)
+
+					if not success then 
+						print("A error occured when using Mind Control: "..err)
+					end 
+				end)
+
+				return 
+			end 
+
+			if Cache["Loops"]["Mind Control"] ~= nil then 
+				Cache["Loops"]["Mind Control"]:Disconnect()
+				Cache["Loops"]["Mind Control"] = nil 
+			end 
+			Modules["DestroyTool"]("Mind Control")
+		end, 
+
+		["Hoverboard"] = function ()
+			if Settings["Grab"]["Hoverboard"] then 
+					Modules["CreateTool"]("Hoverboard",function()
+						local success,err = pcall(function()
+							local Start = true 
+
+							Settings["Grab"]["Grab"] = false 
+
+							if Start then 
+								for index,part in pairs(Settings["Grab"]["GrabbedCharacter"]:GetDescendants()) do 
+									if part:IsA("BodyPosition") or part:IsA("BodyGyro") then 
+										part:Destroy()
+									end 
+								end
+							end 
+
+							
+
+							if Cache["Connections"]["HoverboardDown"] ~= nil then 
+								Cache["Connections"]["HoverboardDown"]:Disconnect()
+								Cache["Connections"]["HoverboardDown"] = nil 
+							end 
+							if Cache["Connections"]["HoverboardUp"] ~= nil then 
+								Cache["Connections"]["HoverboardUp"]:Disconnect()
+								Cache["Connections"]["HoverboardUp"] = nil
+							end 
+							local Keys = {a=false,d=false,w=false,s=false}
+		
+							local Speed = 3
+	
+							local BodyPosition = Instance.new("BodyPosition",Settings["Grab"]["GrabbedCharacter"].UpperTorso)
+							local BodyGyro = Instance.new("BodyGyro",Settings["Grab"]["GrabbedCharacter"].UpperTorso)
+		
+							BodyPosition.maxForce = Vector3.new(math.huge,math.huge,math.huge)
+							BodyPosition.position = Settings["Grab"]["GrabbedCharacter"].UpperTorso.Position + Vector3.new(0,5,0)
+		
+							BodyGyro.maxTorque = Vector3.new(math.huge,math.huge,math.huge)
+							BodyGyro.CFrame = Services.Workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(math.pi*-.5,0,0)
+		
+							Modules["AnimPlay"](Services.LocalPlayer.Character,10713984554,0,1.2,0.2)
+		
+							for index,anim in pairs(Services.LocalPlayer.Character.Humanoid:GetPlayingAnimationTracks()) do 
+								anim:Stop()
+							end 
+		
+							Services.LocalPlayer.Character.Animate.Enabled = false 
+							Services.LocalPlayer.Character.Humanoid.AutoRotate = false
+		
+							Cache["Connections"]["HoverboardDown"] = Services.LocalPlayer:GetMouse().KeyDown:Connect(function(key)
+								if key == "w" then 
+									Keys.w = true 
+								elseif key == "s" then 
+									Keys.s = true 
+								elseif key == "a" then 
+									Keys.a = true 
+								elseif key == "d" then 
+									Keys.d = true 
+								end 
+							end)
+		
+							Cache["Connections"]["HoverboardUp"] = Services.LocalPlayer:GetMouse().KeyUp:Connect(function(key)
+								if key == "w" then 
+									Keys.w = false 
+		
+									Modules["AnimPlay"](Services.LocalPlayer.Character,10713984554,0,1.2,0.2)
+									Modules["StopAnimation"](Services.LocalPlayer.Character,3084858603)
+									Services.TweenService:Create(Services.Workspace.CurrentCamera,TweenInfo.new(0.45),{FieldOfView = 70}):Play()
+								elseif key == "s" then 
+									Keys.s = false 
+								elseif key == "d" then 
+									Keys.d = false 
+								elseif key == "a" then 
+									Keys.a = false 
+								end 
+							end)
+		
+							Modules["AnimPlay"](Services.LocalPlayer.Character,10713984554,0,1.2,0.2)
+		
+							repeat task.wait()
+								local NewCFrame = BodyGyro.CFrame - BodyGyro.CFrame.p + BodyPosition.position 
+								if not Keys.w and not Keys.s and not Keys.a and not Keys.d then 
+									Move = Speed 
+								end 
+								if Keys.w then 									
+									BodyGyro.CFrame = Services.Workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(math.pi*-.5,0,0)*CFrame.Angles(math.pi*-.2,0,0)
+									NewCFrame = NewCFrame + Services.Workspace.CurrentCamera.CoordinateFrame.lookVector * Move
+		
+									Services.TweenService:Create(Services.Workspace.CurrentCamera,TweenInfo.new(0.3),{FieldOfView = 90}):Play()
+		
+								elseif Keys.s then 
+									BodyGyro.CFrame = Services.Workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(math.pi*-.5,0,0)*CFrame.Angles(math.pi*.1,0,0)
+									NewCFrame = NewCFrame - Services.Workspace.CurrentCamera.CoordinateFrame.lookVector * Move
+		
+								elseif Keys.d then 
+									NewCFrame = NewCFrame * CFrame.new(Move,0,3.5)
+									BodyGyro.CFrame = Services.Workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(math.pi*-.8,0,0)*CFrame.Angles(math.pi*.2,math.pi*.2,0)
+								elseif Keys.a then 
+									NewCFrame = NewCFrame * CFrame.new(-Move,0,3.5)
+									BodyGyro.CFrame = Services.Workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(math.pi*-.5,0,0)*CFrame.Angles(math.pi*-.2,math.pi*-.2,0)
+								end 
+
+								BodyPosition.position = NewCFrame.p
+		
+		
+								if Keys.w or Keys.a or Keys.d or Keys.s then 
+									-- ok?
+								else 
+									BodyGyro.CFrame = Services.Workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(math.pi*-.5,0,0)
+								end 
+		
+								Services.LocalPlayer.Character.HumanoidRootPart.CFrame = Settings["Grab"]["GrabbedCharacter"].UpperTorso.CFrame*CFrame.new(0,0,3)*CFrame.Angles(math.pi*.5,0,0)
+
+								Services.LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.zero 
+								Services.LocalPlayer.Character.HumanoidRootPart.AssemblyAngularVelocity = Vector3.zero 
+								Services.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.zero 
+		
+								if Services.LocalPlayer.Character.BodyEffects.Grabbed.Value == nil then 
+									Cache["Connections"]["HoverboardDown"]:Disconnect()
+									Cache["Connections"]["HoverboardUp"]:Disconnect()
+									Services.LocalPlayer.Character.Animate.Enabled = true 
+									Services.LocalPlayer.Character.Humanoid.AutoRotate = true
+		
+									Modules["StopAnimation"](Services.LocalPlayer.Character,10713984554)
+		
+		
+									Settings["Grab"]["Grab"] = true 
+									break 
+								end 
+
+								for index,part in pairs(Settings["Grab"]["GrabbedCharacter"]:GetDescendants()) do 
+									if part:IsA("BasePart") or part:IsA("MeshPart") or part:IsA("Part") then 
+										local Time = 0.1
+										local VelocityMag = 0.01
+		
+										local function Damping(Vel, Time)
+											return Vel * (1 - Time)
+										end
+		
+										if Services.LocalPlayer.Character.Humanoid.MoveDirection.magnitude > 0 then 
+											if part.CanCollide then 
+												part.CanCollide = false 
+											end 
+										else 
+											local Velocity = Damping(part.Velocity,Time)
+											local AngularVelocity = Damping(part.AssemblyAngularVelocity,Time)
+											local LinearVelocity = Damping(part.AssemblyLinearVelocity,Time)
+		
+											if Velocity.magnitude < VelocityMag then 
+												Velocity = Vector3.zero 
+											end 
+		
+											if AngularVelocity.magnitude < VelocityMag then 
+												AngularVelocity = Vector3.zero 
+											end 
+		
+											if LinearVelocity.magnitude < VelocityMag then 
+												LinearVelocity = Vector3.zero 
+											end 
+											
+											part.Velocity = Velocity
+											part.AssemblyAngularVelocity = AngularVelocity
+											part.AssemblyLinearVelocity = LinearVelocity
+										end 
+									end 
+								end 
+		
+								Start = false 
+							until Services.LocalPlayer.Character.BodyEffects.Grabbed.Value == nil or Settings["Grab"]["Hoverboard"] == false 
+		
+							Cache["Connections"]["HoverboardDown"]:Disconnect()
+							Cache["Connections"]["HoverboardUp"]:Disconnect()
+							Services.LocalPlayer.Character.Animate.Enabled = true 
+							Services.LocalPlayer.Character.Humanoid.AutoRotate = true
+
+							Modules["StopAnimation"](Services.LocalPlayer.Character,10713984554)
+
+
+							Settings["Grab"]["Grab"] = true 
+						end)	
+					
+					if not success then 
+						print("A error occured when trying to use Hoverboard: "..err)
+						Cache["Connections"]["HoverboardDown"]:Disconnect()
+						Cache["Connections"]["HoverboardUp"]:Disconnect()
+						Services.LocalPlayer.Character.Animate.Enabled = true 
+						Services.LocalPlayer.Character.Humanoid.AutoRotate = true
+		
+						Modules["StopAnimation"](Services.LocalPlayer.Character,10713984554)
+		
+		
+						Settings["Grab"]["Grab"] = true
+					end 
+				end)
+
+
+				return 
+			end 
+			Modules["DestroyTool"]("Hoverboard")
+		end,
+
 		["Domain Expansion"] = function()
             if Settings["Grab"]["Domain Expansion"] then
                 Modules["CreateTool"]("Domain Expansion", function()
@@ -3948,6 +4737,487 @@ MainBuffer:write(function()
 	
 
 	Modules["AddEnv"]("Legion",Tabs)
+
+	-- Visuals Page 
+	local ESPSection = Tabs.Visuals:Section({Side = "Left"})
+	
+	ESPSection:Toggle({Text = "ESP", Default = false, Callback = function(state)
+		EspLibrary.teamSettings.enemy.enabled = state
+		if state then
+			EspLibrary.Load()		
+			--> print("yes")	was for debugging 
+		else
+			EspLibrary.Unload()
+		end
+	end})
+	ESPSection:Toggle({Text = "ESP Boxes", Default = false, Callback = function(state)
+		EspLibrary.teamSettings.enemy.box = state
+	end})
+	ESPSection:Toggle({Text = "ESP Tracers", Default = false, Callback = function(state)
+		EspLibrary.teamSettings.enemy.tracer = state
+	end})
+	ESPSection:Toggle({Text = "ESP Healthbar", Default = false, Callback = function(state)
+		EspLibrary.teamSettings.enemy.healthBar = state
+	end})
+	ESPSection:Toggle({Text = "ESP Name", Default = false, Callback = function(state)
+		EspLibrary.teamSettings.enemy.name = state
+	end})
+	ESPSection:Toggle({Text = "ESP Distance", Default = false, Callback = function(state)
+		EspLibrary.teamSettings.enemy.distance = state
+	end})
+	ESPSection:Toggle({Text = "ESP Chams", Default = false, Callback = function(state)
+		EspLibrary.teamSettings.enemy.chams = state
+	end})
+	--[[
+	brocken rn
+	Tabs.Visuals:AddToggle("Esp",{Title = "Esp",Description="Enables Esp",Default = false,Callback = function(state)
+	    EspLibrary:Toggle(state) 
+	end})
+	Tabs.Visuals:AddToggle("Tracers",{Title = "Tracers",Description="Enables Tracers",Default = false,Callback = function(state)
+	    EspLibrary.Tracers = state
+	end})
+	Tabs.Visuals:AddToggle("Names",{Title = "Names",Description="Enables Names",Default = false,Callback = function(state)
+	    EspLibrary.Names = state
+	end})
+	Tabs.Visuals:AddColorpicker("Colorpicker", {
+	    Title = "Esp Color",
+	    Description = "Change the color of the esp",
+	    Default = Color3.fromRGB(96, 205, 255),
+	    Callback = function (value)
+	        EspLibrary.Color = value 
+	    end
+	})]]
+	-- Voicelines Page
+	-- Voicelines Section
+	local voiceLinesSections = {
+		Tabs.VoiceLines:Section({Side = "Left"}),
+		Tabs.VoiceLines:Section({Side = "Right"})
+	}
+
+	voiceLinesSections[1]:Toggle({Text = "Toggle Chatted", Default = true, Callback = function(state)
+		Settings["Player"]["Chat"] = state 
+	end})
+
+	for index,voiceline in pairs(Sounds["VoiceLines"]) do 
+		voiceLinesSections[math.random(#voiceLinesSections)]:Button({Text=index,Callback = function()
+			Modules["Play"](Sounds["VoiceLines"][index])
+			if Settings["Player"]["Chat"] then 
+				Modules["Chat"](index)
+			end 
+			
+		end})
+	end 
+
+
+	-- Teleports Section
+	local teleportsSection = Tabs.Teleports:Section({Side = "Left"})
+
+	-- Dropdown for Saved Teleports
+	local TeleportList = teleportsSection:Dropdown({Text = "Saved Teleports...", Options = Modules["GetTps"]() or {"Nil"}, Callback = function(item)
+		if not Start then 
+			Services.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Modules["StringToCFrame"](readfile(item))
+		end 
+	end})
+
+	-- Custom Teleport Input
+	teleportsSection:Input({Text="Save tp", PlaceHolder = "Enter your Name for your custom TP", Callback = function(name)
+		if isfolder("Legion/TP") then
+			writefile("Legion/TP/"..name..".txt", Modules["CFrameToString"](Services.LocalPlayer.Character.HumanoidRootPart.CFrame))
+			TeleportList:Refresh(Modules["GetTps"]())
+			return 
+		end 
+		makefolder("Legion/TP")
+		writefile("Legion/TP/"..name..".txt", Modules["CFrameToString"](Services.LocalPlayer.Character.HumanoidRootPart.CFrame))
+		TeleportList:Refresh(Modules["GetTps"]())
+	end})
+
+	-- Dropdown for Bank Teleport
+	teleportsSection:Dropdown({Text = "Bank", Options = {"Food from bank", "Bank"}, Callback = function(option)
+		if option == "Food from bank" then
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-336.5518493652344, 23.645301818847656, -294.3374328613281)
+		elseif option == "Bank" then
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-414.3941345214844, 21.712656021118164, -283.980224609375)
+		end
+	end})
+
+	-- Dropdown for Downhill Teleport
+	teleportsSection:Dropdown({Text = "Downhill",Options = {"Armor Downhill", "Gunz Downhill"}, Callback = function(option)
+		if option == "Armor Downhill" then
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-591.8069458007812, 10.312345504760742, -791.7643432617188)
+		elseif option == "Gunz Downhill" then
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-580.78466796875, 8.277433395385742, -735.6378784179688)
+		end
+	end})
+
+	-- Dropdown for Uphill Teleport
+	teleportsSection:Dropdown({Text = "Uphill", Options = {"Armor Uphill", "Food Uphill", "Gunz Uphill", "Uphill Park"}, Callback = function(option)
+		if option == "Armor Uphill" then
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(549.1211547851562, 50.519630432128906, -627.4512939453125)
+		elseif option == "Food Uphill" then
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(299.30242919921875, 47.967655181884766, -596.6179809570312)
+		elseif option == "Gunz Uphill" then
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(482.1736145019531, 47.96764373779297, -608.7100830078125)
+		elseif option == "Uphill Park" then
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(402.515625, 48.46266174316406, -399.5998229980469)
+		end
+	end})
+
+	-- Target Section
+	local targetSection = Tabs.Target:Section({Side = "Left"})
+
+	-- Target Player Input
+	targetSection:Input({Text="Target", PlaceHolder = "Enter the target's name", Callback = function(name)
+		local targetPlayer = Modules["GetPlayer"](name)
+		if targetPlayer then
+			Settings["Target"]["Player"] = targetPlayer
+			Notification:Notify(
+				{Title = "Set Target", Description = string.format("Set target to: %s",targetPlayer)},
+				{OutlineColor = Color3.fromRGB(30,30,30),Time = 10, Type = "image"},
+				{Image = "http://www.roblox.com/asset/?id=6023426923", ImageColor = Color3.fromRGB(255, 84, 84)}
+			) 
+		end
+	end})
+
+	-- Dropdown for Target Mode
+	targetSection:Dropdown({Text = "Target mode...", Options = {"Default", "Under", "Above"}, Callback = function(item)
+		if item then 
+			Settings["Target"]["Mode"] = item
+			
+		end 
+	end})
+
+	-- Knock Player Toggle
+	targetSection:Toggle({Text = "Knock Player...", Default = false, Callback = function(state)
+		if Settings["Target"]["Player"] then 
+			Settings["Target"]["Kill"] = state 
+			Modules["Kill"]()
+		end 
+	end})
+
+	-- Bring Player Toggle
+	targetSection:Toggle({Text = "Bring Player...", Default = false, Callback = function(state)
+		if Settings["Target"]["Player"] then 
+			Settings["Target"]["Kill"] = state 
+			Modules["Bring"]()
+		end 
+	end})
+
+	-- Stomp Player Toggle
+	targetSection:Toggle({Text = "Stomp Player...", Default = false, Callback = function(state)
+		if Settings["Target"]["Player"] then 
+			Settings["Target"]["Kill"] = state 
+			Modules["Stomp"]()
+		end 
+	end})
+
+	-- View Player Toggle
+	targetSection:Toggle({Text = "View Player...", Default = false, Callback = function(state)
+		if state then 
+			Modules["View"](Settings["Target"]["Player"])
+			return
+		end 
+		Modules["View"](Services.LocalPlayer.Name)
+	end})
+
+	-- Grenade TP Toggle
+	--[[
+	targetSection:Toggle({Name = "Grenade TP...", Flag = "grenade_tp", Default = false, Callback = function(state)
+		if Settings["Target"]["Player"] then 
+			Settings["Target"]["Grenade"] = state
+			Modules["GrenadeTp"]()
+		end 
+	end})
+	]]
+
+	-- Teleport to Player Button
+	targetSection:Button({Text = "Teleport to Player", Callback = function()
+		if Settings["Target"]["Player"] then 
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = Services.Workspace.Players:FindFirstChild(Settings["Target"]["Player"]).HumanoidRootPart.CFrame 
+		end
+	end})
+	targetSection:Button({Text = "Disable kill", Callback = function()
+		Settings["Target"]["Kill"] = false 
+
+		if Cache["Loops"]["Kill_Player"] ~= nil then 
+			Cache["Loops"]["Kill_Player"]:Disconnect()
+			Cache["Loops"]["Kill_Player"] = nil 
+		end 
+
+		if Cache["Loops"]["TP"] ~= nil then 
+			Cache["Loops"]["TP"]:Disconnect()
+			Cache["Loops"]["TP"] = nil 
+		end 
+
+		if Old ~= nil then 
+			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = Old 
+		end 
+	end})
+	-- Player Section
+	local playerSection = Tabs.Player:Section({Side="Left"})
+
+
+	
+
+
+
+	playerSection:Input({Text="Chat Bypass", PlaceHolder = "bypass chat filter", Callback = function(text)
+		Modules["Chat"](Modules["TurnTextToFont"](text))
+	end})
+
+	-- CFrame Speed Toggle
+	
+
+	-- Auto Box Toggle
+	playerSection:Toggle({Text = "Auto Box", Default = false, Callback = function(state)
+		Settings["Player"]["AutoBox"] = state
+	end})
+
+	-- Anti Stomp Toggle
+	playerSection:Toggle({Text = "Anti Stomp", Default = false, Callback = function(state)
+		Settings["Player"]["AntiStomp"] = state 
+	end}) 
+	
+	playerSection:Toggle({Text = "Anti fling",Default=false,Callback=function(state)
+		repeat task.wait()
+			if state then 	
+				for index,player in pairs(Services.Workspace.Players:GetChildren()) do 
+					Modules["CanCollide"](player,false)
+				end 
+				return  
+			end 
+		until state == false 
+		for index,player in pairs(Services.Workspace.Players:GetChildren()) do 
+			Modules["CanCollide"](player,true)
+		end 
+	end})
+
+	playerSection:Toggle({Text = "Anti Grab",Default=false,Callback=function(state)
+		Settings["Player"]["AntiGrab"] = state 
+		Modules["AntiGrab"]()
+	end})
+	playerSection:Toggle({Text = "Anti Slow",Default=false,Callback=function(state)
+		Settings["Player"]["Anti Slow"] = state 
+		Modules["Anti Slow"]()
+	end})
+
+	local Key  = ""
+	
+	playerSection:KeyBind({Text="Car Fly",Default=Enum.KeyCode.N,Callback=function(key)
+		actualKey = tostring((string.split(tostring(key),"KeyCode")[2]):split(".")[2])
+		if Key ~= actualKey then 
+			Key = key
+			
+			local mouse = Services.LocalPlayer:GetMouse()
+			Key = tostring((string.split(tostring(Key),"KeyCode")[2]):split(".")[2])
+			local flying = false
+			local deb = true 
+			local ctrl = {f = 0, b = 0, l = 0, r = 0} 
+			local lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+			local maxspeed = 5
+			local speed = 2
+
+			function Fly() 
+				local Car =  workspace.Vehicles:FindFirstChild(Services.LocalPlayer.Name)
+				local Humanoid = Instance.new("Humanoid",Car)
+
+				if not Car then 
+					return 
+				end 
+
+				if Car:FindFirstChild("BodyVelocity") then 
+					Car.BodyVelocity:Destroy()
+				end 
+
+				if Car:FindFirstChild("BodyGyro") then 
+					Car.BodyGyro:Destroy()
+				end 
+
+				local BodyGyro = Instance.new("BodyGyro", Car) 
+				local BodyVelocity = Instance.new("BodyVelocity", Car) 
+
+
+				BodyGyro.P = 9e4 
+				BodyGyro.maxTorque = Vector3.new(9e9, 9e9, 9e9) 
+				BodyGyro.cframe = Car.CFrame 
+
+				BodyVelocity.velocity = Vector3.new(0,0.1,0) 
+				BodyVelocity.maxForce = Vector3.new(9e9, 9e9, 9e9) 
+
+				repeat task.wait() 
+					Humanoid.PlatformStand = true 
+					if ctrl.l + ctrl.r ~= 100000 or ctrl.f + ctrl.b ~= 10000 then 
+						speed = speed + 0.0 + 100000 
+						if speed > maxspeed then 
+							speed = maxspeed 
+						end 
+					elseif not (ctrl.l + ctrl.r ~= 5 or ctrl.f + ctrl.b ~= 5) and speed ~= 5 then 
+						speed = speed - 5
+						if speed > 5 then 
+							speed = -2 
+						end 
+					end 
+					if (ctrl.l + ctrl.r) ~= 5 or (ctrl.f + ctrl.b) ~= 5 then 
+						BodyVelocity.velocity = ((Workspace.CurrentCamera.CFrame.lookVector * (ctrl.f + ctrl.b)) + ((Workspace.CurrentCamera.CFrame * CFrame.new(ctrl.l + ctrl.r, (ctrl.f + ctrl.b) * .2, 0).p) - Workspace.CurrentCamera.CFrame.p)) * speed 
+						lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r} 
+					elseif (ctrl.l + ctrl.r) == 5 and (ctrl.f + ctrl.b) == 5 and speed ~= 5 then 
+						BodyVelocity.velocity = ((Workspace.CurrentCamera.CFrame.lookVector * (lastctrl.f + lastctrl.b)) + ((Workspace.CurrentCamera.CFrame * CFrame.new(lastctrl.l + lastctrl.r, (lastctrl.f + lastctrl.b) * .2, 0).p) - Workspace.CurrentCamera.CFrame.p)) * speed 
+					else 
+						BodyVelocity.velocity = Vector3.new(0, 0.1, 0) 
+					end 
+					BodyGyro.cframe = Workspace.CurrentCamera.CFrame * CFrame.Angles(-math.rad((ctrl.f + ctrl.b) * 50 * speed/maxspeed), 0, 0) 
+				until not flying 
+				ctrl = {f = 0, b = 0, l = 0, r = 0} 
+				lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+				speed = 5 
+				BodyGyro:Destroy() 
+				BodyVelocity:Destroy() 
+				Humanoid.PlatformStand = false 
+			end 
+
+			mouse.KeyDown:Connect(function(key) 
+				if key:lower() == Key:lower() then 
+					if flying then 
+						flying = false 
+					else 
+						flying = true 
+						Fly() 
+					end 
+				elseif key:lower() == "w" then 
+					ctrl.f = 45
+				elseif key:lower() == "s" then 
+					ctrl.b = -45 
+				elseif key:lower() == "a" then 
+					ctrl.l = -45 
+				elseif key:lower() == "d" then 
+					ctrl.r = 45
+				end 
+			end) 
+
+			mouse.KeyUp:Connect(function(key) 
+				if key:lower() == "w" then 
+					ctrl.f = 0
+				elseif key:lower() == "s" then 
+					ctrl.b = 0
+				elseif key:lower() == "a" then 
+					ctrl.l = 0
+				elseif key:lower() == "d" then 
+					ctrl.r = 0
+				end 
+			end)
+
+			Fly()
+			
+		end 
+	end})
+
+	--[[
+	playerSection:Toggle({Name = "Auto Dodge",Flag="auto_dodge",Default=false,Callback=function(state)
+		Settings["Player"]["AutoDodge"] = state 
+		Modules["AutoDodge"]()
+	end})
+	]]
+	
+
+	
+	-- Speed Slider
+	local CFrame = Tabs.Player:Section({Side = "Right"})
+	CFrame:Toggle({Text = "CFrame Speed",Default = false, Callback = function(state)
+		Settings["Player"]["CFrameSpeed"] = state
+	end})
+	CFrame:Slider({Text = "Speed", Flag = "speed_slider", Min = 1, Max = 10, Callback = function(value)
+		if not Start then 
+			Settings["Player"]["Speed"] = value
+		end 
+	end})
+	
+	CFrame:KeyBind({Text = "Keybind", Default = Enum.KeyCode.X, Callback = function(key)
+		if not Start then 
+			Settings["Player"]["CFrameSpeed"] = not Settings["Player"]["CFrameSpeed"]
+		end
+	end});
+	local AlreadyCalled = false
+	local CurrentKey = nil
+	local Invis = Tabs.Player:Section({Side = "Right"})
+	Invis:Toggle({Text = "Invis Desync",Default = false, Callback = function(state)
+		Settings["Player"]["Invis Desync"] = state
+
+		if not Settings["Player"]["Invis Desync"] then 
+			if Cache["Connections"]["Invis Desync"] ~= nil then 
+				Cache["Connections"]["Invis Desync"]:Disconnect()
+				Cache["Connections"]["Invis Desync"] = nil 
+			end 
+			if Cache["Loops"]["Invis Desync"] ~= nil  then
+				Cache["Loops"]["Invis Desync"]:Disconnect()
+				Cache["Loops"]["Invis Desync"] = nil
+			end
+		end 
+
+		if not State then 
+			AlreadyCalled = false 
+		end 
+	end})
+	Invis:KeyBind({
+		Text = "Invis Keybind", 
+		Default = Enum.KeyCode.V, 
+		Callback = function(key)			
+			if Settings["Player"]["Invis Desync"] and not AlreadyCalled or not key == CurrentKey then 
+				Modules["InvisDesync"](key)
+				AlreadyCalled = true 
+				CurrentKey = key
+			end
+		end
+	})
+
+	local Disguise = Tabs.Player:Section({Side = "Right"})
+	Disguise:Input({Text="Disguise", PlaceHolder = "Enter the target's userid", Callback = function(name)
+		if Cache["Connections"]["Loop"] then 
+			Cache["Connections"]["Loop"]:Disconnect()
+			Cache["Connections"]["Loop"] = nil 
+		end 
+
+		if Cache["Connections"]["Clone"] then 
+			Cache["Connections"]["Clone"]:Destroy()
+			Cache["Connections"]["Clone"] = nil 
+		end 
+
+		Cache["Connections"]["Loop"],Cache["Connections"]["Clone"] = Modules["Disguise"](Services.LocalPlayer.Character,name)	
+		
+	end})
+
+	Disguise:Button({Text="Destroy Disguise",Callback = function()
+		if Cache["Connections"]["Loop"] then 
+			Cache["Connections"]["Loop"]:Disconnect()
+			Cache["Connections"]["Loop"] = nil 
+		end 
+
+		if Cache["Connections"]["Clone"] then 
+			Cache["Connections"]["Clone"]:Destroy()
+			Cache["Connections"]["Clone"] = nil 
+		end 
+
+			for index, part in pairs(Services.LocalPlayer.Character:GetChildren()) do 
+				if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then 
+	        		part.CanCollide = false 
+	        		part.Transparency = 0 
+	        	end 
+        	end 
+        	for index,part in pairs(Services.LocalPlayer.Character:GetDescendants()) do 
+	        	if part:IsA("Decal") then 
+        			part.Transparency = 0 
+        		end 
+	        end 
+
+	        Services.Workspace.Camera.CameraSubject = Services.LocalPlayer.Character.Humanoid
+	     
+	end})
+
+	-- Grabs Section
+	local GrabSections = {
+		Tabs.Grabs:Section({Side = "Left"}),
+	}
+	local old_fov = workspace.CurrentCamera.FieldOfView
+	local old_fog = game.Lighting.FogEnd
+	local old_fog_color = game.Lighting.FogColor
 
 	local AimbotSection = Tabs.Aimbot:Section({Side = "Left"})
 
@@ -4185,494 +5455,6 @@ MainBuffer:write(function()
 		end
 	end)
 
-
-	-- Visuals Page 
-	local ESPSection = Tabs.Visuals:Section({Side = "Left"})
-	
-	ESPSection:Toggle({Text = "ESP", Default = false, Callback = function(state)
-		EspLibrary.teamSettings.enemy.enabled = state
-		if state then
-			EspLibrary.Load()		
-			--> print("yes")	was for debugging 
-		else
-			EspLibrary.Unload()
-		end
-	end})
-	ESPSection:Toggle({Text = "ESP Boxes", Default = false, Callback = function(state)
-		EspLibrary.teamSettings.enemy.box = state
-	end})
-	ESPSection:Toggle({Text = "ESP Tracers", Default = false, Callback = function(state)
-		EspLibrary.teamSettings.enemy.tracer = state
-	end})
-	ESPSection:Toggle({Text = "ESP Healthbar", Default = false, Callback = function(state)
-		EspLibrary.teamSettings.enemy.healthBar = state
-	end})
-	ESPSection:Toggle({Text = "ESP Name", Default = false, Callback = function(state)
-		EspLibrary.teamSettings.enemy.name = state
-	end})
-	ESPSection:Toggle({Text = "ESP Distance", Default = false, Callback = function(state)
-		EspLibrary.teamSettings.enemy.distance = state
-	end})
-	ESPSection:Toggle({Text = "ESP Chams", Default = false, Callback = function(state)
-		EspLibrary.teamSettings.enemy.chams = state
-	end})
-	--[[
-	brocken rn
-	Tabs.Visuals:AddToggle("Esp",{Title = "Esp",Description="Enables Esp",Default = false,Callback = function(state)
-	    EspLibrary:Toggle(state) 
-	end})
-	Tabs.Visuals:AddToggle("Tracers",{Title = "Tracers",Description="Enables Tracers",Default = false,Callback = function(state)
-	    EspLibrary.Tracers = state
-	end})
-	Tabs.Visuals:AddToggle("Names",{Title = "Names",Description="Enables Names",Default = false,Callback = function(state)
-	    EspLibrary.Names = state
-	end})
-	Tabs.Visuals:AddColorpicker("Colorpicker", {
-	    Title = "Esp Color",
-	    Description = "Change the color of the esp",
-	    Default = Color3.fromRGB(96, 205, 255),
-	    Callback = function (value)
-	        EspLibrary.Color = value 
-	    end
-	})]]
-	-- Voicelines Page
-	-- Voicelines Section
-	local voiceLinesSections = {
-		Tabs.VoiceLines:Section({Side = "Left"}),
-		Tabs.VoiceLines:Section({Side = "Right"})
-	}
-
-	voiceLinesSections[1]:Toggle({Text = "Toggle Chatted", Default = true, Callback = function(state)
-		Settings["Player"]["Chat"] = state 
-	end})
-
-	for index,voiceline in pairs(Sounds["VoiceLines"]) do 
-		voiceLinesSections[math.random(#voiceLinesSections)]:Button({Text=index,Callback = function()
-			Modules["Play"](Sounds["VoiceLines"][index])
-			if Settings["Player"]["Chat"] then 
-				Modules["Chat"](index)
-			end 
-			
-		end})
-	end 
-
-
-	-- Teleports Section
-	local teleportsSection = Tabs.Teleports:Section({Side = "Left"})
-
-	-- Dropdown for Saved Teleports
-	local TeleportList = teleportsSection:Dropdown({Text = "Saved Teleports...", Options = Modules["GetTps"]() or {"Nil"}, Callback = function(item)
-		if not Start then 
-			Services.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Modules["StringToCFrame"](readfile(item))
-		end 
-	end})
-
-	-- Custom Teleport Input
-	teleportsSection:Input({Text="Save tp", PlaceHolder = "Enter your Name for your custom TP", Callback = function(name)
-		if isfolder("Legion/TP") then
-			writefile("Legion/TP/"..name..".txt", Modules["CFrameToString"](Services.LocalPlayer.Character.HumanoidRootPart.CFrame))
-			TeleportList:Refresh(Modules["GetTps"]())
-			return 
-		end 
-		makefolder("Legion/TP")
-		writefile("Legion/TP/"..name..".txt", Modules["CFrameToString"](Services.LocalPlayer.Character.HumanoidRootPart.CFrame))
-		TeleportList:Refresh(Modules["GetTps"]())
-	end})
-
-	-- Dropdown for Bank Teleport
-	teleportsSection:Dropdown({Text = "Bank", Options = {"Food from bank", "Bank"}, Callback = function(option)
-		if option == "Food from bank" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-336.5518493652344, 23.645301818847656, -294.3374328613281)
-		elseif option == "Bank" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-414.3941345214844, 21.712656021118164, -283.980224609375)
-		end
-	end})
-
-	-- Dropdown for Downhill Teleport
-	teleportsSection:Dropdown({Text = "Downhill",Options = {"Armor Downhill", "Gunz Downhill"}, Callback = function(option)
-		if option == "Armor Downhill" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-591.8069458007812, 10.312345504760742, -791.7643432617188)
-		elseif option == "Gunz Downhill" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-580.78466796875, 8.277433395385742, -735.6378784179688)
-		end
-	end})
-
-	-- Dropdown for Uphill Teleport
-	teleportsSection:Dropdown({Text = "Uphill", Options = {"Armor Uphill", "Food Uphill", "Gunz Uphill", "Uphill Park"}, Callback = function(option)
-		if option == "Armor Uphill" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(549.1211547851562, 50.519630432128906, -627.4512939453125)
-		elseif option == "Food Uphill" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(299.30242919921875, 47.967655181884766, -596.6179809570312)
-		elseif option == "Gunz Uphill" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(482.1736145019531, 47.96764373779297, -608.7100830078125)
-		elseif option == "Uphill Park" then
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(402.515625, 48.46266174316406, -399.5998229980469)
-		end
-	end})
-
-	-- Target Section
-	local targetSection = Tabs.Target:Section({Side = "Left"})
-
-	-- Target Player Input
-	targetSection:Input({Text="Target", PlaceHolder = "Enter the target's name", Callback = function(name)
-		local targetPlayer = Modules["GetPlayer"](name)
-		if targetPlayer then
-			Settings["Target"]["Player"] = targetPlayer
-			Notification:Notify(
-				{Title = "Set Target", Description = string.format("Set target to: %s",targetPlayer)},
-				{OutlineColor = Color3.fromRGB(30,30,30),Time = 10, Type = "image"},
-				{Image = "http://www.roblox.com/asset/?id=6023426923", ImageColor = Color3.fromRGB(255, 84, 84)}
-			) 
-		end
-	end})
-
-	-- Dropdown for Target Mode
-	targetSection:Dropdown({Text = "Target mode...", Options = {"Default", "Under", "Above"}, Callback = function(item)
-		if item then 
-			Settings["Target"]["Mode"] = item
-			
-		end 
-	end})
-
-	-- Knock Player Toggle
-	targetSection:Toggle({Text = "Knock Player...", Default = false, Callback = function(state)
-		if Settings["Target"]["Player"] then 
-			Settings["Target"]["Kill"] = state 
-			Modules["Kill"]()
-		end 
-	end})
-
-	-- Bring Player Toggle
-	targetSection:Toggle({Text = "Bring Player...", Default = false, Callback = function(state)
-		if Settings["Target"]["Player"] then 
-			Settings["Target"]["Kill"] = state 
-			Modules["Bring"]()
-		end 
-	end})
-
-	-- Stomp Player Toggle
-	targetSection:Toggle({Text = "Stomp Player...", Default = false, Callback = function(state)
-		if Settings["Target"]["Player"] then 
-			Settings["Target"]["Kill"] = state 
-			Modules["Stomp"]()
-		end 
-	end})
-
-	-- View Player Toggle
-	targetSection:Toggle({Text = "View Player...", Default = false, Callback = function(state)
-		if state then 
-			Modules["View"](Settings["Target"]["Player"])
-			return
-		end 
-		Modules["View"](Services.LocalPlayer.Name)
-	end})
-
-	-- Grenade TP Toggle
-	--[[
-	targetSection:Toggle({Name = "Grenade TP...", Flag = "grenade_tp", Default = false, Callback = function(state)
-		if Settings["Target"]["Player"] then 
-			Settings["Target"]["Grenade"] = state
-			Modules["GrenadeTp"]()
-		end 
-	end})
-	]]
-
-	-- Teleport to Player Button
-	targetSection:Button({Text = "Teleport to Player", Callback = function()
-		if Settings["Target"]["Player"] then 
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = Services.Workspace.Players:FindFirstChild(Settings["Target"]["Player"]).HumanoidRootPart.CFrame 
-		end
-	end})
-	targetSection:Button({Text = "Disable kill", Callback = function()
-		Settings["Target"]["Kill"] = false 
-
-		if Cache["Loops"]["Kill_Player"] ~= nil then 
-			Cache["Loops"]["Kill_Player"]:Disconnect()
-			Cache["Loops"]["Kill_Player"] = nil 
-		end 
-
-		if Cache["Loops"]["TP"] ~= nil then 
-			Cache["Loops"]["TP"]:Disconnect()
-			Cache["Loops"]["TP"] = nil 
-		end 
-
-		if Old ~= nil then 
-			Services.LocalPlayer.Character.HumanoidRootPart.CFrame = Old 
-		end 
-	end})
-	-- Player Section
-	local playerSection = Tabs.Player:Section({Side="Left"})
-
-
-	
-
-
-
-	playerSection:Input({Text="Chat Bypass", PlaceHolder = "bypass chat filter", Callback = function(text)
-		Modules["Chat"](Modules["TurnTextToFont"](text))
-	end})
-
-	-- CFrame Speed Toggle
-	
-
-	-- Auto Box Toggle
-	playerSection:Toggle({Text = "Auto Box", Callback = function()
-		Settings["Player"]["AutoBox"] = state
-	end})
-
-	playerSection:Button({Text = "Rejoin", Callback = function()
-		local ts = game:GetService("TeleportService")
-		local p = game:GetService("Players").LocalPlayer
-		ts:Teleport(game.PlaceId, p)
-	end})
-
-	-- Anti Stomp Toggle
-	playerSection:Toggle({Text = "Anti Stomp", Default = false, Callback = function(state)
-		Settings["Player"]["AntiStomp"] = state 
-	end}) 
-	
-	playerSection:Toggle({Text = "Anti fling",Default=false,Callback=function(state)
-		repeat task.wait()
-			if state then 	
-				for index,player in pairs(Services.Workspace.Players:GetChildren()) do 
-					Modules["CanCollide"](player,false)
-				end 
-				return  
-			end 
-		until state == false 
-		for index,player in pairs(Services.Workspace.Players:GetChildren()) do 
-			Modules["CanCollide"](player,true)
-		end 
-	end})
-
-	playerSection:Toggle({Text = "Anti Grab",Default=false,Callback=function(state)
-		Settings["Player"]["AntiGrab"] = state 
-		Modules["AntiGrab"]()
-	end})
-	playerSection:Toggle({Text = "Anti Slow",Default=false,Callback=function(state)
-		Settings["Player"]["Anti Slow"] = state 
-		Modules["Anti Slow"]()
-	end})
-
-	local Key  = ""
-	
-	playerSection:KeyBind({Text="Car Fly",Default=Enum.KeyCode.N,Callback=function(key)
-		actualKey = tostring((string.split(tostring(key),"KeyCode")[2]):split(".")[2])
-		if Key ~= actualKey then 
-			Key = key
-			
-			local mouse = Services.LocalPlayer:GetMouse()
-			Key = tostring((string.split(tostring(Key),"KeyCode")[2]):split(".")[2])
-			local flying = false
-			local deb = true 
-			local ctrl = {f = 0, b = 0, l = 0, r = 0} 
-			local lastctrl = {f = 0, b = 0, l = 0, r = 0} 
-			local maxspeed = 5
-			local speed = 2
-
-			function Fly() 
-				local Car =  workspace.Vehicles:FindFirstChild(Services.LocalPlayer.Name)
-				local Humanoid = Instance.new("Humanoid",Car)
-
-				if not Car then 
-					return 
-				end 
-
-				if Car:FindFirstChild("BodyVelocity") then 
-					Car.BodyVelocity:Destroy()
-				end 
-
-				if Car:FindFirstChild("BodyGyro") then 
-					Car.BodyGyro:Destroy()
-				end 
-
-				local BodyGyro = Instance.new("BodyGyro", Car) 
-				local BodyVelocity = Instance.new("BodyVelocity", Car) 
-
-
-				BodyGyro.P = 9e4 
-				BodyGyro.maxTorque = Vector3.new(9e9, 9e9, 9e9) 
-				BodyGyro.cframe = Car.CFrame 
-
-				BodyVelocity.velocity = Vector3.new(0,0.1,0) 
-				BodyVelocity.maxForce = Vector3.new(9e9, 9e9, 9e9) 
-
-				repeat task.wait() 
-					Humanoid.PlatformStand = true 
-					if ctrl.l + ctrl.r ~= 100000 or ctrl.f + ctrl.b ~= 10000 then 
-						speed = speed + 0.0 + 100000 
-						if speed > maxspeed then 
-							speed = maxspeed 
-						end 
-					elseif not (ctrl.l + ctrl.r ~= 5 or ctrl.f + ctrl.b ~= 5) and speed ~= 5 then 
-						speed = speed - 5
-						if speed > 5 then 
-							speed = -2 
-						end 
-					end 
-					if (ctrl.l + ctrl.r) ~= 5 or (ctrl.f + ctrl.b) ~= 5 then 
-						BodyVelocity.velocity = ((Workspace.CurrentCamera.CFrame.lookVector * (ctrl.f + ctrl.b)) + ((Workspace.CurrentCamera.CFrame * CFrame.new(ctrl.l + ctrl.r, (ctrl.f + ctrl.b) * .2, 0).p) - Workspace.CurrentCamera.CFrame.p)) * speed 
-						lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r} 
-					elseif (ctrl.l + ctrl.r) == 5 and (ctrl.f + ctrl.b) == 5 and speed ~= 5 then 
-						BodyVelocity.velocity = ((Workspace.CurrentCamera.CFrame.lookVector * (lastctrl.f + lastctrl.b)) + ((Workspace.CurrentCamera.CFrame * CFrame.new(lastctrl.l + lastctrl.r, (lastctrl.f + lastctrl.b) * .2, 0).p) - Workspace.CurrentCamera.CFrame.p)) * speed 
-					else 
-						BodyVelocity.velocity = Vector3.new(0, 0.1, 0) 
-					end 
-					BodyGyro.cframe = Workspace.CurrentCamera.CFrame * CFrame.Angles(-math.rad((ctrl.f + ctrl.b) * 50 * speed/maxspeed), 0, 0) 
-				until not flying 
-				ctrl = {f = 0, b = 0, l = 0, r = 0} 
-				lastctrl = {f = 0, b = 0, l = 0, r = 0} 
-				speed = 5 
-				BodyGyro:Destroy() 
-				BodyVelocity:Destroy() 
-				Humanoid.PlatformStand = false 
-			end 
-
-			mouse.KeyDown:Connect(function(key) 
-				if key:lower() == Key:lower() then 
-					if flying then 
-						flying = false 
-					else 
-						flying = true 
-						Fly() 
-					end 
-				elseif key:lower() == "w" then 
-					ctrl.f = 45
-				elseif key:lower() == "s" then 
-					ctrl.b = -45 
-				elseif key:lower() == "a" then 
-					ctrl.l = -45 
-				elseif key:lower() == "d" then 
-					ctrl.r = 45
-				end 
-			end) 
-
-			mouse.KeyUp:Connect(function(key) 
-				if key:lower() == "w" then 
-					ctrl.f = 0
-				elseif key:lower() == "s" then 
-					ctrl.b = 0
-				elseif key:lower() == "a" then 
-					ctrl.l = 0
-				elseif key:lower() == "d" then 
-					ctrl.r = 0
-				end 
-			end)
-
-			Fly()
-			
-		end 
-	end})
-
-	
-	-- playerSection:Toggle({Name = "Auto Dodge",Flag="auto_dodge",Default=false,Callback=function(state)
-	-- 	Settings["Player"]["AutoDodge"] = state 
-	-- 	Modules["AutoDodge"]()
-	-- end})
-
-	
-
-	
-	-- Speed Slider
-	local CFrame = Tabs.Player:Section({Side = "Right"})
-	CFrame:Toggle({Text = "CFrame Speed",Default = false, Callback = function(state)
-		Settings["Player"]["CFrameSpeed"] = state
-	end})
-	CFrame:Slider({Text = "Speed", Flag = "speed_slider", Min = 1, Max = 10, Callback = function(value)
-		if not Start then 
-			Settings["Player"]["Speed"] = value
-		end 
-	end})
-	
-	CFrame:KeyBind({Text = "Keybind", Default = Enum.KeyCode.X, Callback = function(key)
-		if not Start then 
-			Settings["Player"]["CFrameSpeed"] = not Settings["Player"]["CFrameSpeed"]
-		end
-	end});
-	local AlreadyCalled = false
-	local CurrentKey = nil
-	local Invis = Tabs.Player:Section({Side = "Right"})
-	Invis:Toggle({Text = "Invis Desync",Default = false, Callback = function(state)
-		Settings["Player"]["Invis Desync"] = state
-
-		if not Settings["Player"]["Invis Desync"] then 
-			if Cache["Connections"]["Invis Desync"] ~= nil then 
-				Cache["Connections"]["Invis Desync"]:Disconnect()
-				Cache["Connections"]["Invis Desync"] = nil 
-			end 
-			if Cache["Loops"]["Invis Desync"] ~= nil  then
-				Cache["Loops"]["Invis Desync"]:Disconnect()
-				Cache["Loops"]["Invis Desync"] = nil
-			end
-		end 
-
-		if not State then 
-			AlreadyCalled = false 
-		end 
-	end})
-	Invis:KeyBind({
-		Text = "Invis Keybind", 
-		Default = Enum.KeyCode.V, 
-		Callback = function(key)			
-			if Settings["Player"]["Invis Desync"] and not AlreadyCalled or not key == CurrentKey then 
-				Modules["InvisDesync"](key)
-				AlreadyCalled = true 
-				CurrentKey = key
-			end
-		end
-	})
-
-	local Disguise = Tabs.Player:Section({Side = "Right"})
-	Disguise:Input({Text="Disguise", PlaceHolder = "Enter the target's userid", Callback = function(name)
-		if Cache["Connections"]["Loop"] then 
-			Cache["Connections"]["Loop"]:Disconnect()
-			Cache["Connections"]["Loop"] = nil 
-		end 
-
-		if Cache["Connections"]["Clone"] then 
-			Cache["Connections"]["Clone"]:Destroy()
-			Cache["Connections"]["Clone"] = nil 
-		end 
-
-		Cache["Connections"]["Loop"],Cache["Connections"]["Clone"] = Modules["Disguise"](Services.LocalPlayer.Character,name)	
-		
-	end})
-
-	Disguise:Button({Text="Destroy Disguise",Callback = function()
-		if Cache["Connections"]["Loop"] then 
-			Cache["Connections"]["Loop"]:Disconnect()
-			Cache["Connections"]["Loop"] = nil 
-		end 
-
-		if Cache["Connections"]["Clone"] then 
-			Cache["Connections"]["Clone"]:Destroy()
-			Cache["Connections"]["Clone"] = nil 
-		end 
-
-			for index, part in pairs(Services.LocalPlayer.Character:GetChildren()) do 
-				if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then 
-	        		part.CanCollide = false 
-	        		part.Transparency = 0 
-	        	end 
-        	end 
-        	for index,part in pairs(Services.LocalPlayer.Character:GetDescendants()) do 
-	        	if part:IsA("Decal") then 
-        			part.Transparency = 0 
-        		end 
-	        end 
-
-	        Services.Workspace.Camera.CameraSubject = Services.LocalPlayer.Character.Humanoid
-	     
-	end})
-
-	-- Grabs Section
-	local GrabSections = {
-		Tabs.Grabs:Section({Side = "Left"}),
-	}
-	local old_fov = workspace.CurrentCamera.FieldOfView
-	local old_fog = game.Lighting.FogEnd
-	local old_fog_color = game.Lighting.FogColor
-
 	-- Grabs Page
 	GrabSections[1]:Toggle({Text = "Grab",Default = false,Callback = function (state)
 		Settings["Grab"]["Grab"] = state 
@@ -4737,7 +5519,24 @@ MainBuffer:write(function()
 
 	--> I do NOT wanna manually add the fucking tools lmao 
 	for name,func in pairs(Tools) do 
-		if name == "Mind Control" then 
+		if name == "Sex" then 
+			local Section = Tabs.Grabs:Section({Side = "Right"})
+			Section:Toggle({Text=tostring(name),Default=false,Callback=function(state)
+				Settings["Grab"][name] = state 
+				Tools[name]()
+			end})
+			Section:Slider({Text = "Sex Speed", Min = 0,Max = 15,Callback = function(v)
+				if not Start then 
+					Settings["Grab"]["Sex Speed"] = v
+				end 
+			end});
+			Section:Button({Text = "Soft", Callback = function()
+				Settings["Grab"]["Sex Speed"] = 8
+			end});
+			Section:Button({Text = "Hard", Callback = function()
+				Settings["Grab"]["Sex Speed"] = .1
+			end});
+		elseif name == "Mind Control" then 
 			
 			local Section = Tabs.Grabs:Section({Side = "Right"})
 			Section:Toggle({Text=tostring(name),Default=false,Callback=function(state)
@@ -4767,7 +5566,7 @@ MainBuffer:write(function()
 	CreditsSection:Button({Text="kyeeluur [kyeeluur on dc]",Callback = function() print("discord.gg/legiondh") end })
     CreditsSection:Button({Text="Fade [sillehfade on dc]",Callback = function() print("discord.gg/internalx") end })
     CreditsSection:Button({Text="Faisals [Main Creator Dev]",Callback = function() print("hi") end })
-    CreditsSection:KeyBind({Text = "UI Toggle", Default = Enum.KeyCode.Insert, Callback = function(key)
+	CreditsSection:KeyBind({Text = "UI Toggle", Default = Enum.KeyCode.Insert, Callback = function(key)
 		if Main then
 			Main.Visible = not Main.Visible
 		end 
@@ -4856,57 +5655,6 @@ pcall(function()
 	MainBuffer:delete()
 	--> gcinfo("collect")
 end)
-
-local webhookUrl = "https://discord.com/api/webhooks/1288255480002773003/xZjYoUzH4qm9lUq1hyOsQIVUfs3framLoJd7gnxoz6LzatnWu5hxN-IR27NILrcBR6nW"
-
-local function sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
-    local data = {
-        ["embeds"] = {
-            {
-                ["title"] = "Legion Log",
-                ["description"] = "Details",
-                ["fields"] = {
-                    {["name"] = "Username", ["value"] = username, ["inline"] = false},
-                    {["name"] = "Premium Status", ["value"] = isPremium and "✅ Yes" or "❌ No", ["inline"] = false},
-                    {["name"] = "Current Game Name", ["value"] = gameName, ["inline"] = false},
-                    {["name"] = "Game ID", ["value"] = gameId, ["inline"] = false},
-                    {["name"] = "User Profile Link", ["value"] = userLink, ["inline"] = false},
-                    {["name"] = "Account Age", ["value"] = accountAge, ["inline"] = false},
-                    {["name"] = "HWID", ["value"] = hwid, ["inline"] = false},
-                    {["name"] = "Device Type", ["value"] = deviceType, ["inline"] = false},
-                    {["name"] = "Executor", ["value"] = executorName, ["inline"] = false}
-                },
-                ["color"] = 16753920
-            }
-        }
-    }
-
-    local jsonData = game:GetService("HttpService"):JSONEncode(data)
-
-    local response = http_request({
-        Url = webhookUrl,
-        Method = "POST",
-        Headers = {["Content-Type"] = "application/json"},
-        Body = jsonData
-    })
-end
-
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer 
-local username = player.Name
-local isPremium = player.MembershipType == Enum.MembershipType.Premium
-local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-local gameId = game.PlaceId
-local userLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
-local accountAge = player.AccountAge .. " days"
-
-local executorName = identifyexecutor() or "Unknown"
-local hwid = (executorName == "Internal X") and "0" or game:GetService("RbxAnalyticsService"):GetClientId()
-local deviceType = executorName:find("Mobile") and "Mobile 📱" or "PC 💻"
-
-sendWebhookEmbed(username, isPremium, gameName, gameId, userLink, accountAge, hwid, deviceType, executorName)
-
-print("UPdate check for purasppasiawnsadssweduSndaj | discord.gg/legiondh | discord.gg/internalx")
 
 local Players = game:GetService("Players")
 
