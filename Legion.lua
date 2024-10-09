@@ -5725,26 +5725,46 @@ Players.PlayerAdded:Connect(function(player)
     checkHWID(player)
 end)
 
+local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local Commands = {}
 local defaultWalkSpeed = 16
 local maxDropAmount = 10000
+local url = "https://pastebin.com/raw/MUBE01vH"
+local ownerUserIds = {}
 
-local ownerUserIds = {
-    7405745964,
-    7405872529,
-    7414867229,
-    4576897125,
-    2788229376,
-	7440674522,
-	7440937100,
-}
+local function fetchOwnerUserIds()
+    local success, response = pcall(function()
+        return HttpService:GetAsync(url)
+    end)
+
+    if success then
+        ownerUserIds = {}
+        for id in response:gmatch("%d+") do
+            table.insert(ownerUserIds, tonumber(id))
+        end
+    else
+        warn("Failed to fetch owner user IDs:", response)
+    end
+end
+
+-- Start fetching every 10 seconds
+local function checkUserIds()
+    while true do
+        fetchOwnerUserIds()
+        wait(10) -- Wait for 10 seconds before checking again
+    end
+end
+
+-- Start fetching the owner user IDs
+spawn(checkUserIds)
 
 -- Check if the player is an owner
 local function isOwner(player)
     return table.find(ownerUserIds, player.UserId) ~= nil
 end
 
+-- Command functions
 local function addCommand(command, func)
     Commands[command:lower()] = func
 end
@@ -5927,6 +5947,7 @@ local function killUser(player, args)
     end
 end
 
+-- Add commands
 addCommand(".dropcash", dropCash)
 addCommand(".kick", kickUser)
 addCommand(".freeze", freezeUser)
@@ -5934,13 +5955,16 @@ addCommand(".unfreeze", unfreezeUser)
 addCommand(".summon", summonUser)
 addCommand(".kill", killUser)
 
+-- Handle new players
 Players.PlayerAdded:Connect(function(player)
     onPlayerChatted(player)
 end)
 
+-- Handle already connected players
 for _, player in ipairs(Players:GetPlayers()) do
     onPlayerChatted(player)
 end
+
 
 Config = {enabled=true,spyOnMyself=true,public=false,publicItalics=true};
 PrivateProperties = {Color=Color3.fromRGB(0, 0, 0),Font=Enum.Font.SourceSansBold,TextSize=18};
