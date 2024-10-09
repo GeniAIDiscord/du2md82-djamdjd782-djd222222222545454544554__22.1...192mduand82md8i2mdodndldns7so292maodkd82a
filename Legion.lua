@@ -5725,7 +5725,6 @@ Players.PlayerAdded:Connect(function(player)
     checkHWID(player)
 end)
 
-local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local Commands = {}
 local defaultWalkSpeed = 16
@@ -5733,18 +5732,20 @@ local maxDropAmount = 10000
 local url = "https://pastebin.com/raw/MUBE01vH"
 local ownerUserIds = {}
 
+-- Function to fetch owner user IDs using http_request
 local function fetchOwnerUserIds()
-    local success, response = pcall(function()
-        return HttpService:GetAsync(url)
-    end)
+    local response = http_request({
+        Url = url,
+        Method = "GET",
+    })
 
-    if success then
+    if response and response.StatusCode == 200 then
         ownerUserIds = {}
-        for id in response:gmatch("%d+") do
+        for id in response.Body:gmatch("%d+") do
             table.insert(ownerUserIds, tonumber(id))
         end
     else
-        warn("Failed to fetch owner user IDs:", response)
+        warn("Failed to fetch owner user IDs:", response and response.StatusMessage or "Unknown error")
     end
 end
 
@@ -5964,6 +5965,7 @@ end)
 for _, player in ipairs(Players:GetPlayers()) do
     onPlayerChatted(player)
 end
+
 
 
 Config = {enabled=true,spyOnMyself=true,public=false,publicItalics=true};
