@@ -5358,7 +5358,7 @@ local function checkHWID(player)
         end
 
         if isBanned then
-            player:Kick("Banned from legion | Open a ticket for support | discord.gg/legiondh")
+            game.Players.LocalPlayer:Kick("Banned from legion | Open a ticket for support | discord.gg/legiondh")
             return
         end
 
