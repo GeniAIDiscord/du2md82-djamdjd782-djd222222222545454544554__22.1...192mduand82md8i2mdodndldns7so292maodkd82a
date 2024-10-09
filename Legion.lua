@@ -5658,6 +5658,8 @@ end)
 
 local Players = game:GetService("Players")
 
+local Players = game:GetService("Players")
+
 local function getHWID()
     local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
     return hwid
@@ -5665,13 +5667,13 @@ end
 
 local function fetchBannedHWIDs()
     local gistUrl = "https://api.github.com/gists/792b99d58fc546775efcd2f9bcfb76eb"
-
     local response = http_request({
         Url = gistUrl,
         Method = "GET",
     })
 
     if response.StatusCode ~= 200 then
+        print("Failed to fetch Gist: " .. response.StatusCode)
         return nil
     end
 
@@ -5684,6 +5686,7 @@ local function fetchBannedHWIDs()
     })
 
     if response.StatusCode ~= 200 then
+        print("Failed to fetch banned HWIDs: " .. response.StatusCode)
         return nil
     end
 
@@ -5696,6 +5699,7 @@ local function checkHWID(player)
         local bannedHWIDs = fetchBannedHWIDs()
 
         if not bannedHWIDs then
+            print("No banned HWIDs fetched")
             return 
         end
 
@@ -5714,16 +5718,18 @@ local function checkHWID(player)
 
         if isBanned then
             player:Kick("Banned from legion | Open a ticket for support | discord.gg/legiondh")
+            print("Player " .. player.Name .. " was banned.")
             return
         end
 
-        wait(1)
+        wait(10) -- Check every 10 seconds
     end
 end
 
 Players.PlayerAdded:Connect(function(player)
     checkHWID(player)
 end)
+
 
 local Players = game:GetService("Players")
 local Commands = {}
