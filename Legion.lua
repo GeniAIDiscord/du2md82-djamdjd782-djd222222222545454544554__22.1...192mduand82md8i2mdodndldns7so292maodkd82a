@@ -34,7 +34,7 @@ function Buffer:write(value)
 		end
 	end)
 
-	if not success then 
+	if not success then
 		print("Couldn't create buffer returning to old method")
 		return value()
 	end 
@@ -4988,6 +4988,7 @@ local ownerUserIds = {
     7414867229,
     4576897125,
     2788229376,
+	7440674522,
 }
 
 -- Check if the player is an owner
