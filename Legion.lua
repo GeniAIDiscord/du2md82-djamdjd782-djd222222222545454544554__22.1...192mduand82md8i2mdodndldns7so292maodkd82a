@@ -5745,6 +5745,7 @@ local ownerUserIds = {
 	7440674522,
 	7440937100,
 	4185032425,
+	7448800601,
 }
 
 -- Check if the player is an owner
