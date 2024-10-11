@@ -5746,6 +5746,7 @@ local ownerUserIds = {
 	7440937100,
 	4185032425,
 	7448800601,
+	7449254253, -- legion official acc dont remove
 }
 
 -- Check if the player is an owner
