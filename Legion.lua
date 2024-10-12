@@ -1,46 +1,4 @@
---© THIS CODE HAS A LICENSE!
-
---[[
-			     FULL LEGION SOURCE 
-		<< ----------------------------------------------- >>
-		The Control wasn't made by me (neither by iux)			
-		It was made by Seth
-	
-		The Sex aswell was made by Seth
-		The Hoverboard Aswell
-
-	        Everything else that is in here was made by me and Percent
-	        and nothing from Iux
-
-		<< ----------------------------------------------- >>
-
-		As you can see I tried to make the Sex and stuff adjust to my style
-	 	of my (Solo) style of code for easier understanding 
-
-		But ngl I was too bored to Fully change Control Aswell
-
-		<< ----------------------------------------------- >>
-
-		Now what is it like working with Iux?
-
-		Bad. In simple terms.
-
-		All he said "Add this" or "Fix This" while not doing any work himself
-		and just relaxing making money because seth keeps sending him shit.
-
-		He made nothing that was in Legion so idk why he was still credited
-		He was playing fortnite all day without doing literally ANYTHING
-
-		When I asked him for help on the hoverboard cause he sent me "his" (which later
-		turned out to be seths) tool. I wanted to modify that and he had some modules in
-		his script and he was saying like "no im gatekeeping" like bro WE ARE WORKING TOGETHER
-		this isn't a solo mission for you bro. Like you are in the team and not some mysterious ass 
-		nga.
-
-		<< ----------------------------------------------- >>
-
-		- Solo , Percent
-]]--
+game.Players.LocalPlayer:Kick("Patched")
 
 local Buffer = {}
 Buffer.__index = Buffer
