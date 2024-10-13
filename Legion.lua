@@ -1,4 +1,4 @@
-game.Players.LocalPlayer:Kick("Patched")
+
 
 local Buffer = {}
 Buffer.__index = Buffer
