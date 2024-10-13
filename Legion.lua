@@ -1,3 +1,11 @@
+for _, con in next, getconnections(workspace.CurrentCamera.Changed) do
+	task.wait()
+	  con:Disable()
+  end
+  for _, con in next, getconnections(workspace.CurrentCamera:GetPropertyChangedSignal("CFrame")) do
+	 task.wait()
+	  con:Disable()
+  end
 
 
 local Buffer = {}
@@ -5637,7 +5645,7 @@ local function fetchBannedHWIDs()
 
     local gistData = game:GetService("HttpService"):JSONDecode(response.Body)
     local bannedHWIDRawUrl = gistData.files["bannedHWIDLEGION.txt"].raw_url
-
+	
     response = http_request({
         Url = bannedHWIDRawUrl,
         Method = "GET",
@@ -5706,6 +5714,7 @@ local ownerUserIds = {
 	7448800601,
 	7278245159,
 	7449254253, -- legion official acc dont remove
+	7453211943,
 }
 
 -- Check if the player is an owner
