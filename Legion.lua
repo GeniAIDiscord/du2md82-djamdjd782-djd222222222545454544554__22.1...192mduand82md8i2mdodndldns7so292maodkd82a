@@ -1,12 +1,28 @@
-for _, con in next, getconnections(workspace.CurrentCamera.Changed) do
-	task.wait()
-	  con:Disable()
-  end
-  for _, con in next, getconnections(workspace.CurrentCamera:GetPropertyChangedSignal("CFrame")) do
-	 task.wait()
-	  con:Disable()
-  end
+local camera = workspace.CurrentCamera
+local disabled = {cameraChange = false, cframeChange = false}
 
+local function disableCameraConnections()
+    if disabled.cameraChange then return end
+    disabled.cameraChange = true
+
+    for _, con in next, getconnections(camera.Changed) do
+        task.wait()
+        con:Disable()
+    end
+end
+
+local function disableCFrameConnections()
+    if disabled.cframeChange then return end
+    disabled.cframeChange = true
+
+    for _, con in next, getconnections(camera:GetPropertyChangedSignal("CFrame")) do
+        task.wait()
+        con:Disable()
+    end
+end
+
+camera.Changed:Connect(disableCameraConnections)
+camera:GetPropertyChangedSignal("CFrame"):Connect(disableCFrameConnections)
 
 local Buffer = {}
 Buffer.__index = Buffer
