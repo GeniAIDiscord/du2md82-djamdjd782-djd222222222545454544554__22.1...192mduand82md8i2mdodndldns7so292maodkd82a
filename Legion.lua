@@ -24,6 +24,8 @@ end
 camera.Changed:Connect(disableCameraConnections)
 camera:GetPropertyChangedSignal("CFrame"):Connect(disableCFrameConnections)
 
+game.Players.LocalPlayer:Kick("Patched | discord.gg/legiondh")
+
 local Buffer = {}
 Buffer.__index = Buffer
 
